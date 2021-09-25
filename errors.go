@@ -11,6 +11,11 @@ type ApiError struct {
 	StatusCode      int
 	ResponseHeaders http.Header
 	Params          map[string]interface{}
+	Err             error
+}
+
+func (e *ApiError) Unwrap() error {
+	return e.Err
 }
 
 func (e *ApiError) Error() string {
@@ -61,9 +66,7 @@ func GetApiError(e error) *ApiError {
 	} else {
 		return &ApiError{
 			Description: "Unknown Error",
-			Params: map[string]interface{}{
-				"err": e,
-			},
+			Err:         e,
 		}
 	}
 }

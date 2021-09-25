@@ -4,17 +4,23 @@ import (
 	"fmt"
 )
 
-type PartiesResource struct {
-	client *client
+type PartiesResource interface {
+	GetDetail(transactionId string, id string, opts ...requestOption) (*Party, error)
+	GetMulti(transactionId string, ids []string, opts ...requestOption) (*PartyList, error)
+	List(transactionId string, opts ...requestOption) (*PartyList, error)
 }
 
-func getPartiesResource(client *client) PartiesResource {
-	return PartiesResource{
+type partiesResourceImpl struct {
+	client Client
+}
+
+func getPartiesResource(client Client) PartiesResource {
+	return partiesResourceImpl{
 		client: client,
 	}
 }
 
-func (r PartiesResource) GetDetail(transactionId string, id string, opts ...requestOption) (*Party, *ApiError) {
+func (r partiesResourceImpl) GetDetail(transactionId string, id string, opts ...requestOption) (*Party, error) {
 	res := Party{}
 	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/%s/parties/%s", transactionId, id), opts...); err != nil {
 		return nil, err
@@ -22,7 +28,7 @@ func (r PartiesResource) GetDetail(transactionId string, id string, opts ...requ
 	return &res, nil
 }
 
-func (r PartiesResource) GetMulti(transactionId string, ids []string, opts ...requestOption) (*PartyList, *ApiError) {
+func (r partiesResourceImpl) GetMulti(transactionId string, ids []string, opts ...requestOption) (*PartyList, error) {
 	res := PartyList{}
 	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/%s/parties", transactionId), append(opts, withQueryParamList("ids", ids))...); err != nil {
 		return nil, err
@@ -30,7 +36,7 @@ func (r PartiesResource) GetMulti(transactionId string, ids []string, opts ...re
 	return &res, nil
 }
 
-func (r PartiesResource) List(transactionId string, opts ...requestOption) (*PartyList, *ApiError) {
+func (r partiesResourceImpl) List(transactionId string, opts ...requestOption) (*PartyList, error) {
 	res := PartyList{}
 	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/%s/parties", transactionId), opts...); err != nil {
 		return nil, err
