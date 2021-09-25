@@ -74,29 +74,27 @@ func withPayload(payload *bytes.Buffer) requestOption {
 	}
 }
 
-func readHttpResponse(httpResp *http.Response) ([]byte, *ApiError) {
+func readHttpResponse(httpResp *http.Response) ([]byte, error) {
 	defer httpResp.Body.Close()
 	body, err := ioutil.ReadAll(httpResp.Body)
 	if err != nil {
 		return []byte{}, &ApiError{
 			Description: "Error while reading response body",
-			Params: map[string]interface{}{
-				"err": err,
-			},
+			Err:         err,
 		}
 	}
 	return body, nil
 }
 
-func getUnexpctedApiResponseError(httpResp *http.Response, responseBody []byte, baseError error) *ApiError {
+func getUnexpctedApiResponseError(httpResp *http.Response, responseBody []byte, baseError error) error {
 	return &ApiError{
 		Description:     "Unexpected API response",
 		StatusCode:      httpResp.StatusCode,
 		ResponseHeaders: httpResp.Header,
 		Params: map[string]interface{}{
 			"responseBody": string(responseBody),
-			"err":          baseError,
 		},
+		Err: baseError,
 	}
 }
 
@@ -121,7 +119,7 @@ type errorObject struct {
 	Params  map[string]interface{} `json:"params"`
 }
 
-func getErrorFromHttpResp(httpResp *http.Response) *ApiError {
+func getErrorFromHttpResp(httpResp *http.Response) error {
 	if httpResp.StatusCode < 200 || httpResp.StatusCode >= 300 {
 		body, err := readHttpResponse(httpResp)
 		if err != nil {
@@ -143,7 +141,7 @@ func getErrorFromHttpResp(httpResp *http.Response) *ApiError {
 	return nil
 }
 
-func request(res interface{}, requestMethod string, url string, opts ...requestOption) *ApiError {
+func request(res interface{}, requestMethod string, url string, opts ...requestOption) error {
 	reqOptions := requestOptions{}
 	for _, opt := range opts {
 		opt(&reqOptions)
@@ -162,9 +160,7 @@ func request(res interface{}, requestMethod string, url string, opts ...requestO
 	if err != nil {
 		return &ApiError{
 			Description: "Error while initializing http request",
-			Params: map[string]interface{}{
-				"err": err,
-			},
+			Err:         err,
 		}
 	}
 	if payload.Len() > 0 {
@@ -182,9 +178,7 @@ func request(res interface{}, requestMethod string, url string, opts ...requestO
 	if err != nil {
 		return &ApiError{
 			Description: "Error when sending http request to Glide API",
-			Params: map[string]interface{}{
-				"err": err,
-			},
+			Err:         err,
 		}
 	}
 
@@ -208,11 +202,11 @@ func request(res interface{}, requestMethod string, url string, opts ...requestO
 	return nil
 }
 
-func get(res interface{}, url string, opts ...requestOption) *ApiError {
+func get(res interface{}, url string, opts ...requestOption) error {
 	return request(res, "GET", url, opts...)
 }
 
-func post(res interface{}, url string, payload interface{}, opts ...requestOption) *ApiError {
+func post(res interface{}, url string, payload interface{}, opts ...requestOption) error {
 	var payloadBuffer *bytes.Buffer = nil
 	if payload != nil {
 		json_data, err := json.Marshal(payload)

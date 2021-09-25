@@ -23,7 +23,7 @@ func (k dummyKey) GetDecoded() (crypto.PrivateKey, error) {
 
 func TestGetClientOptions(t *testing.T) {
 	stubDummyKey := dummyKey{}
-	c := GetClient(TEST_CLIENT_KEY, stubDummyKey)
+	c := GetClient(TEST_CLIENT_KEY, stubDummyKey).(*client)
 
 	wantAud := "api.glide.com"
 	if gotAud := c.options.audience; gotAud != wantAud {

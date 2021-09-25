@@ -11,14 +11,14 @@ type claims struct {
 	jwt.StandardClaims
 }
 
-func getJwt(key Key, iss string, sub string, aud string, scopes []string, expiresIn int64) (string, *ApiError) {
+func getJwt(key Key, iss string, sub string, aud string, scopes []string, expiresIn int64) (string, error) {
 	k, err := key.GetDecoded()
 	if err != nil {
 		return "", &ApiError{
 			Params: map[string]interface{}{
 				"desc": "Error decoding key",
-				"err":  err,
 			},
+			Err: err,
 		}
 	}
 
@@ -39,8 +39,8 @@ func getJwt(key Key, iss string, sub string, aud string, scopes []string, expire
 		return "", &ApiError{
 			Params: map[string]interface{}{
 				"desc": "Error signing JWT",
-				"err":  err,
 			},
+			Err: err,
 		}
 	}
 	return t, nil

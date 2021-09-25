@@ -8,11 +8,6 @@ type Address struct {
 	Street  string `json:"street"`
 	Unit    string `json:"unit"`
 	ZipCode string `json:"zip_code"`
-	Object  string `json:"object"`
-}
-
-func (m Address) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type Agent struct {
@@ -33,6 +28,15 @@ type Contact struct {
 	FirstName  string `json:"first_name"`
 	LastName   string `json:"last_name"`
 	Title      string `json:"title"`
+}
+
+type CreateResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m CreateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type FieldWriteDict struct {
@@ -135,6 +139,15 @@ type FolderRenamesResponse struct {
 }
 
 func (m FolderRenamesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FormImportsResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m FormImportsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -243,8 +256,10 @@ func (m PartyRemovesResponse) IsRef() bool {
 type Transaction struct {
 	Id                   string                  `json:"id"`
 	Address              Address                 `json:"address"`
+	Archived             bool                    `json:"archived"`
 	Fields               TransactionFields       `json:"fields"`
 	Folders              FolderList              `json:"folders"`
+	IsLease              bool                    `json:"is_lease"`
 	Parties              PartyList               `json:"parties"`
 	Stage                string                  `json:"stage"`
 	Title                string                  `json:"title"`
@@ -347,6 +362,19 @@ func CombineFieldsWrites(fieldWrites ...TransactionFieldsWrite) TransactionField
 	return res
 }
 
+type TransactionArchivalStatus struct {
+	Archived bool `json:"archived"`
+}
+
+type TransactionCreate struct {
+	AdditionalParties []PartyCreate `json:"additional_parties"`
+	Address           Address       `json:"address"`
+	CreatorRoles      []string      `json:"creator_roles"`
+	IsLease           bool          `json:"is_lease"`
+	Stage             string        `json:"stage"`
+	Title             string        `json:"title"`
+}
+
 type TransactionDocument struct {
 	Id          string      `json:"id"`
 	Folder      Folder      `json:"folder"`
@@ -395,6 +423,15 @@ type TransactionDocumentAssignments struct {
 	Assignments []TransactionDocumentAssignment `json:"assignments"`
 }
 
+type TransactionDocumentAssignmentsResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m TransactionDocumentAssignmentsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TransactionDocumentRename struct {
 	Title                 string `json:"title"`
 	TransactionDocumentId string `json:"transaction_document_id"`
@@ -435,13 +472,13 @@ func (m TransactionDocumentTrashesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type TransactionDocumentsAssignmentsResponse struct {
-	TransactionId string `json:"transaction_id"`
-	Object        string `json:"object"`
+type TransactionDocumentUpload struct {
+	FolderId string `json:"folder_id"`
+	Title    string `json:"title"`
 }
 
-func (m TransactionDocumentsAssignmentsResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
+type TransactionDocumentUploads struct {
+	Uploads []TransactionDocumentUpload `json:"uploads"`
 }
 
 type TransactionDocumentsRestore struct {
@@ -451,6 +488,34 @@ type TransactionDocumentsRestore struct {
 
 type TransactionDocumentsRestores struct {
 	Restores []TransactionDocumentsRestore `json:"restores"`
+}
+
+type TransactionFormImport struct {
+	FormId string `json:"form_id"`
+	Title  string `json:"title"`
+}
+
+type TransactionFormImports struct {
+	FolderId string                  `json:"folder_id"`
+	Imports  []TransactionFormImport `json:"imports"`
+}
+
+type UpdateArchivalStatusResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m UpdateArchivalStatusResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UploadsResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m UploadsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type User struct {
