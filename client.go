@@ -73,7 +73,7 @@ func GetExpandFields(fieldIds ...string) string {
 	return "fields"
 }
 
-func WithUpatedAfter(ts int) requestOption {
+func WithUpdatedAfter(ts int) requestOption {
 	return withQueryParam("updated_after", strconv.Itoa(ts))
 }
 
