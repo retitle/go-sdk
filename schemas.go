@@ -261,6 +261,8 @@ type Transaction struct {
 	Folders              FolderList              `json:"folders"`
 	IsLease              bool                    `json:"is_lease"`
 	Parties              PartyList               `json:"parties"`
+	ReState              string                  `json:"re_state"`
+	Side                 string                  `json:"side"`
 	Stage                string                  `json:"stage"`
 	Title                string                  `json:"title"`
 	TransactionDocuments TransactionDocumentList `json:"transaction_documents"`
@@ -371,6 +373,7 @@ type TransactionCreate struct {
 	Address           Address       `json:"address"`
 	CreatorRoles      []string      `json:"creator_roles"`
 	IsLease           bool          `json:"is_lease"`
+	ReState           string        `json:"re_state"`
 	Stage             string        `json:"stage"`
 	Title             string        `json:"title"`
 }
