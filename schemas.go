@@ -200,8 +200,13 @@ func (m PartyList) NextPageParams() *PageParams {
 }
 
 type PartyCreate struct {
-	Contact Contact  `json:"contact"`
-	Roles   []string `json:"roles"`
+	Body                string   `json:"body"`
+	Contact             Contact  `json:"contact"`
+	Invite              bool     `json:"invite"`
+	InviteRestrictions  []string `json:"invite_restrictions"`
+	Roles               []string `json:"roles"`
+	Subject             string   `json:"subject"`
+	SuppressInviteEmail bool     `json:"suppress_invite_email"`
 }
 
 type PartyCreates struct {

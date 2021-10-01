@@ -5,26 +5,19 @@ import (
 )
 
 type FoldersResource interface {
-	TransactionDocuments() TransactionDocumentsResource
 	GetDetail(transactionId string, id string, opts ...requestOption) (*Folder, error)
 	GetMulti(transactionId string, ids []string, opts ...requestOption) (*FolderList, error)
 	List(transactionId string, opts ...requestOption) (*FolderList, error)
 }
 
 type foldersResourceImpl struct {
-	client               Client
-	transactionDocuments TransactionDocumentsResource
+	client Client
 }
 
 func getFoldersResource(client Client) FoldersResource {
 	return foldersResourceImpl{
-		client:               client,
-		transactionDocuments: getTransactionDocumentsResource(client),
+		client: client,
 	}
-}
-
-func (r foldersResourceImpl) TransactionDocuments() TransactionDocumentsResource {
-	return r.transactionDocuments
 }
 
 func (r foldersResourceImpl) GetDetail(transactionId string, id string, opts ...requestOption) (*Folder, error) {
