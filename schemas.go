@@ -508,12 +508,30 @@ type TransactionFormImports struct {
 	Imports  []TransactionFormImport `json:"imports"`
 }
 
+type TransactionMeta struct {
+	IsLease bool   `json:"is_lease"`
+	Title   string `json:"title"`
+}
+
+type TransactionMetaUpdate struct {
+	Data TransactionMeta `json:"data"`
+}
+
 type UpdateArchivalStatusResponse struct {
 	TransactionId string `json:"transaction_id"`
 	Object        string `json:"object"`
 }
 
 func (m UpdateArchivalStatusResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UpdateTransactionMetaResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m UpdateTransactionMetaResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 

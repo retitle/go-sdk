@@ -25,6 +25,7 @@ type TransactionsResource interface {
 	TransactionDocumentRestores(id string, transactionDocumentsRestores TransactionDocumentsRestores, opts ...requestOption) (*TransactionDocumentRestoresResponse, error)
 	TransactionDocumentTrashes(id string, transactionDocumentTrashes TransactionDocumentTrashes, opts ...requestOption) (*TransactionDocumentTrashesResponse, error)
 	UpdateArchivalStatus(id string, transactionArchivalStatus TransactionArchivalStatus, opts ...requestOption) (*UpdateArchivalStatusResponse, error)
+	UpdateTransactionMeta(id string, transactionMetaUpdate TransactionMetaUpdate, opts ...requestOption) (*UpdateTransactionMetaResponse, error)
 }
 
 type transactionsResourceImpl struct {
@@ -187,6 +188,14 @@ func (r transactionsResourceImpl) TransactionDocumentTrashes(id string, transact
 func (r transactionsResourceImpl) UpdateArchivalStatus(id string, transactionArchivalStatus TransactionArchivalStatus, opts ...requestOption) (*UpdateArchivalStatusResponse, error) {
 	res := UpdateArchivalStatusResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/update_archival_status", id), transactionArchivalStatus, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) UpdateTransactionMeta(id string, transactionMetaUpdate TransactionMetaUpdate, opts ...requestOption) (*UpdateTransactionMetaResponse, error) {
+	res := UpdateTransactionMetaResponse{}
+	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/update_transaction_meta", id), transactionMetaUpdate, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
