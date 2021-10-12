@@ -21,6 +21,7 @@ type Agent struct {
 
 type Contact struct {
 	Agent      Agent  `json:"agent"`
+	AvatarUrl  string `json:"avatar_url"`
 	CellPhone  string `json:"cell_phone"`
 	Email      string `json:"email"`
 	EntityName string `json:"entity_name"`
@@ -39,8 +40,53 @@ func (m CreateResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Field struct {
+	Timestamp int                    `json:"timestamp"`
+	Value     map[string]interface{} `json:"value"`
+	Object    string                 `json:"object"`
+}
+
+func (m Field) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FieldOutOfDateDetail struct {
+	ControlTimestamp int    `json:"control_timestamp"`
+	Timestamp        int    `json:"timestamp"`
+	Object           string `json:"object"`
+}
+
+func (m FieldOutOfDateDetail) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FieldResponse struct {
+	Timestamp int                    `json:"timestamp"`
+	Value     map[string]interface{} `json:"value"`
+	Object    string                 `json:"object"`
+}
+
+func (m FieldResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FieldResponseWarnings struct {
+	OutOfDateFields map[string]FieldOutOfDateDetail `json:"out_of_date_fields"`
+	Object          string                          `json:"object"`
+}
+
+func (m FieldResponseWarnings) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FieldWrite struct {
+	ControlTimestamp int                    `json:"control_timestamp"`
+	Value            map[string]interface{} `json:"value"`
+}
+
 type FieldWriteDict struct {
-	Fields TransactionFieldsWrite `json:"fields"`
+	ControlPolicy string                 `json:"control_policy"`
+	Fields        TransactionFieldsWrite `json:"fields"`
 }
 
 type FieldsResponse struct {
@@ -54,8 +100,9 @@ func (m FieldsResponse) IsRef() bool {
 }
 
 type FieldsResponseResult struct {
-	Fields TransactionFields `json:"fields"`
-	Object string            `json:"object"`
+	Fields   TransactionFields     `json:"fields"`
+	Warnings FieldResponseWarnings `json:"warnings"`
+	Object   string                `json:"object"`
 }
 
 func (m FieldsResponseResult) IsRef() bool {
