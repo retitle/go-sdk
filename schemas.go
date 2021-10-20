@@ -211,6 +211,76 @@ func (m ItemDeletesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Listing struct {
+	Id                string   `json:"id"`
+	Address           Location `json:"address"`
+	Bath              float64  `json:"bath"`
+	BathFull          float64  `json:"bath_full"`
+	BathHalf          float64  `json:"bath_half"`
+	BathOneQuarter    float64  `json:"bath_one_quarter"`
+	BathThreeQuarter  float64  `json:"bath_three_quarter"`
+	Bed               float64  `json:"bed"`
+	ClosePrice        float64  `json:"close_price"`
+	ListingDate       string   `json:"listing_date"`
+	ListingPrice      float64  `json:"listing_price"`
+	ListingType       string   `json:"listing_type"`
+	MediaUrls         []string `json:"media_urls"`
+	MlsKind           string   `json:"mls_kind"`
+	MlsNumber         string   `json:"mls_number"`
+	MlsStatus         string   `json:"mls_status"`
+	OriginalListPrice float64  `json:"original_list_price"`
+	PropertyType      string   `json:"property_type"`
+	UsedInTransaction bool     `json:"used_in_transaction"`
+	YearBuilt         string   `json:"year_built"`
+	Object            string   `json:"object"`
+}
+
+func (m Listing) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ListingList struct {
+	Data       []Listing `json:"data"`
+	ListObject string    `json:"list_object"`
+	Object     string    `json:"object"`
+	HasMore    bool      `json:"has_more"`
+}
+
+func (m ListingList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m ListingList) NextPageParams() *PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &PageParams{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
+type Location struct {
+	AgentAddress  string `json:"agent_address"`
+	City          string `json:"city"`
+	County        string `json:"county"`
+	PrettyAddress string `json:"pretty_address"`
+	State         string `json:"state"`
+	Street        string `json:"street"`
+	StreetNumber  string `json:"street_number"`
+	StreetType    string `json:"street_type"`
+	UnitNumber    string `json:"unit_number"`
+	UnitType      string `json:"unit_type"`
+	ZipCode       string `json:"zip_code"`
+	Object        string `json:"object"`
+}
+
+func (m Location) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Party struct {
 	Id          string      `json:"id"`
 	Contact     Contact     `json:"contact"`
@@ -469,9 +539,9 @@ func (m TransactionDocumentList) NextPageParams() *PageParams {
 }
 
 type TransactionDocumentAssignment struct {
-	FolderId string `json:"folder_id"`
-	Order    int    `json:"order"`
-	TdId     string `json:"td_id"`
+	FolderId              string `json:"folder_id"`
+	Order                 int    `json:"order"`
+	TransactionDocumentId string `json:"transaction_document_id"`
 }
 
 type TransactionDocumentAssignments struct {
