@@ -18,6 +18,7 @@ type TransactionsResource interface {
 	FormImports(id string, transactionFormImports TransactionFormImports, opts ...requestOption) (*FormImportsResponse, error)
 	ItemDeletes(id string, itemDeletes ItemDeletes, opts ...requestOption) (*ItemDeletesResponse, error)
 	PartyCreates(id string, partyCreates PartyCreates, opts ...requestOption) (*PartyCreatesResponse, error)
+	PartyInvites(id string, partyInvites PartyInvites, opts ...requestOption) (*PartyInvitesResponse, error)
 	PartyPatches(id string, partyPatches PartyPatches, opts ...requestOption) (*PartyPatchesResponse, error)
 	PartyRemoves(id string, partyRemoves PartyRemoves, opts ...requestOption) (*PartyRemovesResponse, error)
 	TransactionDocumentAssignments(id string, transactionDocumentAssignments TransactionDocumentAssignments, opts ...requestOption) (*TransactionDocumentAssignmentsResponse, error)
@@ -132,6 +133,14 @@ func (r transactionsResourceImpl) ItemDeletes(id string, itemDeletes ItemDeletes
 func (r transactionsResourceImpl) PartyCreates(id string, partyCreates PartyCreates, opts ...requestOption) (*PartyCreatesResponse, error) {
 	res := PartyCreatesResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/party_creates", id), partyCreates, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) PartyInvites(id string, partyInvites PartyInvites, opts ...requestOption) (*PartyInvitesResponse, error) {
+	res := PartyInvitesResponse{}
+	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/party_invites", id), partyInvites, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

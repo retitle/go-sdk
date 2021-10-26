@@ -286,6 +286,7 @@ type Party struct {
 	Contact     Contact     `json:"contact"`
 	Roles       []string    `json:"roles"`
 	Transaction Transaction `json:"transaction"`
+	UserId      string      `json:"user_id"`
 	Object      string      `json:"object"`
 }
 
@@ -336,6 +337,27 @@ type PartyCreatesResponse struct {
 }
 
 func (m PartyCreatesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type PartyInvite struct {
+	Body                string   `json:"body"`
+	InviteRestrictions  []string `json:"invite_restrictions"`
+	PartyId             string   `json:"party_id"`
+	Subject             string   `json:"subject"`
+	SuppressInviteEmail bool     `json:"suppress_invite_email"`
+}
+
+type PartyInvites struct {
+	Invites []PartyInvite `json:"invites"`
+}
+
+type PartyInvitesResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m PartyInvitesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
