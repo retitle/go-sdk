@@ -1,6 +1,9 @@
 package glide
 
-import "strings"
+import (
+	"net/http"
+	"strings"
+)
 
 type Address struct {
 	City    string `json:"city"`
@@ -20,15 +23,17 @@ type Agent struct {
 }
 
 type Contact struct {
-	Agent      Agent  `json:"agent"`
-	AvatarUrl  string `json:"avatar_url"`
-	CellPhone  string `json:"cell_phone"`
-	Email      string `json:"email"`
-	EntityName string `json:"entity_name"`
-	EntityType string `json:"entity_type"`
-	FirstName  string `json:"first_name"`
-	LastName   string `json:"last_name"`
-	Title      string `json:"title"`
+	Agent           Agent  `json:"agent"`
+	AvatarUrl       string `json:"avatar_url"`
+	BrandLogoUrl    string `json:"brand_logo_url"`
+	CellPhone       string `json:"cell_phone"`
+	Email           string `json:"email"`
+	EntityName      string `json:"entity_name"`
+	EntityType      string `json:"entity_type"`
+	FirstName       string `json:"first_name"`
+	LastName        string `json:"last_name"`
+	PersonalWebsite string `json:"personal_website"`
+	Title           string `json:"title"`
 }
 
 type CreateResponse struct {
@@ -37,6 +42,87 @@ type CreateResponse struct {
 }
 
 func (m CreateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentSplitAsyncResponse struct {
+	ReqId       string                             `json:"req_id"`
+	Suggestions map[string]DocumentSplitSuggestion `json:"suggestions"`
+	Object      string                             `json:"object"`
+}
+
+func (m DocumentSplitAsyncResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentSplitResponse struct {
+	ReqId  string                     `json:"req_id"`
+	Result DocumentSplitAsyncResponse `json:"result"`
+	Object string                     `json:"object"`
+}
+
+func (m DocumentSplitResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentSplitSchema struct {
+	Files   []http.File      `json:"files"`
+	ReState string           `json:"re_state"`
+	ReqId   string           `json:"req_id"`
+	Uploads []DocumentUpload `json:"uploads"`
+}
+
+type DocumentSplitSuggestion struct {
+	EndPage      int    `json:"end_page"`
+	Filename     string `json:"filename"`
+	FormId       string `json:"form_id"`
+	FormSeriesId string `json:"form_series_id"`
+	StartPage    int    `json:"start_page"`
+	Object       string `json:"object"`
+}
+
+func (m DocumentSplitSuggestion) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentUpload struct {
+	Title string `json:"title"`
+}
+
+type DocumentZone struct {
+	Id               string                 `json:"id"`
+	FormId           string                 `json:"form_id"`
+	Kind             string                 `json:"kind"`
+	Name             string                 `json:"name"`
+	OriginalLocation []DocumentZoneLocation `json:"original_location"`
+	Page             int                    `json:"page"`
+	Vertices         []DocumentZoneVertex   `json:"vertices"`
+	Object           string                 `json:"object"`
+}
+
+func (m DocumentZone) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentZoneLocation struct {
+	XMax   float64 `json:"x_max"`
+	XMin   float64 `json:"x_min"`
+	YMax   float64 `json:"y_max"`
+	YMin   float64 `json:"y_min"`
+	Object string  `json:"object"`
+}
+
+func (m DocumentZoneLocation) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentZoneVertex struct {
+	X      int    `json:"x"`
+	Y      int    `json:"y"`
+	Object string `json:"object"`
+}
+
+func (m DocumentZoneVertex) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -211,28 +297,45 @@ func (m ItemDeletesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type LinkListingInfo struct {
+	MlsKind   string `json:"mls_kind"`
+	MlsNumber string `json:"mls_number"`
+}
+
+type LinkListingInfoResponse struct {
+	TransactionId string `json:"transaction_id"`
+	Object        string `json:"object"`
+}
+
+func (m LinkListingInfoResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Listing struct {
-	Id                string   `json:"id"`
-	Address           Location `json:"address"`
-	Bath              float64  `json:"bath"`
-	BathFull          float64  `json:"bath_full"`
-	BathHalf          float64  `json:"bath_half"`
-	BathOneQuarter    float64  `json:"bath_one_quarter"`
-	BathThreeQuarter  float64  `json:"bath_three_quarter"`
-	Bed               float64  `json:"bed"`
-	ClosePrice        float64  `json:"close_price"`
-	ListingDate       string   `json:"listing_date"`
-	ListingPrice      float64  `json:"listing_price"`
-	ListingType       string   `json:"listing_type"`
-	MediaUrls         []string `json:"media_urls"`
-	MlsKind           string   `json:"mls_kind"`
-	MlsNumber         string   `json:"mls_number"`
-	MlsStatus         string   `json:"mls_status"`
-	OriginalListPrice float64  `json:"original_list_price"`
-	PropertyType      string   `json:"property_type"`
-	UsedInTransaction bool     `json:"used_in_transaction"`
-	YearBuilt         string   `json:"year_built"`
-	Object            string   `json:"object"`
+	Id                      string   `json:"id"`
+	Address                 Location `json:"address"`
+	Bath                    float64  `json:"bath"`
+	BathFull                float64  `json:"bath_full"`
+	BathHalf                float64  `json:"bath_half"`
+	BathOneQuarter          float64  `json:"bath_one_quarter"`
+	BathThreeQuarter        float64  `json:"bath_three_quarter"`
+	Bed                     float64  `json:"bed"`
+	CloseDate               string   `json:"close_date"`
+	ClosePrice              float64  `json:"close_price"`
+	Dom                     float64  `json:"dom"`
+	ListingDate             string   `json:"listing_date"`
+	ListingPrice            float64  `json:"listing_price"`
+	ListingType             string   `json:"listing_type"`
+	MediaUrls               []string `json:"media_urls"`
+	MlsKind                 string   `json:"mls_kind"`
+	MlsNumber               string   `json:"mls_number"`
+	MlsStatus               string   `json:"mls_status"`
+	OriginalListPrice       float64  `json:"original_list_price"`
+	PropertyType            string   `json:"property_type"`
+	StatusDate              string   `json:"status_date"`
+	UsedInActiveTransaction bool     `json:"used_in_active_transaction"`
+	YearBuilt               string   `json:"year_built"`
+	Object                  string   `json:"object"`
 }
 
 func (m Listing) IsRef() bool {
@@ -278,6 +381,25 @@ type Location struct {
 }
 
 func (m Location) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type Notification struct {
+	Bcc              []string               `json:"bcc"`
+	Cc               []string               `json:"cc"`
+	Context          map[string]interface{} `json:"context"`
+	IncludeSignature bool                   `json:"include_signature"`
+	Recipients       []string               `json:"recipients"`
+	SeparateEmails   bool                   `json:"separate_emails"`
+	Template         string                 `json:"template"`
+}
+
+type NotificationResponse struct {
+	Results []string `json:"results"`
+	Object  string   `json:"object"`
+}
+
+func (m NotificationResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -395,6 +517,41 @@ type PartyRemovesResponse struct {
 
 func (m PartyRemovesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureDetectionAnalysisResult struct {
+	DocumentZone DocumentZone `json:"document_zone"`
+	Score        float64      `json:"score"`
+	Object       string       `json:"object"`
+}
+
+func (m SignatureDetectionAnalysisResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureDetectionAsyncResponse struct {
+	ReqId      string                                      `json:"req_id"`
+	Signatures map[string]SignatureDetectionAnalysisResult `json:"signatures"`
+	Object     string                                      `json:"object"`
+}
+
+func (m SignatureDetectionAsyncResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureDetectionResponse struct {
+	ReqId  string                          `json:"req_id"`
+	Result SignatureDetectionAsyncResponse `json:"result"`
+	Object string                          `json:"object"`
+}
+
+func (m SignatureDetectionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureDetectionSchema struct {
+	Files   []http.File      `json:"files"`
+	Uploads []DocumentUpload `json:"uploads"`
 }
 
 type Transaction struct {
@@ -625,6 +782,7 @@ type TransactionDocumentUpload struct {
 }
 
 type TransactionDocumentUploads struct {
+	Files   []http.File                 `json:"files"`
 	Uploads []TransactionDocumentUpload `json:"uploads"`
 }
 
@@ -684,11 +842,21 @@ func (m UploadsResponse) IsRef() bool {
 }
 
 type User struct {
-	Id      string  `json:"id"`
-	Contact Contact `json:"contact"`
-	Object  string  `json:"object"`
+	Id           string  `json:"id"`
+	AgentAddress Address `json:"agent_address"`
+	Contact      Contact `json:"contact"`
+	Object       string  `json:"object"`
 }
 
 func (m User) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UserBillingInfo struct {
+	StripeCustomerId string `json:"stripe_customer_id"`
+	Object           string `json:"object"`
+}
+
+func (m UserBillingInfo) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
