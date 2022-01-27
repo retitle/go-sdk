@@ -17,6 +17,7 @@ type TransactionsResource interface {
 	FolderRenames(id string, folderRenames FolderRenames, opts ...requestOption) (*FolderRenamesResponse, error)
 	FormImports(id string, transactionFormImports TransactionFormImports, opts ...requestOption) (*FormImportsResponse, error)
 	ItemDeletes(id string, itemDeletes ItemDeletes, opts ...requestOption) (*ItemDeletesResponse, error)
+	LinkListingInfo(id string, linkListingInfo LinkListingInfo, opts ...requestOption) (*LinkListingInfoResponse, error)
 	PartyCreates(id string, partyCreates PartyCreates, opts ...requestOption) (*PartyCreatesResponse, error)
 	PartyInvites(id string, partyInvites PartyInvites, opts ...requestOption) (*PartyInvitesResponse, error)
 	PartyPatches(id string, partyPatches PartyPatches, opts ...requestOption) (*PartyPatchesResponse, error)
@@ -125,6 +126,14 @@ func (r transactionsResourceImpl) FormImports(id string, transactionFormImports 
 func (r transactionsResourceImpl) ItemDeletes(id string, itemDeletes ItemDeletes, opts ...requestOption) (*ItemDeletesResponse, error) {
 	res := ItemDeletesResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/item_deletes", id), itemDeletes, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) LinkListingInfo(id string, linkListingInfo LinkListingInfo, opts ...requestOption) (*LinkListingInfoResponse, error) {
+	res := LinkListingInfoResponse{}
+	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/link_listing_info", id), linkListingInfo, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
