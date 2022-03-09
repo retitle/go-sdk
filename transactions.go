@@ -12,6 +12,7 @@ type TransactionsResource interface {
 	GetMulti(ids []string, opts ...requestOption) (*TransactionList, error)
 	List(opts ...requestOption) (*TransactionList, error)
 	Create(transactionCreate TransactionCreate, opts ...requestOption) (*CreateResponse, error)
+	AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error)
 	Fields(id string, fieldsWrites TransactionFieldsWrite, opts ...requestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...requestOption) (*FolderCreatesResponse, error)
 	FolderRenames(id string, folderRenames FolderRenames, opts ...requestOption) (*FolderRenamesResponse, error)
@@ -85,6 +86,14 @@ func (r transactionsResourceImpl) List(opts ...requestOption) (*TransactionList,
 func (r transactionsResourceImpl) Create(transactionCreate TransactionCreate, opts ...requestOption) (*CreateResponse, error) {
 	res := CreateResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions"), transactionCreate, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error) {
+	res := PartyRoles{}
+	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/available_party_roles"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

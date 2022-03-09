@@ -11,6 +11,11 @@ type Address struct {
 	Street  string `json:"street"`
 	Unit    string `json:"unit"`
 	ZipCode string `json:"zip_code"`
+	Object  string `json:"object"`
+}
+
+func (m Address) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type Agent struct {
@@ -20,9 +25,24 @@ type Agent struct {
 	LicenseNumber        string `json:"license_number"`
 	LicenseState         string `json:"license_state"`
 	NrdsNumber           string `json:"nrds_number"`
+	Object               string `json:"object"`
+}
+
+func (m Agent) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type AgentRequest struct {
+	CompanyLicenseNumber string `json:"company_license_number"`
+	CompanyName          string `json:"company_name"`
+	CompanyPhoneNumber   string `json:"company_phone_number"`
+	LicenseNumber        string `json:"license_number"`
+	LicenseState         string `json:"license_state"`
+	NrdsNumber           string `json:"nrds_number"`
 }
 
 type Contact struct {
+	Id              string `json:"id"`
 	Agent           Agent  `json:"agent"`
 	AvatarUrl       string `json:"avatar_url"`
 	BrandLogoUrl    string `json:"brand_logo_url"`
@@ -34,6 +54,77 @@ type Contact struct {
 	LastName        string `json:"last_name"`
 	PersonalWebsite string `json:"personal_website"`
 	Title           string `json:"title"`
+	Object          string `json:"object"`
+}
+
+func (m Contact) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ContactList struct {
+	Data       []Contact `json:"data"`
+	ListObject string    `json:"list_object"`
+	Object     string    `json:"object"`
+	HasMore    bool      `json:"has_more"`
+}
+
+func (m ContactList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m ContactList) NextPageParams() *PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &PageParams{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
+type ContactCreate struct {
+	Contact ContactRequest `json:"contact"`
+}
+
+type ContactCreateResponse struct {
+	Contact Contact `json:"contact"`
+	Object  string  `json:"object"`
+}
+
+func (m ContactCreateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ContactRequest struct {
+	Id              string       `json:"id"`
+	Agent           AgentRequest `json:"agent"`
+	AvatarUrl       string       `json:"avatar_url"`
+	BrandLogoUrl    string       `json:"brand_logo_url"`
+	CellPhone       string       `json:"cell_phone"`
+	Email           string       `json:"email"`
+	EntityName      string       `json:"entity_name"`
+	EntityType      string       `json:"entity_type"`
+	FirstName       string       `json:"first_name"`
+	LastName        string       `json:"last_name"`
+	PersonalWebsite string       `json:"personal_website"`
+	Title           string       `json:"title"`
+}
+
+type ContactUpdate struct {
+	Contact ContactRequest `json:"contact"`
+	Roles   []string       `json:"roles"`
+}
+
+type ContactUpdateResponse struct {
+	Contact Contact `json:"contact"`
+	Id      string  `json:"id_"`
+	Object  string  `json:"object"`
+}
+
+func (m ContactUpdateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type CreateResponse struct {
@@ -198,6 +289,7 @@ func (m FieldsResponseResult) IsRef() bool {
 type Folder struct {
 	Id                   string                  `json:"id"`
 	Kind                 string                  `json:"kind"`
+	LastModified         int                     `json:"last_modified"`
 	Title                string                  `json:"title"`
 	TransactionDocuments TransactionDocumentList `json:"transaction_documents"`
 	Object               string                  `json:"object"`
@@ -440,13 +532,13 @@ func (m PartyList) NextPageParams() *PageParams {
 }
 
 type PartyCreate struct {
-	Body                string   `json:"body"`
-	Contact             Contact  `json:"contact"`
-	Invite              bool     `json:"invite"`
-	InviteRestrictions  []string `json:"invite_restrictions"`
-	Roles               []string `json:"roles"`
-	Subject             string   `json:"subject"`
-	SuppressInviteEmail bool     `json:"suppress_invite_email"`
+	Body                string         `json:"body"`
+	Contact             ContactRequest `json:"contact"`
+	Invite              bool           `json:"invite"`
+	InviteRestrictions  []string       `json:"invite_restrictions"`
+	Roles               []string       `json:"roles"`
+	Subject             string         `json:"subject"`
+	SuppressInviteEmail bool           `json:"suppress_invite_email"`
 }
 
 type PartyCreates struct {
@@ -484,9 +576,9 @@ func (m PartyInvitesResponse) IsRef() bool {
 }
 
 type PartyPatch struct {
-	Contact Contact  `json:"contact"`
-	PartyId string   `json:"party_id"`
-	Roles   []string `json:"roles"`
+	Contact ContactRequest `json:"contact"`
+	PartyId string         `json:"party_id"`
+	Roles   []string       `json:"roles"`
 }
 
 type PartyPatches struct {
@@ -516,6 +608,15 @@ type PartyRemovesResponse struct {
 }
 
 func (m PartyRemovesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type PartyRoles struct {
+	Data   []string `json:"data"`
+	Object string   `json:"object"`
+}
+
+func (m PartyRoles) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -680,14 +781,15 @@ type TransactionCreate struct {
 }
 
 type TransactionDocument struct {
-	Id          string      `json:"id"`
-	Folder      Folder      `json:"folder"`
-	FolderKind  string      `json:"folder_kind"`
-	Order       int         `json:"order"`
-	Title       string      `json:"title"`
-	Transaction Transaction `json:"transaction"`
-	Url         string      `json:"url"`
-	Object      string      `json:"object"`
+	Id           string      `json:"id"`
+	Folder       Folder      `json:"folder"`
+	FolderKind   string      `json:"folder_kind"`
+	LastModified int         `json:"last_modified"`
+	Order        int         `json:"order"`
+	Title        string      `json:"title"`
+	Transaction  Transaction `json:"transaction"`
+	Url          string      `json:"url"`
+	Object       string      `json:"object"`
 }
 
 func (m TransactionDocument) IsRef() bool {
@@ -852,6 +954,29 @@ func (m User) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type UserList struct {
+	Data       []User `json:"data"`
+	ListObject string `json:"list_object"`
+	Object     string `json:"object"`
+	HasMore    bool   `json:"has_more"`
+}
+
+func (m UserList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m UserList) NextPageParams() *PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &PageParams{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
 type UserBillingInfo struct {
 	StripeCustomerId string `json:"stripe_customer_id"`
 	Object           string `json:"object"`
@@ -859,4 +984,12 @@ type UserBillingInfo struct {
 
 func (m UserBillingInfo) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UserManagementSchema struct {
+	Email           string `json:"email"`
+	FirstName       string `json:"first_name"`
+	LastName        string `json:"last_name"`
+	LinkedSubjectId string `json:"linked_subject_id"`
+	UsState         string `json:"us_state"`
 }
