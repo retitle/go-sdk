@@ -42,7 +42,6 @@ type AgentRequest struct {
 }
 
 type Contact struct {
-	Id              string `json:"id"`
 	Agent           Agent  `json:"agent"`
 	AvatarUrl       string `json:"avatar_url"`
 	BrandLogoUrl    string `json:"brand_logo_url"`
@@ -61,29 +60,6 @@ func (m Contact) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type ContactList struct {
-	Data       []Contact `json:"data"`
-	ListObject string    `json:"list_object"`
-	Object     string    `json:"object"`
-	HasMore    bool      `json:"has_more"`
-}
-
-func (m ContactList) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-func (m ContactList) NextPageParams() *PageParams {
-	if !m.HasMore {
-		return nil
-	}
-
-	pageSize := len(m.Data)
-	return &PageParams{
-		StartingAfter: m.Data[pageSize-1].Id,
-		Limit:         pageSize,
-	}
-}
-
 type ContactCreate struct {
 	Contact ContactRequest `json:"contact"`
 }
@@ -98,7 +74,6 @@ func (m ContactCreateResponse) IsRef() bool {
 }
 
 type ContactRequest struct {
-	Id              string       `json:"id"`
 	Agent           AgentRequest `json:"agent"`
 	AvatarUrl       string       `json:"avatar_url"`
 	BrandLogoUrl    string       `json:"brand_logo_url"`

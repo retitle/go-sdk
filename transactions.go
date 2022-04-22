@@ -13,7 +13,7 @@ type TransactionsResource interface {
 	List(opts ...requestOption) (*TransactionList, error)
 	Create(transactionCreate TransactionCreate, opts ...requestOption) (*CreateResponse, error)
 	AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error)
-	Fields(id string, fieldsWrites TransactionFieldsWrite, opts ...requestOption) (*FieldsResponse, error)
+	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...requestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...requestOption) (*FolderCreatesResponse, error)
 	FolderRenames(id string, folderRenames FolderRenames, opts ...requestOption) (*FolderRenamesResponse, error)
 	FormImports(id string, transactionFormImports TransactionFormImports, opts ...requestOption) (*FormImportsResponse, error)
@@ -99,8 +99,8 @@ func (r transactionsResourceImpl) AvailablePartyRoles(opts ...requestOption) (*P
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) Fields(id string, fieldsWrites TransactionFieldsWrite, opts ...requestOption) (*FieldsResponse, error) {
-	fieldWriteDict := FieldWriteDict{Fields: fieldsWrites}
+func (r transactionsResourceImpl) Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...requestOption) (*FieldsResponse, error) {
+	fieldWriteDict := FieldWriteDict{Fields: fieldsWrites, ControlPolicy: controlPolicy}
 	res := FieldsResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/fields", id), fieldWriteDict, opts...); err != nil {
 		return nil, err
