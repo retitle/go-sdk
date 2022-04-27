@@ -636,6 +636,7 @@ type Transaction struct {
 	Archived             bool                    `json:"archived"`
 	Fields               TransactionFields       `json:"fields"`
 	Folders              FolderList              `json:"folders"`
+	IngestDocumentsEmail string                  `json:"ingest_documents_email"`
 	IsLease              bool                    `json:"is_lease"`
 	Parties              PartyList               `json:"parties"`
 	ReState              string                  `json:"re_state"`
