@@ -87,6 +87,15 @@ type ContactRequest struct {
 	Title           string       `json:"title"`
 }
 
+type ContactSource struct {
+	Origin string `json:"origin"`
+	Object string `json:"object"`
+}
+
+func (m ContactSource) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type ContactUpdate struct {
 	Contact ContactRequest `json:"contact"`
 	Roles   []string       `json:"roles"`
@@ -471,12 +480,14 @@ func (m NotificationResponse) IsRef() bool {
 }
 
 type Party struct {
-	Id          string      `json:"id"`
-	Contact     Contact     `json:"contact"`
-	Roles       []string    `json:"roles"`
-	Transaction Transaction `json:"transaction"`
-	UserId      string      `json:"user_id"`
-	Object      string      `json:"object"`
+	Id                string        `json:"id"`
+	Contact           Contact       `json:"contact"`
+	Roles             []string      `json:"roles"`
+	Transaction       Transaction   `json:"transaction"`
+	UserContactId     string        `json:"user_contact_id"`
+	UserContactSource ContactSource `json:"user_contact_source"`
+	UserId            string        `json:"user_id"`
+	Object            string        `json:"object"`
 }
 
 func (m Party) IsRef() bool {
@@ -514,6 +525,8 @@ type PartyCreate struct {
 	Roles               []string       `json:"roles"`
 	Subject             string         `json:"subject"`
 	SuppressInviteEmail bool           `json:"suppress_invite_email"`
+	UserContactId       string         `json:"user_contact_id"`
+	UserContactSource   ContactSource  `json:"user_contact_source"`
 }
 
 type PartyCreates struct {
