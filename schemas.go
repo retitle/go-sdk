@@ -42,22 +42,47 @@ type AgentRequest struct {
 }
 
 type Contact struct {
-	Agent           Agent  `json:"agent"`
-	AvatarUrl       string `json:"avatar_url"`
-	BrandLogoUrl    string `json:"brand_logo_url"`
-	CellPhone       string `json:"cell_phone"`
-	Email           string `json:"email"`
-	EntityName      string `json:"entity_name"`
-	EntityType      string `json:"entity_type"`
-	FirstName       string `json:"first_name"`
-	LastName        string `json:"last_name"`
-	PersonalWebsite string `json:"personal_website"`
-	Title           string `json:"title"`
-	Object          string `json:"object"`
+	Id              string  `json:"id"`
+	Address         Address `json:"address"`
+	Agent           Agent   `json:"agent"`
+	AvatarUrl       string  `json:"avatar_url"`
+	BrandLogoUrl    string  `json:"brand_logo_url"`
+	CellPhone       string  `json:"cell_phone"`
+	Email           string  `json:"email"`
+	EntityName      string  `json:"entity_name"`
+	EntityType      string  `json:"entity_type"`
+	FirstName       string  `json:"first_name"`
+	LastName        string  `json:"last_name"`
+	PersonalWebsite string  `json:"personal_website"`
+	Title           string  `json:"title"`
+	Object          string  `json:"object"`
 }
 
 func (m Contact) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ContactList struct {
+	Data       []Contact `json:"data"`
+	ListObject string    `json:"list_object"`
+	Object     string    `json:"object"`
+	HasMore    bool      `json:"has_more"`
+}
+
+func (m ContactList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m ContactList) NextPageParams() *PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &PageParams{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
 }
 
 type ContactCreate struct {
@@ -74,17 +99,18 @@ func (m ContactCreateResponse) IsRef() bool {
 }
 
 type ContactRequest struct {
-	Agent           AgentRequest `json:"agent"`
-	AvatarUrl       string       `json:"avatar_url"`
-	BrandLogoUrl    string       `json:"brand_logo_url"`
-	CellPhone       string       `json:"cell_phone"`
-	Email           string       `json:"email"`
-	EntityName      string       `json:"entity_name"`
-	EntityType      string       `json:"entity_type"`
-	FirstName       string       `json:"first_name"`
-	LastName        string       `json:"last_name"`
-	PersonalWebsite string       `json:"personal_website"`
-	Title           string       `json:"title"`
+	Address         map[string]interface{} `json:"address"`
+	Agent           AgentRequest           `json:"agent"`
+	AvatarUrl       string                 `json:"avatar_url"`
+	BrandLogoUrl    string                 `json:"brand_logo_url"`
+	CellPhone       string                 `json:"cell_phone"`
+	Email           string                 `json:"email"`
+	EntityName      string                 `json:"entity_name"`
+	EntityType      string                 `json:"entity_type"`
+	FirstName       string                 `json:"first_name"`
+	LastName        string                 `json:"last_name"`
+	PersonalWebsite string                 `json:"personal_website"`
+	Title           string                 `json:"title"`
 }
 
 type ContactSource struct {
