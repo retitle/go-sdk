@@ -512,8 +512,10 @@ func (m NotificationResponse) IsRef() bool {
 type Party struct {
 	Id                string        `json:"id"`
 	Contact           Contact       `json:"contact"`
+	CreatedAt         int           `json:"created_at"`
 	Roles             []string      `json:"roles"`
 	Transaction       Transaction   `json:"transaction"`
+	UpdatedAt         int           `json:"updated_at"`
 	UserContactId     string        `json:"user_contact_id"`
 	UserContactSource ContactSource `json:"user_contact_source"`
 	UserId            string        `json:"user_id"`
