@@ -1008,9 +1008,11 @@ func (m UserBillingInfo) IsRef() bool {
 }
 
 type UserManagementSchema struct {
-	Email           string `json:"email"`
-	FirstName       string `json:"first_name"`
-	LastName        string `json:"last_name"`
-	LinkedSubjectId string `json:"linked_subject_id"`
-	UsState         string `json:"us_state"`
+	Email           string   `json:"email"`
+	FirstName       string   `json:"first_name"`
+	LastName        string   `json:"last_name"`
+	LinkedSubjectId string   `json:"linked_subject_id"`
+	MarketIds       []string `json:"market_ids"`
+	SubmarketIds    []string `json:"submarket_ids"`
+	UsState         string   `json:"us_state"`
 }
