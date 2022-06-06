@@ -11,7 +11,7 @@ type Address struct {
 	Street  string `json:"street"`
 	Unit    string `json:"unit,omitempty"`
 	ZipCode string `json:"zip_code"`
-	Object  string `json:"object"`
+	Object  string `json:"object,omitempty"`
 }
 
 func (m Address) IsRef() bool {
@@ -25,7 +25,7 @@ type Agent struct {
 	LicenseNumber        string `json:"license_number,omitempty"`
 	LicenseState         string `json:"license_state,omitempty"`
 	NrdsNumber           string `json:"nrds_number,omitempty"`
-	Object               string `json:"object"`
+	Object               string `json:"object,omitempty"`
 }
 
 func (m Agent) IsRef() bool {
@@ -55,7 +55,7 @@ type Contact struct {
 	LastName        string   `json:"last_name,omitempty"`
 	PersonalWebsite string   `json:"personal_website,omitempty"`
 	Title           string   `json:"title,omitempty"`
-	Object          string   `json:"object"`
+	Object          string   `json:"object,omitempty"`
 }
 
 func (m Contact) IsRef() bool {
@@ -91,7 +91,7 @@ type ContactCreate struct {
 
 type ContactCreateResponse struct {
 	Contact *Contact `json:"contact,omitempty"`
-	Object  string   `json:"object"`
+	Object  string   `json:"object,omitempty"`
 }
 
 func (m ContactCreateResponse) IsRef() bool {
@@ -115,7 +115,7 @@ type ContactRequest struct {
 
 type ContactSource struct {
 	Origin string `json:"origin,omitempty"`
-	Object string `json:"object"`
+	Object string `json:"object,omitempty"`
 }
 
 func (m ContactSource) IsRef() bool {
@@ -134,7 +134,7 @@ type ContactUpdate struct {
 type ContactUpdateResponse struct {
 	Contact *Contact `json:"contact,omitempty"`
 	Id      string   `json:"id_,omitempty"`
-	Object  string   `json:"object"`
+	Object  string   `json:"object,omitempty"`
 }
 
 func (m ContactUpdateResponse) IsRef() bool {
@@ -143,7 +143,7 @@ func (m ContactUpdateResponse) IsRef() bool {
 
 type CreateResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m CreateResponse) IsRef() bool {
@@ -153,7 +153,7 @@ func (m CreateResponse) IsRef() bool {
 type DocumentSplitAsyncResponse struct {
 	ReqId       string                              `json:"req_id,omitempty"`
 	Suggestions map[string]*DocumentSplitSuggestion `json:"suggestions,omitempty"`
-	Object      string                              `json:"object"`
+	Object      string                              `json:"object,omitempty"`
 }
 
 func (m DocumentSplitAsyncResponse) IsRef() bool {
@@ -163,7 +163,7 @@ func (m DocumentSplitAsyncResponse) IsRef() bool {
 type DocumentSplitResponse struct {
 	ReqId  string                      `json:"req_id,omitempty"`
 	Result *DocumentSplitAsyncResponse `json:"result,omitempty"`
-	Object string                      `json:"object"`
+	Object string                      `json:"object,omitempty"`
 }
 
 func (m DocumentSplitResponse) IsRef() bool {
@@ -183,7 +183,7 @@ type DocumentSplitSuggestion struct {
 	FormId       string `json:"form_id,omitempty"`
 	FormSeriesId string `json:"form_series_id,omitempty"`
 	StartPage    int    `json:"start_page,omitempty"`
-	Object       string `json:"object"`
+	Object       string `json:"object,omitempty"`
 }
 
 func (m DocumentSplitSuggestion) IsRef() bool {
@@ -202,7 +202,7 @@ type DocumentZone struct {
 	OriginalLocation []*DocumentZoneLocation `json:"original_location,omitempty"`
 	Page             int                     `json:"page,omitempty"`
 	Vertices         []*DocumentZoneVertex   `json:"vertices,omitempty"`
-	Object           string                  `json:"object"`
+	Object           string                  `json:"object,omitempty"`
 }
 
 func (m DocumentZone) IsRef() bool {
@@ -214,7 +214,7 @@ type DocumentZoneLocation struct {
 	XMin   float64 `json:"x_min,omitempty"`
 	YMax   float64 `json:"y_max,omitempty"`
 	YMin   float64 `json:"y_min,omitempty"`
-	Object string  `json:"object"`
+	Object string  `json:"object,omitempty"`
 }
 
 func (m DocumentZoneLocation) IsRef() bool {
@@ -224,7 +224,7 @@ func (m DocumentZoneLocation) IsRef() bool {
 type DocumentZoneVertex struct {
 	X      int    `json:"x,omitempty"`
 	Y      int    `json:"y,omitempty"`
-	Object string `json:"object"`
+	Object string `json:"object,omitempty"`
 }
 
 func (m DocumentZoneVertex) IsRef() bool {
@@ -234,7 +234,7 @@ func (m DocumentZoneVertex) IsRef() bool {
 type Field struct {
 	Timestamp int                    `json:"timestamp,omitempty"`
 	Value     map[string]interface{} `json:"value,omitempty"`
-	Object    string                 `json:"object"`
+	Object    string                 `json:"object,omitempty"`
 }
 
 func (m Field) IsRef() bool {
@@ -244,7 +244,7 @@ func (m Field) IsRef() bool {
 type FieldOutOfDateDetail struct {
 	ControlTimestamp int    `json:"control_timestamp,omitempty"`
 	Timestamp        int    `json:"timestamp,omitempty"`
-	Object           string `json:"object"`
+	Object           string `json:"object,omitempty"`
 }
 
 func (m FieldOutOfDateDetail) IsRef() bool {
@@ -254,7 +254,7 @@ func (m FieldOutOfDateDetail) IsRef() bool {
 type FieldResponse struct {
 	Timestamp int                    `json:"timestamp,omitempty"`
 	Value     map[string]interface{} `json:"value,omitempty"`
-	Object    string                 `json:"object"`
+	Object    string                 `json:"object,omitempty"`
 }
 
 func (m FieldResponse) IsRef() bool {
@@ -263,7 +263,7 @@ func (m FieldResponse) IsRef() bool {
 
 type FieldResponseWarnings struct {
 	OutOfDateFields map[string]*FieldOutOfDateDetail `json:"out_of_date_fields,omitempty"`
-	Object          string                           `json:"object"`
+	Object          string                           `json:"object,omitempty"`
 }
 
 func (m FieldResponseWarnings) IsRef() bool {
@@ -283,7 +283,7 @@ type FieldWriteDict struct {
 type FieldsResponse struct {
 	Result        *FieldsResponseResult `json:"result,omitempty"`
 	TransactionId string                `json:"transaction_id,omitempty"`
-	Object        string                `json:"object"`
+	Object        string                `json:"object,omitempty"`
 }
 
 func (m FieldsResponse) IsRef() bool {
@@ -293,7 +293,7 @@ func (m FieldsResponse) IsRef() bool {
 type FieldsResponseResult struct {
 	Fields   TransactionFields      `json:"fields,omitempty"`
 	Warnings *FieldResponseWarnings `json:"warnings,omitempty"`
-	Object   string                 `json:"object"`
+	Object   string                 `json:"object,omitempty"`
 }
 
 func (m FieldsResponseResult) IsRef() bool {
@@ -306,7 +306,7 @@ type Folder struct {
 	LastModified         int                      `json:"last_modified,omitempty"`
 	Title                string                   `json:"title,omitempty"`
 	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
-	Object               string                   `json:"object"`
+	Object               string                   `json:"object,omitempty"`
 }
 
 func (m Folder) IsRef() bool {
@@ -347,7 +347,7 @@ type FolderCreates struct {
 type FolderCreatesResponse struct {
 	Result        *FolderCreatesResponseResult `json:"result,omitempty"`
 	TransactionId string                       `json:"transaction_id,omitempty"`
-	Object        string                       `json:"object"`
+	Object        string                       `json:"object,omitempty"`
 }
 
 func (m FolderCreatesResponse) IsRef() bool {
@@ -356,7 +356,7 @@ func (m FolderCreatesResponse) IsRef() bool {
 
 type FolderCreatesResponseResult struct {
 	FolderIds []string `json:"folder_ids,omitempty"`
-	Object    string   `json:"object"`
+	Object    string   `json:"object,omitempty"`
 }
 
 func (m FolderCreatesResponseResult) IsRef() bool {
@@ -374,7 +374,7 @@ type FolderRenames struct {
 
 type FolderRenamesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m FolderRenamesResponse) IsRef() bool {
@@ -383,7 +383,7 @@ func (m FolderRenamesResponse) IsRef() bool {
 
 type FormImportsResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m FormImportsResponse) IsRef() bool {
@@ -396,7 +396,7 @@ type ItemDeletes struct {
 
 type ItemDeletesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m ItemDeletesResponse) IsRef() bool {
@@ -410,7 +410,7 @@ type LinkListingInfo struct {
 
 type LinkListingInfoResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m LinkListingInfoResponse) IsRef() bool {
@@ -441,7 +441,7 @@ type Listing struct {
 	StatusDate              string    `json:"status_date,omitempty"`
 	UsedInActiveTransaction bool      `json:"used_in_active_transaction,omitempty"`
 	YearBuilt               string    `json:"year_built,omitempty"`
-	Object                  string    `json:"object"`
+	Object                  string    `json:"object,omitempty"`
 }
 
 func (m Listing) IsRef() bool {
@@ -483,7 +483,7 @@ type Location struct {
 	UnitNumber    string `json:"unit_number,omitempty"`
 	UnitType      string `json:"unit_type,omitempty"`
 	ZipCode       string `json:"zip_code,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m Location) IsRef() bool {
@@ -502,7 +502,7 @@ type Notification struct {
 
 type NotificationResponse struct {
 	Results []string `json:"results"`
-	Object  string   `json:"object"`
+	Object  string   `json:"object,omitempty"`
 }
 
 func (m NotificationResponse) IsRef() bool {
@@ -519,7 +519,7 @@ type Party struct {
 	UserContactId     string         `json:"user_contact_id,omitempty"`
 	UserContactSource *ContactSource `json:"user_contact_source,omitempty"`
 	UserId            string         `json:"user_id,omitempty"`
-	Object            string         `json:"object"`
+	Object            string         `json:"object,omitempty"`
 }
 
 func (m Party) IsRef() bool {
@@ -567,7 +567,7 @@ type PartyCreates struct {
 
 type PartyCreatesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m PartyCreatesResponse) IsRef() bool {
@@ -588,7 +588,7 @@ type PartyInvites struct {
 
 type PartyInvitesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m PartyInvitesResponse) IsRef() bool {
@@ -607,7 +607,7 @@ type PartyPatches struct {
 
 type PartyPatchesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m PartyPatchesResponse) IsRef() bool {
@@ -624,7 +624,7 @@ type PartyRemoves struct {
 
 type PartyRemovesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m PartyRemovesResponse) IsRef() bool {
@@ -633,7 +633,7 @@ func (m PartyRemovesResponse) IsRef() bool {
 
 type PartyRoles struct {
 	Data   []string `json:"data,omitempty"`
-	Object string   `json:"object"`
+	Object string   `json:"object,omitempty"`
 }
 
 func (m PartyRoles) IsRef() bool {
@@ -643,7 +643,7 @@ func (m PartyRoles) IsRef() bool {
 type SignatureDetectionAnalysisResult struct {
 	DocumentZone *DocumentZone `json:"document_zone,omitempty"`
 	Score        float64       `json:"score,omitempty"`
-	Object       string        `json:"object"`
+	Object       string        `json:"object,omitempty"`
 }
 
 func (m SignatureDetectionAnalysisResult) IsRef() bool {
@@ -653,7 +653,7 @@ func (m SignatureDetectionAnalysisResult) IsRef() bool {
 type SignatureDetectionAsyncResponse struct {
 	ReqId      string                                       `json:"req_id,omitempty"`
 	Signatures map[string]*SignatureDetectionAnalysisResult `json:"signatures,omitempty"`
-	Object     string                                       `json:"object"`
+	Object     string                                       `json:"object,omitempty"`
 }
 
 func (m SignatureDetectionAsyncResponse) IsRef() bool {
@@ -663,7 +663,7 @@ func (m SignatureDetectionAsyncResponse) IsRef() bool {
 type SignatureDetectionResponse struct {
 	ReqId  string                           `json:"req_id,omitempty"`
 	Result *SignatureDetectionAsyncResponse `json:"result,omitempty"`
-	Object string                           `json:"object"`
+	Object string                           `json:"object,omitempty"`
 }
 
 func (m SignatureDetectionResponse) IsRef() bool {
@@ -689,7 +689,7 @@ type Transaction struct {
 	Stage                string                   `json:"stage,omitempty"`
 	Title                string                   `json:"title,omitempty"`
 	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
-	Object               string                   `json:"object"`
+	Object               string                   `json:"object,omitempty"`
 }
 
 func (m Transaction) IsRef() bool {
@@ -810,7 +810,7 @@ type TransactionDocument struct {
 	Title        string       `json:"title,omitempty"`
 	Transaction  *Transaction `json:"transaction,omitempty"`
 	Url          string       `json:"url,omitempty"`
-	Object       string       `json:"object"`
+	Object       string       `json:"object,omitempty"`
 }
 
 func (m TransactionDocument) IsRef() bool {
@@ -852,7 +852,7 @@ type TransactionDocumentAssignments struct {
 
 type TransactionDocumentAssignmentsResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m TransactionDocumentAssignmentsResponse) IsRef() bool {
@@ -870,7 +870,7 @@ type TransactionDocumentRenames struct {
 
 type TransactionDocumentRenamesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m TransactionDocumentRenamesResponse) IsRef() bool {
@@ -879,7 +879,7 @@ func (m TransactionDocumentRenamesResponse) IsRef() bool {
 
 type TransactionDocumentRestoresResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m TransactionDocumentRestoresResponse) IsRef() bool {
@@ -892,7 +892,7 @@ type TransactionDocumentTrashes struct {
 
 type TransactionDocumentTrashesResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m TransactionDocumentTrashesResponse) IsRef() bool {
@@ -939,7 +939,7 @@ type TransactionMetaUpdate struct {
 
 type UpdateArchivalStatusResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m UpdateArchivalStatusResponse) IsRef() bool {
@@ -948,7 +948,7 @@ func (m UpdateArchivalStatusResponse) IsRef() bool {
 
 type UpdateTransactionMetaResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m UpdateTransactionMetaResponse) IsRef() bool {
@@ -957,7 +957,7 @@ func (m UpdateTransactionMetaResponse) IsRef() bool {
 
 type UploadsResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m UploadsResponse) IsRef() bool {
@@ -968,7 +968,7 @@ type User struct {
 	Id           string   `json:"id,omitempty"`
 	AgentAddress *Address `json:"agent_address,omitempty"`
 	Contact      *Contact `json:"contact,omitempty"`
-	Object       string   `json:"object"`
+	Object       string   `json:"object,omitempty"`
 }
 
 func (m User) IsRef() bool {
@@ -1000,7 +1000,7 @@ func (m UserList) NextPageParams() *PageParams {
 
 type UserBillingInfo struct {
 	StripeCustomerId string `json:"stripe_customer_id,omitempty"`
-	Object           string `json:"object"`
+	Object           string `json:"object,omitempty"`
 }
 
 func (m UserBillingInfo) IsRef() bool {
@@ -1008,9 +1008,11 @@ func (m UserBillingInfo) IsRef() bool {
 }
 
 type UserManagementSchema struct {
-	Email           string `json:"email"`
-	FirstName       string `json:"first_name"`
-	LastName        string `json:"last_name"`
-	LinkedSubjectId string `json:"linked_subject_id"`
-	UsState         string `json:"us_state,omitempty"`
+	Email           string   `json:"email"`
+	FirstName       string   `json:"first_name"`
+	LastName        string   `json:"last_name"`
+	LinkedSubjectId string   `json:"linked_subject_id"`
+	MarketIds       []string `json:"market_ids,omitempty"`
+	SubmarketIds    []string `json:"submarket_ids,omitempty"`
+	UsState         string   `json:"us_state,omitempty"`
 }
