@@ -792,13 +792,19 @@ type TransactionArchivalStatus struct {
 }
 
 type TransactionCreate struct {
-	AdditionalParties []*PartyCreate `json:"additional_parties,omitempty"`
-	Address           *Address       `json:"address,omitempty"`
-	CreatorRoles      []string       `json:"creator_roles,omitempty"`
-	IsLease           bool           `json:"is_lease,omitempty"`
-	ReState           string         `json:"re_state,omitempty"`
-	Stage             string         `json:"stage,omitempty"`
-	Title             string         `json:"title,omitempty"`
+	AdditionalParties []*PartyCreate      `json:"additional_parties,omitempty"`
+	Address           *Address            `json:"address,omitempty"`
+	Creator           *TransactionCreator `json:"creator,omitempty"`
+	CreatorRoles      []string            `json:"creator_roles,omitempty"`
+	IsLease           bool                `json:"is_lease,omitempty"`
+	ReState           string              `json:"re_state,omitempty"`
+	Stage             string              `json:"stage,omitempty"`
+	Title             string              `json:"title,omitempty"`
+}
+
+type TransactionCreator struct {
+	UserContactId     string                `json:"user_contact_id,omitempty"`
+	UserContactSource *ContactSourceRequest `json:"user_contact_source,omitempty"`
 }
 
 type TransactionDocument struct {
