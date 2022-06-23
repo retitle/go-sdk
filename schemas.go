@@ -99,18 +99,18 @@ func (m ContactCreateResponse) IsRef() bool {
 }
 
 type ContactRequest struct {
-	Address         map[string]interface{} `json:"address,omitempty"`
-	Agent           *AgentRequest          `json:"agent,omitempty"`
-	AvatarUrl       string                 `json:"avatar_url,omitempty"`
-	BrandLogoUrl    string                 `json:"brand_logo_url,omitempty"`
-	CellPhone       string                 `json:"cell_phone,omitempty"`
-	Email           string                 `json:"email,omitempty"`
-	EntityName      string                 `json:"entity_name,omitempty"`
-	EntityType      string                 `json:"entity_type,omitempty"`
-	FirstName       string                 `json:"first_name"`
-	LastName        string                 `json:"last_name,omitempty"`
-	PersonalWebsite string                 `json:"personal_website,omitempty"`
-	Title           string                 `json:"title,omitempty"`
+	Address         *Address      `json:"address,omitempty"`
+	Agent           *AgentRequest `json:"agent,omitempty"`
+	AvatarUrl       string        `json:"avatar_url,omitempty"`
+	BrandLogoUrl    string        `json:"brand_logo_url,omitempty"`
+	CellPhone       string        `json:"cell_phone,omitempty"`
+	Email           string        `json:"email,omitempty"`
+	EntityName      string        `json:"entity_name,omitempty"`
+	EntityType      string        `json:"entity_type,omitempty"`
+	FirstName       string        `json:"first_name"`
+	LastName        string        `json:"last_name,omitempty"`
+	PersonalWebsite string        `json:"personal_website,omitempty"`
+	Title           string        `json:"title,omitempty"`
 }
 
 type ContactSource struct {
