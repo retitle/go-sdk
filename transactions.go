@@ -13,6 +13,7 @@ type TransactionsResource interface {
 	List(opts ...requestOption) (*TransactionList, error)
 	Create(transactionCreate TransactionCreate, opts ...requestOption) (*CreateResponse, error)
 	AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error)
+	OrgsTransactionsIds(opts ...requestOption) (*TransactionByOrgSchema, error)
 	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...requestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...requestOption) (*FolderCreatesResponse, error)
 	FolderRenames(id string, folderRenames FolderRenames, opts ...requestOption) (*FolderRenamesResponse, error)
@@ -94,6 +95,14 @@ func (r transactionsResourceImpl) Create(transactionCreate TransactionCreate, op
 func (r transactionsResourceImpl) AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error) {
 	res := PartyRoles{}
 	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/available_party_roles"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) OrgsTransactionsIds(opts ...requestOption) (*TransactionByOrgSchema, error) {
+	res := TransactionByOrgSchema{}
+	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/orgs_transactions_ids"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
