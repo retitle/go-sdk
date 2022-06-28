@@ -791,6 +791,18 @@ type TransactionArchivalStatus struct {
 	Archived bool `json:"archived,omitempty"`
 }
 
+type TransactionByOrgSchema struct {
+	Cursor  string   `json:"cursor,omitempty"`
+	Data    []string `json:"data,omitempty"`
+	HasMore bool     `json:"has_more,omitempty"`
+	Total   int      `json:"total,omitempty"`
+	Object  string   `json:"object,omitempty"`
+}
+
+func (m TransactionByOrgSchema) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TransactionCreate struct {
 	AdditionalParties []*PartyCreate      `json:"additional_parties,omitempty"`
 	Address           *Address            `json:"address,omitempty"`

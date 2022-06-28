@@ -1,5 +1,6 @@
 package glide
 
+//
 import (
 	"bytes"
 	"encoding/json"
