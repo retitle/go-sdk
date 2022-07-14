@@ -218,10 +218,10 @@ func (c client) getJwt(sub string, scopes []string) (string, error) {
 	return getJwt(c.key, c.clientKey, sub, c.options.audience, scopes, JWT_EXPIRES)
 }
 
-func (c client) getAccessToken(sub string, scopes []string) (*jwtOauthAccessToken, error) {
-	assertionsJwt, err := c.getJwt(sub, scopes)
+func (c client) getAccessToken(sub string, scopes []string) (string, error) {
+	jwt, err := c.getJwt(sub, scopes)
 	if err != nil {
-		return nil, &ApiError{
+		return "", &ApiError{
 			Params: map[string]interface{}{
 				"desc": "Error issuing assertions JWT",
 			},
@@ -229,47 +229,19 @@ func (c client) getAccessToken(sub string, scopes []string) (*jwtOauthAccessToke
 		}
 	}
 
-	data := jwtOauthAccessToken{}
-	if err = c.post(&data, false, "/oauth/token", jwtOauth{
-		GrantType: "JWT",
-		Assertion: assertionsJwt,
-	}); err != nil {
-		return nil, err
-	}
-
-	if data.AccessToken == "" {
-		if data.RequestScopesUrl != "" {
-			err = &ApiError{
-				Description: "Need user consent to access scopes",
-				Params: map[string]interface{}{
-					"missing_scopes":     data.MissingScopes,
-					"request_scopes_url": data.RequestScopesUrl,
-				},
-			}
-		} else {
-			err = &ApiError{
-				Description: "Unknown error",
-				Params: map[string]interface{}{
-					"data": data,
-				},
-			}
-		}
-		return nil, err
-	}
-
-	return &data, nil
+	return jwt, nil
 }
 
 func (c *client) StartImpersonating(sub string, scopes []string) error {
-	data, err := c.getAccessToken(sub, scopes)
+	jwt, err := c.getAccessToken(sub, scopes)
 	if err != nil {
 		return err
 	}
 	c.impersonating = &impersonating{
 		sub:                sub,
 		scopes:             scopes,
-		accessToken:        data.AccessToken,
-		accessTokenExpires: time.Now().Add(time.Second * time.Duration(data.ExpiresIn)),
+		accessToken:        jwt,
+		accessTokenExpires: time.Now().Add(time.Second * time.Duration(JWT_EXPIRES)),
 	}
 
 	return nil
@@ -312,7 +284,7 @@ func (c client) shouldRefreshToken() bool {
 
 func (c *client) refreshAccessToken() error {
 	if c.shouldRefreshToken() {
-		data, err := c.getAccessToken(c.impersonating.sub, c.impersonating.scopes)
+		jwt, err := c.getAccessToken(c.impersonating.sub, c.impersonating.scopes)
 
 		if err != nil {
 			// fail silently if token is not yet expired
@@ -320,8 +292,8 @@ func (c *client) refreshAccessToken() error {
 				return err
 			}
 		} else {
-			c.impersonating.accessToken = data.AccessToken
-			c.impersonating.accessTokenExpires = time.Now().Add(time.Second * time.Duration(data.ExpiresIn))
+			c.impersonating.accessToken = jwt
+			c.impersonating.accessTokenExpires = time.Now().Add(time.Second * time.Duration(JWT_EXPIRES))
 		}
 	}
 
