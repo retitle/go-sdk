@@ -13,8 +13,8 @@ type TransactionsResource interface {
 	List(opts ...requestOption) (*TransactionList, error)
 	Create(transactionCreate TransactionCreate, opts ...requestOption) (*CreateResponse, error)
 	AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error)
-	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...requestOption) (*FieldsResponse, error)
 	OrgsTransactionsIds(opts ...requestOption) (*TransactionByOrgSchema, error)
+	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...requestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...requestOption) (*FolderCreatesResponse, error)
 	FolderRenames(id string, folderRenames FolderRenames, opts ...requestOption) (*FolderRenamesResponse, error)
 	FormImports(id string, transactionFormImports TransactionFormImports, opts ...requestOption) (*FormImportsResponse, error)
@@ -24,6 +24,7 @@ type TransactionsResource interface {
 	PartyInvites(id string, partyInvites PartyInvites, opts ...requestOption) (*PartyInvitesResponse, error)
 	PartyPatches(id string, partyPatches PartyPatches, opts ...requestOption) (*PartyPatchesResponse, error)
 	PartyRemoves(id string, partyRemoves PartyRemoves, opts ...requestOption) (*PartyRemovesResponse, error)
+	PartyUpdateContactDetails(id string, partyUpdateContactDetails PartyUpdateContactDetails, opts ...requestOption) (*PartyUpdateContactDetailsResponse, error)
 	TransactionDocumentAssignments(id string, transactionDocumentAssignments TransactionDocumentAssignments, opts ...requestOption) (*TransactionDocumentAssignmentsResponse, error)
 	TransactionDocumentRenames(id string, transactionDocumentRenames TransactionDocumentRenames, opts ...requestOption) (*TransactionDocumentRenamesResponse, error)
 	TransactionDocumentRestores(id string, transactionDocumentsRestores TransactionDocumentsRestores, opts ...requestOption) (*TransactionDocumentRestoresResponse, error)
@@ -184,6 +185,14 @@ func (r transactionsResourceImpl) PartyPatches(id string, partyPatches PartyPatc
 func (r transactionsResourceImpl) PartyRemoves(id string, partyRemoves PartyRemoves, opts ...requestOption) (*PartyRemovesResponse, error) {
 	res := PartyRemovesResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/party_removes", id), partyRemoves, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) PartyUpdateContactDetails(id string, partyUpdateContactDetails PartyUpdateContactDetails, opts ...requestOption) (*PartyUpdateContactDetailsResponse, error) {
+	res := PartyUpdateContactDetailsResponse{}
+	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/party_update_contact_details", id), partyUpdateContactDetails, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

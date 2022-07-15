@@ -550,15 +550,16 @@ func (m PartyList) NextPageParams() *PageParams {
 }
 
 type PartyCreate struct {
-	Body                string                `json:"body,omitempty"`
-	Contact             *ContactRequest       `json:"contact,omitempty"`
-	Invite              bool                  `json:"invite,omitempty"`
-	InviteRestrictions  []string              `json:"invite_restrictions,omitempty"`
-	Roles               []string              `json:"roles,omitempty"`
-	Subject             string                `json:"subject,omitempty"`
-	SuppressInviteEmail bool                  `json:"suppress_invite_email,omitempty"`
-	UserContactId       string                `json:"user_contact_id,omitempty"`
-	UserContactSource   *ContactSourceRequest `json:"user_contact_source,omitempty"`
+	Body                  string                `json:"body,omitempty"`
+	Contact               *ContactRequest       `json:"contact,omitempty"`
+	Invite                bool                  `json:"invite,omitempty"`
+	InviteRestrictions    []string              `json:"invite_restrictions,omitempty"`
+	PromoteToPrimaryAgent bool                  `json:"promote_to_primary_agent,omitempty"`
+	Roles                 []string              `json:"roles,omitempty"`
+	Subject               string                `json:"subject,omitempty"`
+	SuppressInviteEmail   bool                  `json:"suppress_invite_email,omitempty"`
+	UserContactId         string                `json:"user_contact_id,omitempty"`
+	UserContactSource     *ContactSourceRequest `json:"user_contact_source,omitempty"`
 }
 
 type PartyCreates struct {
@@ -637,6 +638,22 @@ type PartyRoles struct {
 }
 
 func (m PartyRoles) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type PartyUpdateContactDetails struct {
+	Contact               *ContactRequest `json:"contact,omitempty"`
+	PartyId               string          `json:"party_id,omitempty"`
+	PromoteToPrimaryAgent bool            `json:"promote_to_primary_agent,omitempty"`
+	Roles                 []string        `json:"roles,omitempty"`
+}
+
+type PartyUpdateContactDetailsResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m PartyUpdateContactDetailsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
