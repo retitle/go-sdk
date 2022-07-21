@@ -114,6 +114,7 @@ type ContactRequest struct {
 }
 
 type ContactSource struct {
+	Id     string `json:"id,omitempty"`
 	Origin string `json:"origin,omitempty"`
 	Object string `json:"object,omitempty"`
 }
@@ -123,6 +124,7 @@ func (m ContactSource) IsRef() bool {
 }
 
 type ContactSourceRequest struct {
+	Id     string `json:"id,omitempty"`
 	Origin string `json:"origin,omitempty"`
 }
 
@@ -693,20 +695,21 @@ type SignatureDetectionSchema struct {
 }
 
 type Transaction struct {
-	Id                   string                   `json:"id,omitempty"`
-	Address              *Address                 `json:"address,omitempty"`
-	Archived             bool                     `json:"archived,omitempty"`
-	Fields               TransactionFields        `json:"fields,omitempty"`
-	Folders              *FolderList              `json:"folders,omitempty"`
-	IngestDocumentsEmail string                   `json:"ingest_documents_email,omitempty"`
-	IsLease              bool                     `json:"is_lease,omitempty"`
-	Parties              *PartyList               `json:"parties,omitempty"`
-	ReState              string                   `json:"re_state,omitempty"`
-	Side                 string                   `json:"side,omitempty"`
-	Stage                string                   `json:"stage,omitempty"`
-	Title                string                   `json:"title,omitempty"`
-	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
-	Object               string                   `json:"object,omitempty"`
+	Id                    string                   `json:"id,omitempty"`
+	Address               *Address                 `json:"address,omitempty"`
+	Archived              bool                     `json:"archived,omitempty"`
+	Fields                TransactionFields        `json:"fields,omitempty"`
+	Folders               *FolderList              `json:"folders,omitempty"`
+	IngestDocumentsEmail  string                   `json:"ingest_documents_email,omitempty"`
+	IsLease               bool                     `json:"is_lease,omitempty"`
+	Parties               *PartyList               `json:"parties,omitempty"`
+	ReState               string                   `json:"re_state,omitempty"`
+	SecondaryAddressesIds []string                 `json:"secondary_addresses_ids,omitempty"`
+	Side                  string                   `json:"side,omitempty"`
+	Stage                 string                   `json:"stage,omitempty"`
+	Title                 string                   `json:"title,omitempty"`
+	TransactionDocuments  *TransactionDocumentList `json:"transaction_documents,omitempty"`
+	Object                string                   `json:"object,omitempty"`
 }
 
 func (m Transaction) IsRef() bool {
