@@ -63,7 +63,9 @@ func withQueryParams(qParams QueryParams) requestOption {
 			requestOptions.qParams = QueryParams{}
 		}
 		for name, value := range qParams {
-			requestOptions.qParams[name] = value
+			if value != "" {
+				requestOptions.qParams[name] = value
+			}
 		}
 	}
 }
