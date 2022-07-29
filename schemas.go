@@ -152,6 +152,27 @@ func (m CreateResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type DeletedParties struct {
+	Data   []*DeletedParty `json:"data,omitempty"`
+	Object string          `json:"object,omitempty"`
+}
+
+func (m DeletedParties) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DeletedParty struct {
+	Contact   *Contact `json:"contact,omitempty"`
+	DeletedAt int      `json:"deleted_at,omitempty"`
+	PartyId   string   `json:"party_id,omitempty"`
+	Roles     []string `json:"roles,omitempty"`
+	Object    string   `json:"object,omitempty"`
+}
+
+func (m DeletedParty) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type DocumentSplitAsyncResponse struct {
 	ReqId       string                              `json:"req_id,omitempty"`
 	Suggestions map[string]*DocumentSplitSuggestion `json:"suggestions,omitempty"`
@@ -441,7 +462,7 @@ type Listing struct {
 	OriginalListPrice       float64   `json:"original_list_price,omitempty"`
 	PropertyType            string    `json:"property_type,omitempty"`
 	StatusDate              string    `json:"status_date,omitempty"`
-	UsedInActiveTransaction bool      `json:"used_in_active_transaction,omitempty"`
+	UsedInActiveTransaction *bool     `json:"used_in_active_transaction,omitempty"`
 	YearBuilt               string    `json:"year_built,omitempty"`
 	Object                  string    `json:"object,omitempty"`
 }
@@ -496,9 +517,9 @@ type Notification struct {
 	Bcc              []string               `json:"bcc,omitempty"`
 	Cc               []string               `json:"cc,omitempty"`
 	Context          map[string]interface{} `json:"context,omitempty"`
-	IncludeSignature bool                   `json:"include_signature,omitempty"`
+	IncludeSignature *bool                  `json:"include_signature,omitempty"`
 	Recipients       []string               `json:"recipients,omitempty"`
-	SeparateEmails   bool                   `json:"separate_emails,omitempty"`
+	SeparateEmails   *bool                  `json:"separate_emails,omitempty"`
 	Template         string                 `json:"template"`
 }
 
@@ -554,12 +575,12 @@ func (m PartyList) NextPageParams() *PageParams {
 type PartyCreate struct {
 	Body                  string                `json:"body,omitempty"`
 	Contact               *ContactRequest       `json:"contact,omitempty"`
-	Invite                bool                  `json:"invite,omitempty"`
+	Invite                *bool                 `json:"invite,omitempty"`
 	InviteRestrictions    []string              `json:"invite_restrictions,omitempty"`
-	PromoteToPrimaryAgent bool                  `json:"promote_to_primary_agent,omitempty"`
+	PromoteToPrimaryAgent *bool                 `json:"promote_to_primary_agent,omitempty"`
 	Roles                 []string              `json:"roles,omitempty"`
 	Subject               string                `json:"subject,omitempty"`
-	SuppressInviteEmail   bool                  `json:"suppress_invite_email,omitempty"`
+	SuppressInviteEmail   *bool                 `json:"suppress_invite_email,omitempty"`
 	UserContactId         string                `json:"user_contact_id,omitempty"`
 	UserContactSource     *ContactSourceRequest `json:"user_contact_source,omitempty"`
 }
@@ -582,7 +603,7 @@ type PartyInvite struct {
 	InviteRestrictions  []string `json:"invite_restrictions,omitempty"`
 	PartyId             string   `json:"party_id"`
 	Subject             string   `json:"subject,omitempty"`
-	SuppressInviteEmail bool     `json:"suppress_invite_email,omitempty"`
+	SuppressInviteEmail *bool    `json:"suppress_invite_email,omitempty"`
 }
 
 type PartyInvites struct {
@@ -646,7 +667,7 @@ func (m PartyRoles) IsRef() bool {
 type PartyUpdateContactDetails struct {
 	Contact               *ContactRequest `json:"contact,omitempty"`
 	PartyId               string          `json:"party_id,omitempty"`
-	PromoteToPrimaryAgent bool            `json:"promote_to_primary_agent,omitempty"`
+	PromoteToPrimaryAgent *bool           `json:"promote_to_primary_agent,omitempty"`
 	Roles                 []string        `json:"roles,omitempty"`
 }
 
@@ -697,11 +718,11 @@ type SignatureDetectionSchema struct {
 type Transaction struct {
 	Id                    string                   `json:"id,omitempty"`
 	Address               *Address                 `json:"address,omitempty"`
-	Archived              bool                     `json:"archived,omitempty"`
+	Archived              *bool                    `json:"archived,omitempty"`
 	Fields                TransactionFields        `json:"fields,omitempty"`
 	Folders               *FolderList              `json:"folders,omitempty"`
 	IngestDocumentsEmail  string                   `json:"ingest_documents_email,omitempty"`
-	IsLease               bool                     `json:"is_lease,omitempty"`
+	IsLease               *bool                    `json:"is_lease,omitempty"`
 	Parties               *PartyList               `json:"parties,omitempty"`
 	ReState               string                   `json:"re_state,omitempty"`
 	SecondaryAddressesIds []string                 `json:"secondary_addresses_ids,omitempty"`
@@ -808,13 +829,13 @@ func CombineFieldsWrites(fieldWrites ...TransactionFieldsWrite) TransactionField
 }
 
 type TransactionArchivalStatus struct {
-	Archived bool `json:"archived,omitempty"`
+	Archived *bool `json:"archived,omitempty"`
 }
 
 type TransactionByOrgSchema struct {
 	Cursor  string   `json:"cursor,omitempty"`
 	Data    []string `json:"data,omitempty"`
-	HasMore bool     `json:"has_more,omitempty"`
+	HasMore *bool    `json:"has_more,omitempty"`
 	Total   int      `json:"total,omitempty"`
 	Object  string   `json:"object,omitempty"`
 }
@@ -828,7 +849,7 @@ type TransactionCreate struct {
 	Address           *Address            `json:"address,omitempty"`
 	Creator           *TransactionCreator `json:"creator,omitempty"`
 	CreatorRoles      []string            `json:"creator_roles,omitempty"`
-	IsLease           bool                `json:"is_lease,omitempty"`
+	IsLease           *bool               `json:"is_lease,omitempty"`
 	ReState           string              `json:"re_state,omitempty"`
 	Stage             string              `json:"stage,omitempty"`
 	Title             string              `json:"title,omitempty"`
@@ -967,7 +988,7 @@ type TransactionFormImports struct {
 }
 
 type TransactionMeta struct {
-	IsLease bool   `json:"is_lease,omitempty"`
+	IsLease *bool  `json:"is_lease,omitempty"`
 	Title   string `json:"title,omitempty"`
 }
 

@@ -14,6 +14,7 @@ type TransactionsResource interface {
 	Create(transactionCreate TransactionCreate, opts ...requestOption) (*CreateResponse, error)
 	AvailablePartyRoles(opts ...requestOption) (*PartyRoles, error)
 	OrgsTransactionsIds(opts ...requestOption) (*TransactionByOrgSchema, error)
+	DeletedParties(id string, opts ...requestOption) (*DeletedParties, error)
 	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...requestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...requestOption) (*FolderCreatesResponse, error)
 	FolderRenames(id string, folderRenames FolderRenames, opts ...requestOption) (*FolderRenamesResponse, error)
@@ -104,6 +105,14 @@ func (r transactionsResourceImpl) AvailablePartyRoles(opts ...requestOption) (*P
 func (r transactionsResourceImpl) OrgsTransactionsIds(opts ...requestOption) (*TransactionByOrgSchema, error) {
 	res := TransactionByOrgSchema{}
 	if err := r.client.get(&res, true, fmt.Sprintf("/transactions/orgs_transactions_ids"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) DeletedParties(id string, opts ...requestOption) (*DeletedParties, error) {
+	res := DeletedParties{}
+	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/deleted_parties", id), nil, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
