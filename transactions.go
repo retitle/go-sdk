@@ -26,6 +26,7 @@ type TransactionsResource interface {
 	PartyPatches(id string, partyPatches PartyPatches, opts ...requestOption) (*PartyPatchesResponse, error)
 	PartyRemoves(id string, partyRemoves PartyRemoves, opts ...requestOption) (*PartyRemovesResponse, error)
 	PartyUpdateContactDetails(id string, partyUpdateContactDetails PartyUpdateContactDetails, opts ...requestOption) (*PartyUpdateContactDetailsResponse, error)
+	ReorderFolders(id string, transactionDocumentReorderFolders TransactionDocumentReorderFolders, opts ...requestOption) (*ReorderFoldersResponse, error)
 	TransactionDocumentAssignments(id string, transactionDocumentAssignments TransactionDocumentAssignments, opts ...requestOption) (*TransactionDocumentAssignmentsResponse, error)
 	TransactionDocumentRenames(id string, transactionDocumentRenames TransactionDocumentRenames, opts ...requestOption) (*TransactionDocumentRenamesResponse, error)
 	TransactionDocumentRestores(id string, transactionDocumentsRestores TransactionDocumentsRestores, opts ...requestOption) (*TransactionDocumentRestoresResponse, error)
@@ -202,6 +203,14 @@ func (r transactionsResourceImpl) PartyRemoves(id string, partyRemoves PartyRemo
 func (r transactionsResourceImpl) PartyUpdateContactDetails(id string, partyUpdateContactDetails PartyUpdateContactDetails, opts ...requestOption) (*PartyUpdateContactDetailsResponse, error) {
 	res := PartyUpdateContactDetailsResponse{}
 	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/party_update_contact_details", id), partyUpdateContactDetails, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) ReorderFolders(id string, transactionDocumentReorderFolders TransactionDocumentReorderFolders, opts ...requestOption) (*ReorderFoldersResponse, error) {
+	res := ReorderFoldersResponse{}
+	if err := r.client.post(&res, true, fmt.Sprintf("/transactions/%s/reorder_folders", id), transactionDocumentReorderFolders, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

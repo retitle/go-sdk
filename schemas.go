@@ -19,13 +19,14 @@ func (m Address) IsRef() bool {
 }
 
 type Agent struct {
-	CompanyLicenseNumber string `json:"company_license_number,omitempty"`
-	CompanyName          string `json:"company_name,omitempty"`
-	CompanyPhoneNumber   string `json:"company_phone_number,omitempty"`
-	LicenseNumber        string `json:"license_number,omitempty"`
-	LicenseState         string `json:"license_state,omitempty"`
-	NrdsNumber           string `json:"nrds_number,omitempty"`
-	Object               string `json:"object,omitempty"`
+	Address              *Address `json:"address,omitempty"`
+	CompanyLicenseNumber string   `json:"company_license_number,omitempty"`
+	CompanyName          string   `json:"company_name,omitempty"`
+	CompanyPhoneNumber   string   `json:"company_phone_number,omitempty"`
+	LicenseNumber        string   `json:"license_number,omitempty"`
+	LicenseState         string   `json:"license_state,omitempty"`
+	NrdsNumber           string   `json:"nrds_number,omitempty"`
+	Object               string   `json:"object,omitempty"`
 }
 
 func (m Agent) IsRef() bool {
@@ -51,6 +52,7 @@ type Contact struct {
 	Email           string   `json:"email,omitempty"`
 	EntityName      string   `json:"entity_name,omitempty"`
 	EntityType      string   `json:"entity_type,omitempty"`
+	FaxPhone        string   `json:"fax_phone,omitempty"`
 	FirstName       string   `json:"first_name"`
 	LastName        string   `json:"last_name,omitempty"`
 	PersonalWebsite string   `json:"personal_website,omitempty"`
@@ -107,6 +109,7 @@ type ContactRequest struct {
 	Email           string        `json:"email,omitempty"`
 	EntityName      string        `json:"entity_name,omitempty"`
 	EntityType      string        `json:"entity_type,omitempty"`
+	FaxPhone        string        `json:"fax_phone,omitempty"`
 	FirstName       string        `json:"first_name"`
 	LastName        string        `json:"last_name,omitempty"`
 	PersonalWebsite string        `json:"personal_website,omitempty"`
@@ -327,6 +330,7 @@ type Folder struct {
 	Id                   string                   `json:"id,omitempty"`
 	Kind                 string                   `json:"kind,omitempty"`
 	LastModified         int                      `json:"last_modified,omitempty"`
+	OrderIndex           int                      `json:"order_index,omitempty"`
 	Title                string                   `json:"title,omitempty"`
 	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
 	Object               string                   `json:"object,omitempty"`
@@ -680,6 +684,15 @@ func (m PartyUpdateContactDetailsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type ReorderFoldersResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m ReorderFoldersResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureDetectionAnalysisResult struct {
 	DocumentZone *DocumentZone `json:"document_zone,omitempty"`
 	Score        float64       `json:"score,omitempty"`
@@ -934,6 +947,15 @@ type TransactionDocumentRenamesResponse struct {
 
 func (m TransactionDocumentRenamesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type TransactionDocumentReorderFolder struct {
+	FolderId   string `json:"folder_id,omitempty"`
+	OrderIndex int    `json:"order_index,omitempty"`
+}
+
+type TransactionDocumentReorderFolders struct {
+	Folders []*TransactionDocumentReorderFolder `json:"folders,omitempty"`
 }
 
 type TransactionDocumentRestoresResponse struct {
