@@ -66,6 +66,10 @@ func WithExpand(paths ...string) requestOption {
 	return withQueryParamList("expand", paths)
 }
 
+func WithHeader(name string, value string) requestOption {
+	return withHeader(name, value)
+}
+
 func GetExpandFields(fieldIds ...string) string {
 	if len(fieldIds) > 0 {
 		return fmt.Sprintf("fields[%s]", strings.Join(fieldIds, ","))
