@@ -3,6 +3,8 @@ package glide
 import (
 	"net/http"
 	"strings"
+
+	"github.com/retitle/go-sdk/core"
 )
 
 type Address struct {
@@ -34,30 +36,32 @@ func (m Agent) IsRef() bool {
 }
 
 type AgentRequest struct {
-	CompanyLicenseNumber string `json:"company_license_number,omitempty"`
-	CompanyName          string `json:"company_name,omitempty"`
-	CompanyPhoneNumber   string `json:"company_phone_number,omitempty"`
-	LicenseNumber        string `json:"license_number,omitempty"`
-	LicenseState         string `json:"license_state,omitempty"`
-	NrdsNumber           string `json:"nrds_number,omitempty"`
+	Address              *Address `json:"address,omitempty"`
+	CompanyLicenseNumber string   `json:"company_license_number,omitempty"`
+	CompanyName          string   `json:"company_name,omitempty"`
+	CompanyPhoneNumber   string   `json:"company_phone_number,omitempty"`
+	LicenseNumber        string   `json:"license_number,omitempty"`
+	LicenseState         string   `json:"license_state,omitempty"`
+	NrdsNumber           string   `json:"nrds_number,omitempty"`
 }
 
 type Contact struct {
-	Id              string   `json:"id,omitempty"`
-	Address         *Address `json:"address,omitempty"`
-	Agent           *Agent   `json:"agent,omitempty"`
-	AvatarUrl       string   `json:"avatar_url,omitempty"`
-	BrandLogoUrl    string   `json:"brand_logo_url,omitempty"`
-	CellPhone       string   `json:"cell_phone,omitempty"`
-	Email           string   `json:"email,omitempty"`
-	EntityName      string   `json:"entity_name,omitempty"`
-	EntityType      string   `json:"entity_type,omitempty"`
-	FaxPhone        string   `json:"fax_phone,omitempty"`
-	FirstName       string   `json:"first_name"`
-	LastName        string   `json:"last_name,omitempty"`
-	PersonalWebsite string   `json:"personal_website,omitempty"`
-	Title           string   `json:"title,omitempty"`
-	Object          string   `json:"object,omitempty"`
+	Id              string         `json:"id,omitempty"`
+	Address         *Address       `json:"address,omitempty"`
+	Agent           *Agent         `json:"agent,omitempty"`
+	AvatarUrl       string         `json:"avatar_url,omitempty"`
+	BrandLogoUrl    string         `json:"brand_logo_url,omitempty"`
+	CellPhone       string         `json:"cell_phone,omitempty"`
+	ContactSource   *ContactSource `json:"contact_source,omitempty"`
+	Email           string         `json:"email,omitempty"`
+	EntityName      string         `json:"entity_name,omitempty"`
+	EntityType      string         `json:"entity_type,omitempty"`
+	FaxPhone        string         `json:"fax_phone,omitempty"`
+	FirstName       string         `json:"first_name"`
+	LastName        string         `json:"last_name,omitempty"`
+	PersonalWebsite string         `json:"personal_website,omitempty"`
+	Title           string         `json:"title,omitempty"`
+	Object          string         `json:"object,omitempty"`
 }
 
 func (m Contact) IsRef() bool {
@@ -75,13 +79,13 @@ func (m ContactList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m ContactList) NextPageParams() *PageParams {
+func (m ContactList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -351,13 +355,13 @@ func (m FolderList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m FolderList) NextPageParams() *PageParams {
+func (m FolderList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -486,13 +490,13 @@ func (m ListingList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m ListingList) NextPageParams() *PageParams {
+func (m ListingList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -564,13 +568,13 @@ func (m PartyList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m PartyList) NextPageParams() *PageParams {
+func (m PartyList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -761,13 +765,13 @@ func (m TransactionList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m TransactionList) NextPageParams() *PageParams {
+func (m TransactionList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -900,13 +904,13 @@ func (m TransactionDocumentList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m TransactionDocumentList) NextPageParams() *PageParams {
+func (m TransactionDocumentList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -1068,13 +1072,13 @@ func (m UserList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m UserList) NextPageParams() *PageParams {
+func (m UserList) NextPageParams() *core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParams{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
