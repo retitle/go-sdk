@@ -2,43 +2,45 @@ package glide
 
 import (
 	"fmt"
+
+	"github.com/retitle/go-sdk/core"
 )
 
 type UserManagementResource interface {
-	GetDetail(id string, opts ...requestOption) (*User, error)
-	List(opts ...requestOption) (*UserList, error)
-	Upsert(userManagementSchema UserManagementSchema, opts ...requestOption) (*User, error)
+	GetDetail(id string, opts ...core.RequestOption) (*User, error)
+	List(opts ...core.RequestOption) (*UserList, error)
+	Upsert(UserManagementSchema UserManagementSchema, opts ...core.RequestOption) (*User, error)
 }
 
 type userManagementResourceImpl struct {
 	client Client
 }
 
-func getUserManagementResource(client Client) UserManagementResource {
+func GetUserManagementResource(client Client) UserManagementResource {
 	return userManagementResourceImpl{
 		client: client,
 	}
 }
 
-func (r userManagementResourceImpl) GetDetail(id string, opts ...requestOption) (*User, error) {
+func (r userManagementResourceImpl) GetDetail(id string, opts ...core.RequestOption) (*User, error) {
 	res := User{}
-	if err := r.client.get(&res, true, fmt.Sprintf("/user_management/%s", id), opts...); err != nil {
+	if err := r.client.Get(&res, true, fmt.Sprintf("/user_management/%s", id), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r userManagementResourceImpl) List(opts ...requestOption) (*UserList, error) {
+func (r userManagementResourceImpl) List(opts ...core.RequestOption) (*UserList, error) {
 	res := UserList{}
-	if err := r.client.get(&res, true, fmt.Sprintf("/user_management"), opts...); err != nil {
+	if err := r.client.Get(&res, true, fmt.Sprintf("/user_management"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r userManagementResourceImpl) Upsert(userManagementSchema UserManagementSchema, opts ...requestOption) (*User, error) {
+func (r userManagementResourceImpl) Upsert(UserManagementSchema UserManagementSchema, opts ...core.RequestOption) (*User, error) {
 	res := User{}
-	if err := r.client.post(&res, true, fmt.Sprintf("/user_management/upsert"), userManagementSchema, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/user_management/upsert"), UserManagementSchema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
