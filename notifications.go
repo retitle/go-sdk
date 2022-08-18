@@ -2,27 +2,25 @@ package glide
 
 import (
 	"fmt"
-
-	"github.com/retitle/go-sdk/v3/core"
 )
 
 type NotificationsResource interface {
-	SendEmail(notification Notification, opts ...core.RequestOption) (*NotificationResponse, error)
+	SendEmail(notification Notification, opts ...requestOption) (*NotificationResponse, error)
 }
 
 type notificationsResourceImpl struct {
 	client Client
 }
 
-func GetNotificationsResource(client Client) NotificationsResource {
+func getNotificationsResource(client Client) NotificationsResource {
 	return notificationsResourceImpl{
 		client: client,
 	}
 }
 
-func (r notificationsResourceImpl) SendEmail(notification Notification, opts ...core.RequestOption) (*NotificationResponse, error) {
+func (r notificationsResourceImpl) SendEmail(notification Notification, opts ...requestOption) (*NotificationResponse, error) {
 	res := NotificationResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/notifications/send_email"), notification, opts...); err != nil {
+	if err := r.client.post(&res, true, fmt.Sprintf("/notifications/send_email"), notification, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

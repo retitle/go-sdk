@@ -1,4 +1,4 @@
-package core
+package glide
 
 type Response interface {
 	IsRef() bool

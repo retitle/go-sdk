@@ -1,4 +1,4 @@
-package core
+package glide
 
 type jwtOauth struct {
 	GrantType string `json:"grant_type"`

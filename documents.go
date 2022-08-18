@@ -2,36 +2,34 @@ package glide
 
 import (
 	"fmt"
-
-	"github.com/retitle/go-sdk/v3/core"
 )
 
 type DocumentsResource interface {
-	DocumentSplit(documentsplitschema DocumentSplitSchema, opts ...core.RequestOption) (*DocumentSplitResponse, error)
-	SignatureDetection(signaturedetectionschema SignatureDetectionSchema, opts ...core.RequestOption) (*SignatureDetectionResponse, error)
+	DocumentSplit(documentSplitSchema DocumentSplitSchema, opts ...requestOption) (*DocumentSplitResponse, error)
+	SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, opts ...requestOption) (*SignatureDetectionResponse, error)
 }
 
 type documentsResourceImpl struct {
 	client Client
 }
 
-func GetDocumentsResource(client Client) DocumentsResource {
+func getDocumentsResource(client Client) DocumentsResource {
 	return documentsResourceImpl{
 		client: client,
 	}
 }
 
-func (r documentsResourceImpl) DocumentSplit(documentsplitschema DocumentSplitSchema, opts ...core.RequestOption) (*DocumentSplitResponse, error) {
+func (r documentsResourceImpl) DocumentSplit(documentSplitSchema DocumentSplitSchema, opts ...requestOption) (*DocumentSplitResponse, error) {
 	res := DocumentSplitResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/documents/document_split"), documentsplitschema, opts...); err != nil {
+	if err := r.client.post(&res, true, fmt.Sprintf("/documents/document_split"), documentSplitSchema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r documentsResourceImpl) SignatureDetection(signaturedetectionschema SignatureDetectionSchema, opts ...core.RequestOption) (*SignatureDetectionResponse, error) {
+func (r documentsResourceImpl) SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, opts ...requestOption) (*SignatureDetectionResponse, error) {
 	res := SignatureDetectionResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/documents/signature_detection"), signaturedetectionschema, opts...); err != nil {
+	if err := r.client.post(&res, true, fmt.Sprintf("/documents/signature_detection"), signatureDetectionSchema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

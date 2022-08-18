@@ -1,4 +1,4 @@
-package core
+package glide
 
 import (
 	"time"
@@ -11,10 +11,10 @@ type claims struct {
 	jwt.StandardClaims
 }
 
-func GetJwt(key Key, iss string, sub string, aud string, scopes []string, expiresIn int64) (string, error) {
+func getJwt(key Key, iss string, sub string, aud string, scopes []string, expiresIn int64) (string, error) {
 	k, err := key.GetDecoded()
 	if err != nil {
-		return "", &ApiErrorImpl{
+		return "", &ApiError{
 			Params: map[string]interface{}{
 				"desc": "Error decoding key",
 			},
@@ -36,7 +36,7 @@ func GetJwt(key Key, iss string, sub string, aud string, scopes []string, expire
 	})
 	t, err := token.SignedString(k)
 	if err != nil {
-		return "", &ApiErrorImpl{
+		return "", &ApiError{
 			Params: map[string]interface{}{
 				"desc": "Error signing JWT",
 			},
