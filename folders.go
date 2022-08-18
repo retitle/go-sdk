@@ -3,7 +3,7 @@ package glide
 import (
 	"fmt"
 
-	"github.com/retitle/go-sdk/core"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type FoldersResource interface {

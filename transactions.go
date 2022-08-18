@@ -3,7 +3,7 @@ package glide
 import (
 	"fmt"
 
-	"github.com/retitle/go-sdk/core"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type TransactionsResource interface {
@@ -13,28 +13,28 @@ type TransactionsResource interface {
 	GetDetail(id string, opts ...core.RequestOption) (*Transaction, error)
 	GetMulti(ids []string, opts ...core.RequestOption) (*TransactionList, error)
 	List(opts ...core.RequestOption) (*TransactionList, error)
-	Create(TransactionCreate TransactionCreate, opts ...core.RequestOption) (*CreateResponse, error)
+	Create(transactioncreate TransactionCreate, opts ...core.RequestOption) (*CreateResponse, error)
 	AvailablePartyRoles(opts ...core.RequestOption) (*PartyRoles, error)
 	OrgsTransactionsIds(opts ...core.RequestOption) (*TransactionByOrgSchema, error)
 	DeletedParties(id string, opts ...core.RequestOption) (*DeletedParties, error)
 	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...core.RequestOption) (*FieldsResponse, error)
-	FolderCreates(id string, FolderCreates FolderCreates, opts ...core.RequestOption) (*FolderCreatesResponse, error)
-	FolderRenames(id string, FolderRenames FolderRenames, opts ...core.RequestOption) (*FolderRenamesResponse, error)
-	FormImports(id string, TransactionFormImports TransactionFormImports, opts ...core.RequestOption) (*FormImportsResponse, error)
-	ItemDeletes(id string, ItemDeletes ItemDeletes, opts ...core.RequestOption) (*ItemDeletesResponse, error)
-	LinkListingInfo(id string, LinkListingInfo LinkListingInfo, opts ...core.RequestOption) (*LinkListingInfoResponse, error)
-	PartyCreates(id string, PartyCreates PartyCreates, opts ...core.RequestOption) (*PartyCreatesResponse, error)
-	PartyInvites(id string, PartyInvites PartyInvites, opts ...core.RequestOption) (*PartyInvitesResponse, error)
-	PartyPatches(id string, PartyPatches PartyPatches, opts ...core.RequestOption) (*PartyPatchesResponse, error)
-	PartyRemoves(id string, PartyRemoves PartyRemoves, opts ...core.RequestOption) (*PartyRemovesResponse, error)
-	PartyUpdateContactDetails(id string, PartyUpdateContactDetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error)
-	ReorderFolders(id string, TransactionDocumentReorderFolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error)
-	TransactionDocumentAssignments(id string, TransactionDocumentAssignments TransactionDocumentAssignments, opts ...core.RequestOption) (*TransactionDocumentAssignmentsResponse, error)
-	TransactionDocumentRenames(id string, TransactionDocumentRenames TransactionDocumentRenames, opts ...core.RequestOption) (*TransactionDocumentRenamesResponse, error)
-	TransactionDocumentRestores(id string, TransactionDocumentsRestores TransactionDocumentsRestores, opts ...core.RequestOption) (*TransactionDocumentRestoresResponse, error)
-	TransactionDocumentTrashes(id string, TransactionDocumentTrashes TransactionDocumentTrashes, opts ...core.RequestOption) (*TransactionDocumentTrashesResponse, error)
-	UpdateArchivalStatus(id string, TransactionArchivalStatus TransactionArchivalStatus, opts ...core.RequestOption) (*UpdateArchivalStatusResponse, error)
-	UpdateTransactionMeta(id string, TransactionMetaUpdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error)
+	FolderCreates(id string, foldercreates FolderCreates, opts ...core.RequestOption) (*FolderCreatesResponse, error)
+	FolderRenames(id string, folderrenames FolderRenames, opts ...core.RequestOption) (*FolderRenamesResponse, error)
+	FormImports(id string, transactionformimports TransactionFormImports, opts ...core.RequestOption) (*FormImportsResponse, error)
+	ItemDeletes(id string, itemdeletes ItemDeletes, opts ...core.RequestOption) (*ItemDeletesResponse, error)
+	LinkListingInfo(id string, linklistinginfo LinkListingInfo, opts ...core.RequestOption) (*LinkListingInfoResponse, error)
+	PartyCreates(id string, partycreates PartyCreates, opts ...core.RequestOption) (*PartyCreatesResponse, error)
+	PartyInvites(id string, partyinvites PartyInvites, opts ...core.RequestOption) (*PartyInvitesResponse, error)
+	PartyPatches(id string, partypatches PartyPatches, opts ...core.RequestOption) (*PartyPatchesResponse, error)
+	PartyRemoves(id string, partyremoves PartyRemoves, opts ...core.RequestOption) (*PartyRemovesResponse, error)
+	PartyUpdateContactDetails(id string, partyupdatecontactdetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error)
+	ReorderFolders(id string, transactiondocumentreorderfolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error)
+	TransactionDocumentAssignments(id string, transactiondocumentassignments TransactionDocumentAssignments, opts ...core.RequestOption) (*TransactionDocumentAssignmentsResponse, error)
+	TransactionDocumentRenames(id string, transactiondocumentrenames TransactionDocumentRenames, opts ...core.RequestOption) (*TransactionDocumentRenamesResponse, error)
+	TransactionDocumentRestores(id string, transactiondocumentsrestores TransactionDocumentsRestores, opts ...core.RequestOption) (*TransactionDocumentRestoresResponse, error)
+	TransactionDocumentTrashes(id string, transactiondocumenttrashes TransactionDocumentTrashes, opts ...core.RequestOption) (*TransactionDocumentTrashesResponse, error)
+	UpdateArchivalStatus(id string, transactionarchivalstatus TransactionArchivalStatus, opts ...core.RequestOption) (*UpdateArchivalStatusResponse, error)
+	UpdateTransactionMeta(id string, transactionmetaupdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error)
 }
 
 type transactionsResourceImpl struct {
@@ -89,9 +89,9 @@ func (r transactionsResourceImpl) List(opts ...core.RequestOption) (*Transaction
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) Create(TransactionCreate TransactionCreate, opts ...core.RequestOption) (*CreateResponse, error) {
+func (r transactionsResourceImpl) Create(transactioncreate TransactionCreate, opts ...core.RequestOption) (*CreateResponse, error) {
 	res := CreateResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions"), TransactionCreate, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions"), transactioncreate, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
@@ -130,137 +130,137 @@ func (r transactionsResourceImpl) Fields(id string, fieldsWrites TransactionFiel
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) FolderCreates(id string, FolderCreates FolderCreates, opts ...core.RequestOption) (*FolderCreatesResponse, error) {
+func (r transactionsResourceImpl) FolderCreates(id string, foldercreates FolderCreates, opts ...core.RequestOption) (*FolderCreatesResponse, error) {
 	res := FolderCreatesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/folder_creates", id), FolderCreates, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/folder_creates", id), foldercreates, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) FolderRenames(id string, FolderRenames FolderRenames, opts ...core.RequestOption) (*FolderRenamesResponse, error) {
+func (r transactionsResourceImpl) FolderRenames(id string, folderrenames FolderRenames, opts ...core.RequestOption) (*FolderRenamesResponse, error) {
 	res := FolderRenamesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/folder_renames", id), FolderRenames, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/folder_renames", id), folderrenames, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) FormImports(id string, TransactionFormImports TransactionFormImports, opts ...core.RequestOption) (*FormImportsResponse, error) {
+func (r transactionsResourceImpl) FormImports(id string, transactionformimports TransactionFormImports, opts ...core.RequestOption) (*FormImportsResponse, error) {
 	res := FormImportsResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/form_imports", id), TransactionFormImports, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/form_imports", id), transactionformimports, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) ItemDeletes(id string, ItemDeletes ItemDeletes, opts ...core.RequestOption) (*ItemDeletesResponse, error) {
+func (r transactionsResourceImpl) ItemDeletes(id string, itemdeletes ItemDeletes, opts ...core.RequestOption) (*ItemDeletesResponse, error) {
 	res := ItemDeletesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/item_deletes", id), ItemDeletes, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/item_deletes", id), itemdeletes, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) LinkListingInfo(id string, LinkListingInfo LinkListingInfo, opts ...core.RequestOption) (*LinkListingInfoResponse, error) {
+func (r transactionsResourceImpl) LinkListingInfo(id string, linklistinginfo LinkListingInfo, opts ...core.RequestOption) (*LinkListingInfoResponse, error) {
 	res := LinkListingInfoResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/link_listing_info", id), LinkListingInfo, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/link_listing_info", id), linklistinginfo, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) PartyCreates(id string, PartyCreates PartyCreates, opts ...core.RequestOption) (*PartyCreatesResponse, error) {
+func (r transactionsResourceImpl) PartyCreates(id string, partycreates PartyCreates, opts ...core.RequestOption) (*PartyCreatesResponse, error) {
 	res := PartyCreatesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_creates", id), PartyCreates, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_creates", id), partycreates, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) PartyInvites(id string, PartyInvites PartyInvites, opts ...core.RequestOption) (*PartyInvitesResponse, error) {
+func (r transactionsResourceImpl) PartyInvites(id string, partyinvites PartyInvites, opts ...core.RequestOption) (*PartyInvitesResponse, error) {
 	res := PartyInvitesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_invites", id), PartyInvites, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_invites", id), partyinvites, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) PartyPatches(id string, PartyPatches PartyPatches, opts ...core.RequestOption) (*PartyPatchesResponse, error) {
+func (r transactionsResourceImpl) PartyPatches(id string, partypatches PartyPatches, opts ...core.RequestOption) (*PartyPatchesResponse, error) {
 	res := PartyPatchesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_patches", id), PartyPatches, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_patches", id), partypatches, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) PartyRemoves(id string, PartyRemoves PartyRemoves, opts ...core.RequestOption) (*PartyRemovesResponse, error) {
+func (r transactionsResourceImpl) PartyRemoves(id string, partyremoves PartyRemoves, opts ...core.RequestOption) (*PartyRemovesResponse, error) {
 	res := PartyRemovesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_removes", id), PartyRemoves, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_removes", id), partyremoves, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) PartyUpdateContactDetails(id string, PartyUpdateContactDetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error) {
+func (r transactionsResourceImpl) PartyUpdateContactDetails(id string, partyupdatecontactdetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error) {
 	res := PartyUpdateContactDetailsResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_update_contact_details", id), PartyUpdateContactDetails, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_update_contact_details", id), partyupdatecontactdetails, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) ReorderFolders(id string, TransactionDocumentReorderFolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error) {
+func (r transactionsResourceImpl) ReorderFolders(id string, transactiondocumentreorderfolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error) {
 	res := ReorderFoldersResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/reorder_folders", id), TransactionDocumentReorderFolders, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/reorder_folders", id), transactiondocumentreorderfolders, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) TransactionDocumentAssignments(id string, TransactionDocumentAssignments TransactionDocumentAssignments, opts ...core.RequestOption) (*TransactionDocumentAssignmentsResponse, error) {
+func (r transactionsResourceImpl) TransactionDocumentAssignments(id string, transactiondocumentassignments TransactionDocumentAssignments, opts ...core.RequestOption) (*TransactionDocumentAssignmentsResponse, error) {
 	res := TransactionDocumentAssignmentsResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_assignments", id), TransactionDocumentAssignments, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_assignments", id), transactiondocumentassignments, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) TransactionDocumentRenames(id string, TransactionDocumentRenames TransactionDocumentRenames, opts ...core.RequestOption) (*TransactionDocumentRenamesResponse, error) {
+func (r transactionsResourceImpl) TransactionDocumentRenames(id string, transactiondocumentrenames TransactionDocumentRenames, opts ...core.RequestOption) (*TransactionDocumentRenamesResponse, error) {
 	res := TransactionDocumentRenamesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_renames", id), TransactionDocumentRenames, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_renames", id), transactiondocumentrenames, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) TransactionDocumentRestores(id string, TransactionDocumentsRestores TransactionDocumentsRestores, opts ...core.RequestOption) (*TransactionDocumentRestoresResponse, error) {
+func (r transactionsResourceImpl) TransactionDocumentRestores(id string, transactiondocumentsrestores TransactionDocumentsRestores, opts ...core.RequestOption) (*TransactionDocumentRestoresResponse, error) {
 	res := TransactionDocumentRestoresResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_restores", id), TransactionDocumentsRestores, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_restores", id), transactiondocumentsrestores, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) TransactionDocumentTrashes(id string, TransactionDocumentTrashes TransactionDocumentTrashes, opts ...core.RequestOption) (*TransactionDocumentTrashesResponse, error) {
+func (r transactionsResourceImpl) TransactionDocumentTrashes(id string, transactiondocumenttrashes TransactionDocumentTrashes, opts ...core.RequestOption) (*TransactionDocumentTrashesResponse, error) {
 	res := TransactionDocumentTrashesResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_trashes", id), TransactionDocumentTrashes, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/transaction_document_trashes", id), transactiondocumenttrashes, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) UpdateArchivalStatus(id string, TransactionArchivalStatus TransactionArchivalStatus, opts ...core.RequestOption) (*UpdateArchivalStatusResponse, error) {
+func (r transactionsResourceImpl) UpdateArchivalStatus(id string, transactionarchivalstatus TransactionArchivalStatus, opts ...core.RequestOption) (*UpdateArchivalStatusResponse, error) {
 	res := UpdateArchivalStatusResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/update_archival_status", id), TransactionArchivalStatus, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/update_archival_status", id), transactionarchivalstatus, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r transactionsResourceImpl) UpdateTransactionMeta(id string, TransactionMetaUpdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error) {
+func (r transactionsResourceImpl) UpdateTransactionMeta(id string, transactionmetaupdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error) {
 	res := UpdateTransactionMetaResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/update_transaction_meta", id), TransactionMetaUpdate, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/update_transaction_meta", id), transactionmetaupdate, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

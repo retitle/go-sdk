@@ -62,3 +62,16 @@ func (imp *ImpersonationImpl) SetAccessTokenExpires(value time.Time) Impersonati
 func NewImpersonation() Impersonation {
 	return &ImpersonationImpl{}
 }
+
+func NewImpersonationWithParams(
+	sub string,
+	scopes []string,
+	accessToken string,
+	accessTokenExpires time.Time) Impersonation {
+	return &ImpersonationImpl{
+		sub:                sub,
+		scopes:             scopes,
+		accessTokenExpires: accessTokenExpires,
+		accessToken:        accessToken,
+	}
+}

@@ -9,8 +9,8 @@ import (
 
 	glide "github.com/retitle/go-sdk"
 
-	"github.com/retitle/go-sdk/core"
-	"github.com/retitle/go-sdk/core/mocks"
+	"github.com/retitle/go-sdk/core/v3/mocks"
+	"github.com/retitle/go-sdk/v3/core"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

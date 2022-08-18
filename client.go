@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/retitle/go-sdk/core"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type Client interface {
@@ -159,7 +159,7 @@ func (c *ClientImpl) getJwt(sub string, scopes []string) (string, error) {
 func (c *ClientImpl) getAccessToken(sub string, scopes []string) (string, error) {
 	jwt, err := c.getJwt(sub, scopes)
 	if err != nil {
-		return "", &core.ApiError{
+		return "", &core.ApiErrorImpl{
 			Params: map[string]interface{}{
 				"desc": "Error issuing assertions JWT",
 			},

@@ -13,6 +13,13 @@ type HttpReqFuncType func(string) (*http.Response, error)
 
 type QueryParams map[string]string
 
+type RequestOptions interface {
+	GetHeaders() http.Header
+	GetHost() string
+	GetQParams() QueryParams
+	GetPayload() *bytes.Buffer
+}
+
 type RequestOptionsImpl struct {
 	headers http.Header
 	host    string
@@ -20,18 +27,23 @@ type RequestOptionsImpl struct {
 	payload *bytes.Buffer
 }
 
-type RequestOption func(requestOptions *RequestOptionsImpl)
-
-func withHeaderList(name string, values []string) RequestOption {
-	return func(requestOptions *RequestOptionsImpl) {
-		if requestOptions.headers == nil {
-			requestOptions.headers = http.Header{}
-		}
-		for _, value := range values {
-			requestOptions.headers.Add(name, value)
-		}
-	}
+func (reqOpt *RequestOptionsImpl) GetHeaders() http.Header {
+	return reqOpt.headers
 }
+
+func (reqOpt *RequestOptionsImpl) GetHost() string {
+	return reqOpt.host
+}
+
+func (reqOpt *RequestOptionsImpl) GetQParams() QueryParams {
+	return reqOpt.qParams
+}
+
+func (reqOpt *RequestOptionsImpl) GetPayload() *bytes.Buffer {
+	return reqOpt.payload
+}
+
+type RequestOption func(requestOptions *RequestOptionsImpl)
 
 func withHeaders(headers http.Header) RequestOption {
 	return func(requestOptions *RequestOptionsImpl) {
@@ -76,24 +88,21 @@ func readHttpResponse(httpResp *http.Response) ([]byte, error) {
 	defer httpResp.Body.Close()
 	body, err := ioutil.ReadAll(httpResp.Body)
 	if err != nil {
-		return []byte{}, &ApiError{
-			Description: "Error while reading response body",
-			Err:         err,
-		}
+		return []byte{}, NewApiErrorWithArgs(err.Error(), http.StatusBadRequest, httpResp.Header, map[string]interface{}{}, err)
 	}
 	return body, nil
 }
 
 func getUnexpctedApiResponseError(httpResp *http.Response, responseBody []byte, baseError error) error {
-	return &ApiError{
-		Description:     "Unexpected API response",
-		StatusCode:      httpResp.StatusCode,
-		ResponseHeaders: httpResp.Header,
-		Params: map[string]interface{}{
+	return NewApiErrorWithArgs(
+		ApiErrorHttpBodyResponse,
+		http.StatusBadRequest,
+		httpResp.Header,
+		map[string]interface{}{
 			"responseBody": string(responseBody),
 		},
-		Err: baseError,
-	}
+		baseError,
+	)
 }
 
 func getErrorDescription(statusCode int) string {
@@ -129,7 +138,7 @@ func getErrorFromHttpResp(httpResp *http.Response) error {
 			return getUnexpctedApiResponseError(httpResp, body, err)
 		}
 
-		return &ApiError{
+		return &ApiErrorImpl{
 			Description:     fmt.Sprintf("%s - %s", getErrorDescription(httpResp.StatusCode), errorDesc.Message),
 			StatusCode:      httpResp.StatusCode,
 			ResponseHeaders: httpResp.Header,

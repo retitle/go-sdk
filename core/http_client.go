@@ -39,10 +39,7 @@ func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url str
 		req.Host = reqOptions.host
 	}
 	if err != nil {
-		return &ApiError{
-			Description: "Error while initializing http request",
-			Err:         err,
-		}
+		return NewHttpMethodApiError(err)
 	}
 	if payload.Len() > 0 {
 		req.Header.Del("Content-Type")
@@ -57,10 +54,7 @@ func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url str
 
 	httpResp, err := hc.requester.Do(req)
 	if err != nil {
-		return &ApiError{
-			Description: "Error when sending http request to Glide API",
-			Err:         err,
-		}
+		return NewHttpRequestApiError(err)
 	}
 
 	glideErr := getErrorFromHttpResp(httpResp)

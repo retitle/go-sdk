@@ -3,13 +3,13 @@ package glide
 import (
 	"fmt"
 
-	"github.com/retitle/go-sdk/core"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type UserManagementResource interface {
 	GetDetail(id string, opts ...core.RequestOption) (*User, error)
 	List(opts ...core.RequestOption) (*UserList, error)
-	Upsert(UserManagementSchema UserManagementSchema, opts ...core.RequestOption) (*User, error)
+	Upsert(usermanagementschema UserManagementSchema, opts ...core.RequestOption) (*User, error)
 }
 
 type userManagementResourceImpl struct {
@@ -38,9 +38,9 @@ func (r userManagementResourceImpl) List(opts ...core.RequestOption) (*UserList,
 	return &res, nil
 }
 
-func (r userManagementResourceImpl) Upsert(UserManagementSchema UserManagementSchema, opts ...core.RequestOption) (*User, error) {
+func (r userManagementResourceImpl) Upsert(usermanagementschema UserManagementSchema, opts ...core.RequestOption) (*User, error) {
 	res := User{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/user_management/upsert"), UserManagementSchema, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/user_management/upsert"), usermanagementschema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
