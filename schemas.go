@@ -35,6 +35,7 @@ func (m Agent) IsRef() bool {
 
 type AgentRequest struct {
 	Address              *Address `json:"address,omitempty"`
+	AddressId            string   `json:"address_id,omitempty"`
 	CompanyLicenseNumber string   `json:"company_license_number,omitempty"`
 	CompanyName          string   `json:"company_name,omitempty"`
 	CompanyPhoneNumber   string   `json:"company_phone_number,omitempty"`
@@ -104,6 +105,7 @@ func (m ContactCreateResponse) IsRef() bool {
 
 type ContactRequest struct {
 	Address         *Address      `json:"address,omitempty"`
+	AddressId       string        `json:"address_id,omitempty"`
 	Agent           *AgentRequest `json:"agent,omitempty"`
 	AvatarUrl       string        `json:"avatar_url,omitempty"`
 	BrandLogoUrl    string        `json:"brand_logo_url,omitempty"`
