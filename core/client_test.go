@@ -5,7 +5,7 @@ import (
 	"errors"
 	"testing"
 
-	glide "github.com/retitle/go-sdk"
+	glide "github.com/retitle/go-sdk/v3"
 
 	"github.com/dgrijalva/jwt-go"
 )

@@ -1,10 +1,14 @@
 package tests_utils
 
+/*
+import "net/http"
+
 import (
   "encoding/json"
   "fmt"
   glide "github.com/retitle/go-sdk/v3"
   "github.com/retitle/go-sdk/v3/core"
+  "github.com/retitle/go-sdk/v3/core/mocks"
   "github.com/stretchr/testify/assert"
   "github.com/stretchr/testify/mock"
   "io"
@@ -137,3 +141,4 @@ func RunGlideExternalApiTestCases(
     })
   }
 }
+*/
