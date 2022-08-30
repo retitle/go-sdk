@@ -14,7 +14,7 @@ type claims struct {
 func GetJwt(key Key, iss string, sub string, aud string, scopes []string, expiresIn int64) (string, error) {
 	k, err := key.GetDecoded()
 	if err != nil {
-		return "", &ApiError{
+		return "", &ApiErrorImpl{
 			Params: map[string]interface{}{
 				"desc": "Error decoding key",
 			},
@@ -36,7 +36,7 @@ func GetJwt(key Key, iss string, sub string, aud string, scopes []string, expire
 	})
 	t, err := token.SignedString(k)
 	if err != nil {
-		return "", &ApiError{
+		return "", &ApiErrorImpl{
 			Params: map[string]interface{}{
 				"desc": "Error signing JWT",
 			},

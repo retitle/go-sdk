@@ -3,7 +3,11 @@ package core
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
+	"io"
+	"mime/multipart"
 	"net/http"
+	"net/textproto"
 	"strings"
 )
 
@@ -15,6 +19,7 @@ type HttpClientRequester interface {
 type HttpClient interface {
 	Get(res interface{}, url string, opts ...RequestOption) error
 	Post(res interface{}, url string, payload interface{}, opts ...RequestOption) error
+	PostWithFiles(res interface{}, url string, payload interface{}, files []File, opts ...RequestOption) error
 	Request(res interface{}, requestMethod string, url string, opts ...RequestOption) error
 	SetRequester(requester HttpClientRequester)
 }
@@ -39,10 +44,7 @@ func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url str
 		req.Host = reqOptions.host
 	}
 	if err != nil {
-		return &ApiError{
-			Description: "Error while initializing http request",
-			Err:         err,
-		}
+		return NewHttpMethodApiError(err)
 	}
 	if payload.Len() > 0 {
 		req.Header.Del("Content-Type")
@@ -57,10 +59,7 @@ func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url str
 
 	httpResp, err := hc.requester.Do(req)
 	if err != nil {
-		return &ApiError{
-			Description: "Error when sending http request to Glide API",
-			Err:         err,
-		}
+		return NewHttpRequestApiError(err)
 	}
 
 	glideErr := getErrorFromHttpResp(httpResp)
@@ -90,13 +89,61 @@ func (hc *HttpClientImpl) Get(res interface{}, url string, opts ...RequestOption
 func (hc *HttpClientImpl) Post(res interface{}, url string, payload interface{}, opts ...RequestOption) error {
 	var payloadBuffer *bytes.Buffer = nil
 	if payload != nil {
-		json_data, err := json.Marshal(payload)
+		jsonData, err := json.Marshal(payload)
 		if err != nil {
 			return GetApiError(err)
 		}
-		payloadBuffer = bytes.NewBuffer(json_data)
+		payloadBuffer = bytes.NewBuffer(jsonData)
 		opts = append(opts, withPayload(payloadBuffer))
 	}
+	return hc.Request(res, "POST", url, opts...)
+}
+
+func (hc *HttpClientImpl) PostWithFiles(res interface{}, url string, payload interface{}, files []File, opts ...RequestOption) error {
+	bytesBuffer := &bytes.Buffer{}
+	writer := multipart.NewWriter(bytesBuffer)
+
+	if payload != nil {
+		jsonData, err := json.Marshal(payload)
+		if err != nil {
+			return GetApiError(err)
+		}
+
+		partHeader := make(textproto.MIMEHeader)
+		fieldName := "_____"
+		fileName := "payload.json"
+		partHeader.Set("Content-Disposition", fmt.Sprintf(`form-data; name="%s"; filename="%s"`, fieldName, fileName))
+		partHeader.Set("Content-Type", "application/json")
+		part, err := writer.CreatePart(partHeader)
+		if err != nil {
+			return GetApiError(err)
+		}
+		_, err = io.WriteString(part, string(jsonData))
+		if err != nil {
+			return GetApiError(err)
+		}
+	}
+
+	for _, file := range files {
+		part, err := writer.CreateFormFile(file.title, file.title)
+		if err != nil {
+			return GetApiError(err)
+		}
+
+		_, err = io.Copy(part, file.content)
+		if err != nil {
+			return GetApiError(err)
+		}
+	}
+
+	err := writer.Close()
+	if err != nil {
+		return err
+	}
+
+	opts = append(opts, withPayload(bytesBuffer))
+	opts = append(opts, WithHeader("Content-Type", writer.FormDataContentType()))
+
 	return hc.Request(res, "POST", url, opts...)
 }
 

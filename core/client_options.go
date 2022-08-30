@@ -1,11 +1,9 @@
 package core
 
 import (
-	"fmt"
 	"net/http"
 	"strconv"
 	"strings"
-	"time"
 )
 
 type ClientOptions interface {
@@ -19,13 +17,6 @@ type ClientOptions interface {
 	SetUrl(value string) ClientOptions
 	SetBasePath(value string) ClientOptions
 	SetAudience(value string) ClientOptions
-}
-
-type impersonating struct {
-	sub                string
-	scopes             []string
-	accessToken        string
-	accessTokenExpires time.Time
 }
 
 type ClientOptionsImpl struct {
@@ -133,13 +124,6 @@ func WithHeader(name string, value string) RequestOption {
 	header := http.Header{}
 	header.Add(name, value)
 	return withHeaders(header)
-}
-
-func GetExpandFields(fieldIds ...string) string {
-	if len(fieldIds) > 0 {
-		return fmt.Sprintf("fields[%s]", strings.Join(fieldIds, ","))
-	}
-	return "fields"
 }
 
 func WithUpdatedAfter(ts int) RequestOption {

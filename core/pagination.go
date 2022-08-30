@@ -4,12 +4,16 @@ import (
 	"strconv"
 )
 
-type PageParams struct {
+type PageParams interface {
+	GetQueryParams() map[string]string
+}
+
+type PageParamsImpl struct {
 	StartingAfter string
 	Limit         int
 }
 
-func (p PageParams) GetQueryParams() map[string]string {
+func (p *PageParamsImpl) GetQueryParams() map[string]string {
 	qp := map[string]string{}
 	if p.StartingAfter != "" {
 		qp["starting_after"] = p.StartingAfter
@@ -20,27 +24,26 @@ func (p PageParams) GetQueryParams() map[string]string {
 	return qp
 }
 
-func WithPage(pageParams *PageParams) RequestOption {
-	var pp PageParams
-	if pageParams == nil {
-		pp = PageParams{}
-	} else {
-		pp = *pageParams
-	}
-	return withQueryParams(pp.GetQueryParams())
-}
-
 func WithPageParams(limit int, startingAfter string) RequestOption {
-	return WithPage(&PageParams{
+	return WithPage(&PageParamsImpl{
 		Limit:         limit,
 		StartingAfter: startingAfter,
 	})
 }
 
-func WithPageLimit(limit int) RequestOption {
-	return WithPageParams(limit, "")
+func WithPage(pageParams PageParams) RequestOption {
+	var pp PageParams
+	if pageParams == nil {
+		pp = &PageParamsImpl{}
+	} else {
+		pp = pageParams
+	}
+	return withQueryParams(pp.GetQueryParams())
 }
 
-func WithPageStartingAfter(startingAfter string) RequestOption {
-	return WithPageParams(0, startingAfter)
+func NewPageParamsWith(limit int, startingAfter string) PageParams {
+	return &PageParamsImpl{
+		Limit:         limit,
+		StartingAfter: startingAfter,
+	}
 }

@@ -5,12 +5,13 @@ import (
 	"strings"
 	"time"
 
-	"github.com/retitle/go-sdk/core"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type Client interface {
 	Get(res core.Response, authRequired bool, path string, opts ...core.RequestOption) error
 	Post(res core.Response, authRequired bool, path string, payload core.Request, opts ...core.RequestOption) error
+	PostWithFiles(res core.Response, authRequired bool, path string, payload core.Request, files []core.File, opts ...core.RequestOption) error
 	GetOptions() core.ClientOptions
 	SetHttpClient(httpClient core.HttpClient)
 	StartImpersonating(sub string, scopes []string) error
@@ -152,6 +153,12 @@ func (c *ClientImpl) Post(res core.Response, authRequired bool, path string, pay
 	})
 }
 
+func (c *ClientImpl) PostWithFiles(res core.Response, authRequired bool, path string, payload core.Request, files []core.File, opts ...core.RequestOption) error {
+	return c.request(authRequired, func(extraOpts ...core.RequestOption) error {
+		return c.httpClient.PostWithFiles(res, c.getUrl(path), payload, files, append(opts, extraOpts...)...)
+	})
+}
+
 func (c *ClientImpl) getJwt(sub string, scopes []string) (string, error) {
 	return core.GetJwt(c.key, c.clientKey, sub, c.GetOptions().GetAudience(), scopes, JWT_EXPIRES)
 }
@@ -159,7 +166,7 @@ func (c *ClientImpl) getJwt(sub string, scopes []string) (string, error) {
 func (c *ClientImpl) getAccessToken(sub string, scopes []string) (string, error) {
 	jwt, err := c.getJwt(sub, scopes)
 	if err != nil {
-		return "", &core.ApiError{
+		return "", &core.ApiErrorImpl{
 			Params: map[string]interface{}{
 				"desc": "Error issuing assertions JWT",
 			},
