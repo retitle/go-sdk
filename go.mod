@@ -2,12 +2,6 @@ module github.com/retitle/go-sdk/v3
 
 go 1.18
 
-replace (
-	github.com/retitle/go-sdk/v3/core => ./core/
-	github.com/retitle/go-sdk/v3/core/mocks => ./core/mocks/
-	github.com/retitle/go-sdk/v3/tests_utils => ./tests_utils/
-)
-
 require (
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
 	github.com/stretchr/testify v1.8.0
