@@ -3,6 +3,8 @@ package glide
 import (
 	"net/http"
 	"strings"
+
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type Address struct {
@@ -78,13 +80,13 @@ func (m ContactList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m ContactList) NextPageParams() *PageParams {
+func (m ContactList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -355,13 +357,13 @@ func (m FolderList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m FolderList) NextPageParams() *PageParams {
+func (m FolderList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -490,13 +492,13 @@ func (m ListingList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m ListingList) NextPageParams() *PageParams {
+func (m ListingList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -568,13 +570,13 @@ func (m PartyList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m PartyList) NextPageParams() *PageParams {
+func (m PartyList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -765,13 +767,13 @@ func (m TransactionList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m TransactionList) NextPageParams() *PageParams {
+func (m TransactionList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -904,13 +906,13 @@ func (m TransactionDocumentList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m TransactionDocumentList) NextPageParams() *PageParams {
+func (m TransactionDocumentList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
@@ -1072,13 +1074,13 @@ func (m UserList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-func (m UserList) NextPageParams() *PageParams {
+func (m UserList) NextPageParams() core.PageParams {
 	if !m.HasMore {
 		return nil
 	}
 
 	pageSize := len(m.Data)
-	return &PageParams{
+	return &core.PageParamsImpl{
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}

@@ -2,6 +2,8 @@
 
 > :warning: **The SDK and underlaying API are still being developed and current APIs are bound to change, not respecting backward compatibility conventions on versioning**
 
+> :warning: **Current SDK Go version 1.18**
+
 This SDK is meant to be used to more easily consume Glide's external APIs while using Go after an integration app has been set up for your Brokerage at Glide.
 
 The underlying API's spec is available for both development and production environments on the links below:
@@ -20,13 +22,117 @@ The integration app you use will dictate the client key and RS256 key pair value
 go get github.com/retitle/go-sdk
 ```
 
+## HTTP Mocks for test development
+The goal of this section is to provide snipped code that allows devs to test new resources/methods inside the sdk.
+Keep in mind that our mission is to verify every HTTP call made by this sdk through unit testing, hence
+these HTTP calls must be mocked. In order to accomplish this here is a true example that can be found in file
+`user_management_test.go`:
+
+```go
+
+func parseStructToIoReadCloser[T any](v *T) io.ReadCloser {
+    b, _ := json.Marshal(v)
+    stringReader := strings.NewReader(string(b))
+    stringReadCloser := io.NopCloser(stringReader)
+    return stringReadCloser
+}
+
+
+func TestUserManagement(t *testing.T) {
+    var (
+        mockedRequest          *http.Request
+        mockedResponse         *http.Response
+        expectedBodyResponse   *glide.User
+        bodyResponse           *glide.User
+        httpRequester          *mocks.HttpClientRequester
+        client                 glide.Client
+        httpClient             core.HttpClient
+        userManagementResource glide.UserManagementResource
+        expectedErr            error
+        method                 string
+        err                    error
+        someClientKey          = "come-valid-key"
+        somePem                = []byte{}
+        url                    = "http://api.glide.com/user_management"
+        michaelJordanId        = "23"
+    )
+
+    ttests := []struct {
+    name    string
+    arrange func()
+    act     func()
+    assert  func()
+    }{
+        {
+            name: "Should Call Get successfully",
+            arrange: func() {
+                method = "GET"
+                expectedBodyResponse = &glide.User{
+                    Id: michaelJordanId,
+                }
+                expectedErr = nil
+
+                stringReadCloser := parseStructToIoReadCloser(expectedBodyResponse)
+                mockedRequest, _ = http.NewRequest(method, fmt.Sprintf("%v/%v", url, michaelJordanId), nil)
+                mockedResponse = &http.Response{StatusCode: http.StatusOK, Body: stringReadCloser}
+                // HTTP mock
+                httpRequester = &mocks.HttpClientRequester{}
+                httpRequester.On("Do", mock.MatchedBy(func(req *http.Request) bool {
+                    return req.URL.Host == mockedRequest.URL.Host && req.URL.Path == mockedRequest.URL.Path && req.Method == mockedRequest.Method && req.Body == http.NoBody
+                })).
+                Return(mockedResponse, nil)
+
+                // Injecting the http mock
+                httpClient = core.NewHttpClientWithRequester(httpRequester)
+                client = glide.GetClient(someClientKey, core.GetRsa256KeyFromPEMBytes(somePem))
+                client.SetHttpClient(httpClient)
+
+                userManagementResource = glide.GetUserManagementResource(client)
+            },
+            act: func() {
+                bodyResponse, err = userManagementResource.GetDetail(michaelJordanId)
+            },
+            assert: func() {
+                assert.Equal(t, expectedErr, err)
+                assert.Equal(t, expectedBodyResponse, bodyResponse)
+            },
+        },
+    }
+
+    for _, tt := range ttests {
+        t.Run(tt.name, func(t *testing.T) {
+            tt.arrange()
+
+            tt.act()
+
+            tt.assert()
+        })
+    }
+}
+
+```
+
+
+## Testing
+
+To run the test case execute the following command
+```bash
+go test
+```
+### Execute test covergae
+
+Execute the following command
+```bash
+go test -cover
+```
+
 ## Example usage
 
 ```go
 package my_package
 
 import (
-    "github.com/retitle/go-sdk"
+    "github.com/retitle/go-sdk/v3"
 
     "fmt"
 )
