@@ -9,6 +9,7 @@ import (
 type TransactionsResource interface {
 	Folders() FoldersResource
 	Parties() PartiesResource
+	Tasks() TasksResource
 	TransactionDocuments() TransactionDocumentsResource
 	GetDetail(id string, opts ...core.RequestOption) (*Transaction, error)
 	GetMulti(ids []string, opts ...core.RequestOption) (*TransactionList, error)
@@ -42,6 +43,10 @@ type transactionsResourceImpl struct {
 	client               Client
 	folders              FoldersResource
 	parties              PartiesResource
+<<<<<<< HEAD
+=======
+	tasks                TasksResource
+>>>>>>> main
 	transactionDocuments TransactionDocumentsResource
 }
 
@@ -50,6 +55,7 @@ func GetTransactionsResource(client Client) TransactionsResource {
 		client:               client,
 		folders:              GetFoldersResource(client),
 		parties:              GetPartiesResource(client),
+		tasks:                GetTasksResource(client),
 		transactionDocuments: GetTransactionDocumentsResource(client),
 	}
 }
@@ -60,6 +66,10 @@ func (r transactionsResourceImpl) Folders() FoldersResource {
 
 func (r transactionsResourceImpl) Parties() PartiesResource {
 	return r.parties
+}
+
+func (r transactionsResourceImpl) Tasks() TasksResource {
+	return r.tasks
 }
 
 func (r transactionsResourceImpl) TransactionDocuments() TransactionDocumentsResource {

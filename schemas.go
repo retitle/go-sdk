@@ -106,20 +106,21 @@ func (m ContactCreateResponse) IsRef() bool {
 }
 
 type ContactRequest struct {
-	Address         *Address      `json:"address,omitempty"`
-	AddressId       string        `json:"address_id,omitempty"`
-	Agent           *AgentRequest `json:"agent,omitempty"`
-	AvatarUrl       string        `json:"avatar_url,omitempty"`
-	BrandLogoUrl    string        `json:"brand_logo_url,omitempty"`
-	CellPhone       string        `json:"cell_phone,omitempty"`
-	Email           string        `json:"email,omitempty"`
-	EntityName      string        `json:"entity_name,omitempty"`
-	EntityType      string        `json:"entity_type,omitempty"`
-	FaxPhone        string        `json:"fax_phone,omitempty"`
-	FirstName       string        `json:"first_name"`
-	LastName        string        `json:"last_name,omitempty"`
-	PersonalWebsite string        `json:"personal_website,omitempty"`
-	Title           string        `json:"title,omitempty"`
+	Address         *Address       `json:"address,omitempty"`
+	AddressId       string         `json:"address_id,omitempty"`
+	Agent           *AgentRequest  `json:"agent,omitempty"`
+	AvatarUrl       string         `json:"avatar_url,omitempty"`
+	BrandLogoUrl    string         `json:"brand_logo_url,omitempty"`
+	CellPhone       string         `json:"cell_phone,omitempty"`
+	ContactSource   *ContactSource `json:"contact_source,omitempty"`
+	Email           string         `json:"email,omitempty"`
+	EntityName      string         `json:"entity_name,omitempty"`
+	EntityType      string         `json:"entity_type,omitempty"`
+	FaxPhone        string         `json:"fax_phone,omitempty"`
+	FirstName       string         `json:"first_name"`
+	LastName        string         `json:"last_name,omitempty"`
+	PersonalWebsite string         `json:"personal_website,omitempty"`
+	Title           string         `json:"title,omitempty"`
 }
 
 type ContactSource struct {
@@ -752,6 +753,46 @@ type SignatureDetectionSchema struct {
 	Uploads []*DocumentUpload `json:"uploads,omitempty"`
 }
 
+type Task struct {
+	Id          string       `json:"id,omitempty"`
+	BoardId     string       `json:"board_id,omitempty"`
+	Name        string       `json:"name,omitempty"`
+	OrderIndex  int          `json:"order_index,omitempty"`
+	Status      string       `json:"status,omitempty"`
+	TaskKind    string       `json:"task_kind,omitempty"`
+	Title       string       `json:"title,omitempty"`
+	Transaction *Transaction `json:"transaction,omitempty"`
+	Type        string       `json:"type,omitempty"`
+	Object      string       `json:"object,omitempty"`
+}
+
+func (m Task) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type TaskList struct {
+	Data       []Task `json:"data"`
+	ListObject string `json:"list_object"`
+	Object     string `json:"object"`
+	HasMore    bool   `json:"has_more"`
+}
+
+func (m TaskList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m TaskList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
 type Transaction struct {
 	Id                    string                   `json:"id,omitempty"`
 	Address               *Address                 `json:"address,omitempty"`
@@ -765,6 +806,7 @@ type Transaction struct {
 	SecondaryAddressesIds []string                 `json:"secondary_addresses_ids,omitempty"`
 	Side                  string                   `json:"side,omitempty"`
 	Stage                 string                   `json:"stage,omitempty"`
+	Tasks                 *TaskList                `json:"tasks,omitempty"`
 	Title                 string                   `json:"title,omitempty"`
 	TransactionDocuments  *TransactionDocumentList `json:"transaction_documents,omitempty"`
 	Object                string                   `json:"object,omitempty"`
