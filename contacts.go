@@ -18,6 +18,7 @@ type contactsResourceImpl struct {
 	client Client
 }
 
+
 func GetContactsResource(client Client) ContactsResource {
 	return contactsResourceImpl{
 		client: client,
