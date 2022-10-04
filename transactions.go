@@ -43,10 +43,7 @@ type transactionsResourceImpl struct {
 	client               Client
 	folders              FoldersResource
 	parties              PartiesResource
-<<<<<<< HEAD
-=======
 	tasks                TasksResource
->>>>>>> main
 	transactionDocuments TransactionDocumentsResource
 }
 
