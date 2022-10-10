@@ -9,8 +9,8 @@ import (
 	"time"
 
 	jwt_go "github.com/dgrijalva/jwt-go"
-	"github.com/retitle/go-sdk/v3/core"
-	"github.com/retitle/go-sdk/v3/core/mocks"
+	"github.com/retitle/go-sdk/v4/core"
+	"github.com/retitle/go-sdk/v4/core/mocks"
 	"github.com/stretchr/testify/assert"
 )
 

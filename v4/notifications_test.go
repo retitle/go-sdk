@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	glide "github.com/retitle/go-sdk/v3"
-	"github.com/retitle/go-sdk/v3/core"
-	"github.com/retitle/go-sdk/v3/tests_utils"
+	"github.com/retitle/go-sdk/v4/core"
+	"github.com/retitle/go-sdk/v4/tests_utils"
 	"github.com/stretchr/testify/assert"
 )
 

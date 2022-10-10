@@ -2,7 +2,7 @@ package fixtures
 
 import (
 	glide "github.com/retitle/go-sdk/v3"
-	"github.com/retitle/go-sdk/v3/core"
+	"github.com/retitle/go-sdk/v4/core"
 )
 
 func ListingData() *glide.Listing {

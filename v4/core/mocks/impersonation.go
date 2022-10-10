@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	core "github.com/retitle/go-sdk/v3/core"
+	core "github.com/retitle/go-sdk/v4/core"
 	mock "github.com/stretchr/testify/mock"
 
 	time "time"
