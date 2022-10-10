@@ -1,4 +1,4 @@
-module github.com/retitle/go-sdk/v3
+module github.com/retitle/go-sdk/v4
 
 go 1.18
 
