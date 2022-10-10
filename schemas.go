@@ -602,16 +602,14 @@ func (m PartyList) NextPageParams() core.PageParams {
 }
 
 type PartyCreate struct {
-	Body                  string                `json:"body,omitempty"`
-	Contact               *ContactRequest       `json:"contact,omitempty"`
-	Invite                *bool                 `json:"invite,omitempty"`
-	InviteRestrictions    []string              `json:"invite_restrictions,omitempty"`
-	PromoteToPrimaryAgent *bool                 `json:"promote_to_primary_agent,omitempty"`
-	Roles                 []string              `json:"roles,omitempty"`
-	Subject               string                `json:"subject,omitempty"`
-	SuppressInviteEmail   *bool                 `json:"suppress_invite_email,omitempty"`
-	UserContactId         string                `json:"user_contact_id,omitempty"`
-	UserContactSource     *ContactSourceRequest `json:"user_contact_source,omitempty"`
+	Body                  string          `json:"body,omitempty"`
+	Contact               *ContactRequest `json:"contact,omitempty"`
+	Invite                *bool           `json:"invite,omitempty"`
+	InviteRestrictions    []string        `json:"invite_restrictions,omitempty"`
+	PromoteToPrimaryAgent *bool           `json:"promote_to_primary_agent,omitempty"`
+	Roles                 []string        `json:"roles,omitempty"`
+	Subject               string          `json:"subject,omitempty"`
+	SuppressInviteEmail   *bool           `json:"suppress_invite_email,omitempty"`
 }
 
 type PartyCreates struct {

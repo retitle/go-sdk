@@ -173,7 +173,7 @@ func PartyCreateData() *glide.PartyCreate {
 		Roles:                 []string{"role1"},
 		Subject:               "Some subject",
 		SuppressInviteEmail:   tests_utils.Pointer(false),
-		UserContactId:         "Some user id",
+		Contact:               ContactRequest(),
 	}
 }
 

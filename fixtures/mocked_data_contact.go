@@ -6,13 +6,33 @@ import (
 
 func ContactWithAddress() *glide.Contact {
 	return &glide.Contact{
-		Id:        "123",
-		Address:   Address1(),
-		CellPhone: "987654321",
-		Email:     "test_email@compass.com",
-		FirstName: "Contact1",
-		LastName:  "ContactLast",
-		Object:    "user",
+		Id:            "123",
+		Address:       Address1(),
+		CellPhone:     "987654321",
+		Email:         "test_email@compass.com",
+		FirstName:     "Contact1",
+		LastName:      "ContactLast",
+		Object:        "user",
+		ContactSource: ContactSource(),
+	}
+}
+
+func ContactRequest() *glide.ContactRequest {
+	return &glide.ContactRequest{
+		Address:       Address1(),
+		CellPhone:     "987654321",
+		Email:         "test_email@compass.com",
+		FirstName:     "Contact1",
+		LastName:      "ContactLast",
+		ContactSource: ContactSource(),
+	}
+}
+
+func ContactSource() *glide.ContactSource {
+	return &glide.ContactSource{
+		Id:     "123",
+		Origin: "GLIDE",
+		Object: "contact_source",
 	}
 }
 
