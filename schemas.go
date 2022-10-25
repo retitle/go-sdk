@@ -707,6 +707,20 @@ func (m PartyUpdateContactDetailsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type PartyUpdateContactSource struct {
+	ContactSource *ContactSource `json:"contact_source,omitempty"`
+	PartyId       string         `json:"party_id"`
+}
+
+type PartyUpdateContactSourceResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m PartyUpdateContactSourceResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type ReorderFoldersResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
 	Object        string `json:"object,omitempty"`

@@ -30,6 +30,7 @@ type TransactionsResource interface {
 	PartyPatches(id string, partypatches PartyPatches, opts ...core.RequestOption) (*PartyPatchesResponse, error)
 	PartyRemoves(id string, partyremoves PartyRemoves, opts ...core.RequestOption) (*PartyRemovesResponse, error)
 	PartyUpdateContactDetails(id string, partyupdatecontactdetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error)
+	PartyUpdateContactSource(id string, partyupdatecontactsource PartyUpdateContactSource, opts ...core.RequestOption) (*PartyUpdateContactSourceResponse, error)
 	ReorderFolders(id string, transactiondocumentreorderfolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error)
 	TransactionDocumentAssignments(id string, transactiondocumentassignments TransactionDocumentAssignments, opts ...core.RequestOption) (*TransactionDocumentAssignmentsResponse, error)
 	TransactionDocumentRenames(id string, transactiondocumentrenames TransactionDocumentRenames, opts ...core.RequestOption) (*TransactionDocumentRenamesResponse, error)
@@ -221,6 +222,14 @@ func (r transactionsResourceImpl) PartyRemoves(id string, partyremoves PartyRemo
 func (r transactionsResourceImpl) PartyUpdateContactDetails(id string, partyupdatecontactdetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error) {
 	res := PartyUpdateContactDetailsResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_update_contact_details", id), partyupdatecontactdetails, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) PartyUpdateContactSource(id string, partyupdatecontactsource PartyUpdateContactSource, opts ...core.RequestOption) (*PartyUpdateContactSourceResponse, error) {
+	res := PartyUpdateContactSourceResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/party_update_contact_source", id), partyupdatecontactsource, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
