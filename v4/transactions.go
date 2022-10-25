@@ -225,7 +225,7 @@ func (r transactionsResourceImpl) PartyUpdateContactDetails(id string, partyupda
 		return nil, err
 	}
 	return &res, nil
-}
+} 
 
 func (r transactionsResourceImpl) PartyUpdateContactSource(id string, partyupdatecontactsource PartyUpdateContactSource, opts ...core.RequestOption) (*PartyUpdateContactSourceResponse, error) {
 	res := PartyUpdateContactSourceResponse{}
