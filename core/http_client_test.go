@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/retitle/go-sdk/v3/tests_utils"
+	"github.com/retitle/go-sdk/v4/tests_utils"
 
-	"github.com/retitle/go-sdk/v3/core"
-	"github.com/retitle/go-sdk/v3/core/mocks"
+	"github.com/retitle/go-sdk/v4/core"
+	"github.com/retitle/go-sdk/v4/core/mocks"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 )

@@ -3,7 +3,7 @@ package glide_test
 import (
 	"testing"
 
-	glide "github.com/retitle/go-sdk/v3"
+	glide "github.com/retitle/go-sdk/v4"
 	"github.com/stretchr/testify/assert"
 )
 

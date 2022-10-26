@@ -1,7 +1,7 @@
 package fixtures
 
 import (
-	glide "github.com/retitle/go-sdk/v3"
+	glide "github.com/retitle/go-sdk/v4"
 )
 
 func ContactWithAddress() *glide.Contact {

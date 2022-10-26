@@ -132,7 +132,7 @@ go test -cover
 package my_package
 
 import (
-    "github.com/retitle/go-sdk/v3"
+    "github.com/retitle/go-sdk/v4"
 
     "fmt"
 )

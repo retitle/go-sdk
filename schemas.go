@@ -4,9 +4,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/retitle/go-sdk/v3/core"
+	"github.com/retitle/go-sdk/v4/core"
 )
-
+ 
 type Address struct {
 	City    string `json:"city"`
 	State   string `json:"state"`

@@ -6,7 +6,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/retitle/go-sdk/v3/core"
+	"github.com/retitle/go-sdk/v4/core"
 	"github.com/stretchr/testify/assert"
 )
 
