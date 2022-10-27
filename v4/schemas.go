@@ -1157,7 +1157,7 @@ func (m UserList) NextPageParams() core.PageParams {
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
-} 
+}
 
 type UserBillingInfo struct {
 	StripeCustomerId string `json:"stripe_customer_id,omitempty"`

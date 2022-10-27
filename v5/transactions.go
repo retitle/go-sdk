@@ -3,7 +3,7 @@ package glide
 import (
 	"fmt"
 
-	"github.com/retitle/go-sdk/v4/core"
+	"github.com/retitle/go-sdk/v5/core"
 )
 
 type TransactionsResource interface {
