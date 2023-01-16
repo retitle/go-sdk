@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/retitle/go-sdk/v5/core"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 type Address struct {
@@ -956,6 +956,7 @@ type TransactionDocument struct {
 	LastModified    int          `json:"last_modified,omitempty"`
 	LatestVersionId string       `json:"latest_version_id,omitempty"`
 	Order           int          `json:"order,omitempty"`
+	PageCount       int          `json:"page_count,omitempty"`
 	Title           string       `json:"title,omitempty"`
 	Transaction     *Transaction `json:"transaction,omitempty"`
 	Url             string       `json:"url,omitempty"`

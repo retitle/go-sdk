@@ -1,8 +1,8 @@
 package fixtures
 
 import (
-	glide "github.com/retitle/go-sdk/v4"
-	"github.com/retitle/go-sdk/v4/core"
+	glide "github.com/retitle/go-sdk/v3"
+	"github.com/retitle/go-sdk/v3/core"
 )
 
 func PartyData() *glide.Party {

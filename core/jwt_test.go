@@ -8,9 +8,8 @@ import (
 	"testing"
 	"time"
 
-	jwt_go "github.com/dgrijalva/jwt-go"
-	"github.com/retitle/go-sdk/v4/core"
-	"github.com/retitle/go-sdk/v4/core/mocks"
+	"github.com/retitle/go-sdk/v3/core"
+	"github.com/retitle/go-sdk/v3/core/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -53,7 +52,7 @@ func TestGetJwt(t *testing.T) {
 				key = mocks.Key{}
 				cryptoPrivateKey, _ := rsa.GenerateKey(rand.Reader, 1024)
 				key.On("GetDecoded").Return(cryptoPrivateKey, nil)
-				key.On("GetJwtSigningMethod").Return(jwt_go.SigningMethodRS256, nil)
+				key.On("GetJwtSigningMethod").Return(jwt.SigningMethodRS256, nil)
 				iss = "fakeiss"
 				sub = "fakesub"
 				aud = "fakeaud"
@@ -78,7 +77,7 @@ func TestGetJwt(t *testing.T) {
 			arrange: func() {
 				key = mocks.Key{}
 				key.On("GetDecoded").Return(nil, fmt.Errorf("Error"))
-				key.On("GetJwtSigningMethod").Return(jwt_go.SigningMethodRS256, nil)
+				key.On("GetJwtSigningMethod").Return(jwt.SigningMethodRS256, nil)
 				iss = "fakeiss"
 				sub = "fakesub"
 				aud = "fakeaud"
@@ -105,7 +104,7 @@ func TestGetJwt(t *testing.T) {
 				key = mocks.Key{}
 				emptyCryptoPrivateKey := FakePrivateKey{}
 				key.On("GetDecoded").Return(emptyCryptoPrivateKey, nil)
-				key.On("GetJwtSigningMethod").Return(jwt_go.SigningMethodRS256, nil)
+				key.On("GetJwtSigningMethod").Return(jwt.SigningMethodRS256, nil)
 				iss = "fakeiss"
 				sub = "fakesub"
 				aud = "fakeaud"

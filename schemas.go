@@ -562,16 +562,14 @@ func (m NotificationResponse) IsRef() bool {
 }
 
 type Party struct {
-	Id          		string       `json:"id,omitempty"`
-	Contact     		*Contact     `json:"contact,omitempty"`
-	CreatedAt   		int          `json:"created_at,omitempty"`
-	Roles       		[]string     `json:"roles,omitempty"`
-	Transaction 		*Transaction `json:"transaction,omitempty"`
-	UpdatedAt   		int          `json:"updated_at,omitempty"`
-	UserContactId       string         `json:"user_contact_id,omitempty"`
-	UserContactSource   *ContactSource `json:"user_contact_source,omitempty"`
-	UserId      		string       `json:"user_id,omitempty"`
-	Object      		string       `json:"object,omitempty"`
+	Id          string       `json:"id,omitempty"`
+	Contact     *Contact     `json:"contact,omitempty"`
+	CreatedAt   int          `json:"created_at,omitempty"`
+	Roles       []string     `json:"roles,omitempty"`
+	Transaction *Transaction `json:"transaction,omitempty"`
+	UpdatedAt   int          `json:"updated_at,omitempty"`
+	UserId      string       `json:"user_id,omitempty"`
+	Object      string       `json:"object,omitempty"`
 }
 
 func (m Party) IsRef() bool {
@@ -958,6 +956,7 @@ type TransactionDocument struct {
 	LastModified    int          `json:"last_modified,omitempty"`
 	LatestVersionId string       `json:"latest_version_id,omitempty"`
 	Order           int          `json:"order,omitempty"`
+	PageCount       int          `json:"page_count,omitempty"`
 	Title           string       `json:"title,omitempty"`
 	Transaction     *Transaction `json:"transaction,omitempty"`
 	Url             string       `json:"url,omitempty"`

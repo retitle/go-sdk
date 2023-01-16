@@ -3,7 +3,7 @@ package core
 import (
 	"crypto"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 //go:generate mockery --name=Key --filename=key.go --output=mocks

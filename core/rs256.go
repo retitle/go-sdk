@@ -4,7 +4,7 @@ import (
 	"crypto"
 	"io/ioutil"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v4"
 )
 
 type rsa256Key struct {
