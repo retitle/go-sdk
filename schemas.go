@@ -820,6 +820,7 @@ type Transaction struct {
 	Title                 string                   `json:"title,omitempty"`
 	TransactionDocuments  *TransactionDocumentList `json:"transaction_documents,omitempty"`
 	Object                string                   `json:"object,omitempty"`
+	TeamId                string                   `json:"team_id,omitempty"`
 }
 
 func (m Transaction) IsRef() bool {

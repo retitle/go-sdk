@@ -8,8 +8,9 @@ import (
 
 func TransactionsData() *glide.Transaction {
 	return &glide.Transaction{
-		Id:    "Trasaction ID",
-		Title: "DBZ transaction",
+		Id:     "Trasaction ID",
+		Title:  "DBZ transaction",
+		TeamId: "Team ID",
 	}
 }
 
@@ -32,7 +33,7 @@ func TransactionsError() core.ErrorObject {
 func TransactionsCreateData() *glide.TransactionCreate {
 	return &glide.TransactionCreate{
 		Title:  TransactionsData().Title,
-		TeamId: "teamId",
+		TeamId: TransactionsData().TeamId,
 	}
 }
 
