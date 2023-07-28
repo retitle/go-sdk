@@ -942,6 +942,7 @@ type TransactionCreate struct {
 	ReState           string              `json:"re_state,omitempty"`
 	Stage             string              `json:"stage,omitempty"`
 	Title             string              `json:"title,omitempty"`
+	TeamId            string              `json:"team_id,omitempty"`
 }
 
 type TransactionCreator struct {

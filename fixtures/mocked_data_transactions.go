@@ -31,7 +31,8 @@ func TransactionsError() core.ErrorObject {
 
 func TransactionsCreateData() *glide.TransactionCreate {
 	return &glide.TransactionCreate{
-		Title: TransactionsData().Title,
+		Title:  TransactionsData().Title,
+		TeamId: "teamId",
 	}
 }
 
