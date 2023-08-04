@@ -8,6 +8,7 @@ import (
 	"testing"
 	"time"
 
+	"github.com/dgrijalva/jwt/v4"
 	"github.com/retitle/go-sdk/v3/core"
 	"github.com/retitle/go-sdk/v3/core/mocks"
 	"github.com/stretchr/testify/assert"

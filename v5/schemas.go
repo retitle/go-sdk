@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/retitle/go-sdk/v3/core"
+	"github.com/retitle/go-sdk/v5/core"
 )
 
 type Address struct {
@@ -608,6 +608,7 @@ type PartyCreate struct {
 	Roles                 []string        `json:"roles,omitempty"`
 	Subject               string          `json:"subject,omitempty"`
 	SuppressInviteEmail   *bool           `json:"suppress_invite_email,omitempty"`
+	TeamId                string          `json:"team_id,omitempty"`
 }
 
 type PartyCreates struct {
@@ -648,6 +649,7 @@ type PartyPatch struct {
 	Contact *ContactRequest `json:"contact,omitempty"`
 	PartyId string          `json:"party_id,omitempty"`
 	Roles   []string        `json:"roles,omitempty"`
+	TeamId  string          `json:"team_id,omitempty"`
 }
 
 type PartyPatches struct {
@@ -694,6 +696,7 @@ type PartyUpdateContactDetails struct {
 	PartyId               string          `json:"party_id,omitempty"`
 	PromoteToPrimaryAgent *bool           `json:"promote_to_primary_agent,omitempty"`
 	Roles                 []string        `json:"roles,omitempty"`
+	TeamId                string          `json:"team_id,omitempty"`
 }
 
 type PartyUpdateContactDetailsResponse struct {
@@ -941,6 +944,7 @@ type TransactionCreate struct {
 	IsLease           *bool               `json:"is_lease,omitempty"`
 	ReState           string              `json:"re_state,omitempty"`
 	Stage             string              `json:"stage,omitempty"`
+	TeamId            string              `json:"team_id,omitempty"`
 	Title             string              `json:"title,omitempty"`
 }
 
