@@ -62,6 +62,7 @@ type Contact struct {
 	LastName        string         `json:"last_name,omitempty"`
 	PersonalWebsite string         `json:"personal_website,omitempty"`
 	Title           string         `json:"title,omitempty"`
+	TeamId          string         `json:"team_id,omitempty"`
 	Object          string         `json:"object,omitempty"`
 }
 
