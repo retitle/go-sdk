@@ -815,6 +815,7 @@ type Transaction struct {
 	Folders               *FolderList              `json:"folders,omitempty"`
 	IngestDocumentsEmail  string                   `json:"ingest_documents_email,omitempty"`
 	IsLease               *bool                    `json:"is_lease,omitempty"`
+	IsReferral            *bool                    `json:"is_referral,omitempty"`
 	Parties               *PartyList               `json:"parties,omitempty"`
 	ReState               string                   `json:"re_state,omitempty"`
 	SecondaryAddressesIds []string                 `json:"secondary_addresses_ids,omitempty"`
@@ -943,6 +944,7 @@ type TransactionCreate struct {
 	Creator           *TransactionCreator `json:"creator,omitempty"`
 	CreatorRoles      []string            `json:"creator_roles,omitempty"`
 	IsLease           *bool               `json:"is_lease,omitempty"`
+	IsReferral        *bool               `json:"is_referral,omitempty"`
 	ReState           string              `json:"re_state,omitempty"`
 	Stage             string              `json:"stage,omitempty"`
 	TeamId            string              `json:"team_id,omitempty"`
