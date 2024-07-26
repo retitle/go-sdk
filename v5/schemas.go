@@ -571,7 +571,7 @@ type Party struct {
 	UpdatedAt        int          `json:"updated_at,omitempty"`
 	UserId           string       `json:"user_id,omitempty"`
 	Object           string       `json:"object,omitempty"`
-	ClientVisibility int          `json:"client_visibility,omitempty"`
+	ClientVisibility string       `json:"client_visibility,omitempty"`
 }
 
 func (m Party) IsRef() bool {
@@ -611,7 +611,7 @@ type PartyCreate struct {
 	Subject               string          `json:"subject,omitempty"`
 	SuppressInviteEmail   *bool           `json:"suppress_invite_email,omitempty"`
 	TeamId                string          `json:"team_id,omitempty"`
-	ClientVisibility      int             `json:"client_visibility,omitempty"`
+	ClientVisibility      string          `json:"client_visibility,omitempty"`
 }
 
 type PartyCreates struct {
@@ -653,7 +653,7 @@ type PartyPatch struct {
 	PartyId          string          `json:"party_id,omitempty"`
 	Roles            []string        `json:"roles,omitempty"`
 	TeamId           string          `json:"team_id,omitempty"`
-	ClientVisibility int             `json:"client_visibility,omitempty"`
+	ClientVisibility string          `json:"client_visibility,omitempty"`
 }
 
 type PartyPatches struct {
@@ -701,7 +701,7 @@ type PartyUpdateContactDetails struct {
 	PromoteToPrimaryAgent *bool           `json:"promote_to_primary_agent,omitempty"`
 	Roles                 []string        `json:"roles,omitempty"`
 	TeamId                string          `json:"team_id,omitempty"`
-	ClientVisibility      int             `json:"client_visibility,omitempty"`
+	ClientVisibility      string          `json:"client_visibility,omitempty"`
 }
 
 type PartyUpdateContactDetailsResponse struct {
