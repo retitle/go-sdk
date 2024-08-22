@@ -961,17 +961,18 @@ type TransactionCreator struct {
 }
 
 type TransactionDocument struct {
-	Id              string       `json:"id,omitempty"`
-	Folder          *Folder      `json:"folder,omitempty"`
-	FolderKind      string       `json:"folder_kind,omitempty"`
-	LastModified    int          `json:"last_modified,omitempty"`
-	LatestVersionId string       `json:"latest_version_id,omitempty"`
-	Order           int          `json:"order,omitempty"`
-	PageCount       int          `json:"page_count,omitempty"`
-	Title           string       `json:"title,omitempty"`
-	Transaction     *Transaction `json:"transaction,omitempty"`
-	Url             string       `json:"url,omitempty"`
-	Object          string       `json:"object,omitempty"`
+	Id                     string       `json:"id,omitempty"`
+	Folder                 *Folder      `json:"folder,omitempty"`
+	FolderKind             string       `json:"folder_kind,omitempty"`
+	LastModified           int          `json:"last_modified,omitempty"`
+	LatestVersionId        string       `json:"latest_version_id,omitempty"`
+	Order                  int          `json:"order,omitempty"`
+	PageCount              int          `json:"page_count,omitempty"`
+	Title                  string       `json:"title,omitempty"`
+	Transaction            *Transaction `json:"transaction,omitempty"`
+	Url                    string       `json:"url,omitempty"`
+	Object                 string       `json:"object,omitempty"`
+	ClientVisibilityStatus string       `json:"client_visibility_status,omitempty"`
 }
 
 func (m TransactionDocument) IsRef() bool {
