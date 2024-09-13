@@ -973,6 +973,7 @@ type TransactionDocument struct {
 	Url                    string       `json:"url,omitempty"`
 	Object                 string       `json:"object,omitempty"`
 	ClientVisibilityStatus string       `json:"client_visibility_status,omitempty"`
+	ClientDocumentType     string       `json:"client_document_type,omitempty"`
 }
 
 func (m TransactionDocument) IsRef() bool {
