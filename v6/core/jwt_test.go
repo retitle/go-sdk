@@ -8,9 +8,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/golang-jwt/jwt/v4"
-	"github.com/retitle/go-sdk/v3/core"
-	"github.com/retitle/go-sdk/v3/core/mocks"
+	jwt_go "github.com/dgrijalva/jwt-go"
+	"github.com/retitle/go-sdk/v6/core"
+	"github.com/retitle/go-sdk/v6/core/mocks"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -32,7 +32,7 @@ func (fpk *FakePrivateKey) Equal(x crypto.PrivateKey) bool {
 func TestGetJwt(t *testing.T) {
 	var (
 		key       mocks.Key
-		jwtToken  string
+		jwt       string
 		err       error
 		iss       string
 		sub       string
@@ -53,7 +53,7 @@ func TestGetJwt(t *testing.T) {
 				key = mocks.Key{}
 				cryptoPrivateKey, _ := rsa.GenerateKey(rand.Reader, 1024)
 				key.On("GetDecoded").Return(cryptoPrivateKey, nil)
-				key.On("GetJwtSigningMethod").Return(jwt.SigningMethodRS256, nil)
+				key.On("GetJwtSigningMethod").Return(jwt_go.SigningMethodRS256, nil)
 				iss = "fakeiss"
 				sub = "fakesub"
 				aud = "fakeaud"
@@ -61,7 +61,7 @@ func TestGetJwt(t *testing.T) {
 				expiresIn = int64((time.Minute * time.Duration(60)).Seconds())
 			},
 			act: func() {
-				jwtToken, err = core.GetJwt(&key,
+				jwt, err = core.GetJwt(&key,
 					iss,
 					sub,
 					aud,
@@ -70,7 +70,7 @@ func TestGetJwt(t *testing.T) {
 			},
 			assert: func() {
 				assert.Nil(t, err)
-				assert.NotEmpty(t, jwtToken)
+				assert.NotEmpty(t, jwt)
 			},
 		},
 		{
@@ -78,7 +78,7 @@ func TestGetJwt(t *testing.T) {
 			arrange: func() {
 				key = mocks.Key{}
 				key.On("GetDecoded").Return(nil, fmt.Errorf("Error"))
-				key.On("GetJwtSigningMethod").Return(jwt.SigningMethodRS256, nil)
+				key.On("GetJwtSigningMethod").Return(jwt_go.SigningMethodRS256, nil)
 				iss = "fakeiss"
 				sub = "fakesub"
 				aud = "fakeaud"
@@ -86,7 +86,7 @@ func TestGetJwt(t *testing.T) {
 				expiresIn = int64((time.Minute * time.Duration(60)).Seconds())
 			},
 			act: func() {
-				jwtToken, err = core.GetJwt(&key,
+				jwt, err = core.GetJwt(&key,
 					iss,
 					sub,
 					aud,
@@ -96,7 +96,7 @@ func TestGetJwt(t *testing.T) {
 			assert: func() {
 				errAs := &core.ApiErrorImpl{}
 				assert.ErrorAs(t, err, &errAs)
-				assert.Empty(t, jwtToken)
+				assert.Empty(t, jwt)
 			},
 		},
 		{
@@ -105,7 +105,7 @@ func TestGetJwt(t *testing.T) {
 				key = mocks.Key{}
 				emptyCryptoPrivateKey := FakePrivateKey{}
 				key.On("GetDecoded").Return(emptyCryptoPrivateKey, nil)
-				key.On("GetJwtSigningMethod").Return(jwt.SigningMethodRS256, nil)
+				key.On("GetJwtSigningMethod").Return(jwt_go.SigningMethodRS256, nil)
 				iss = "fakeiss"
 				sub = "fakesub"
 				aud = "fakeaud"
@@ -113,7 +113,7 @@ func TestGetJwt(t *testing.T) {
 				expiresIn = int64((time.Minute * time.Duration(60)).Seconds())
 			},
 			act: func() {
-				jwtToken, err = core.GetJwt(&key,
+				jwt, err = core.GetJwt(&key,
 					iss,
 					sub,
 					aud,
@@ -123,7 +123,7 @@ func TestGetJwt(t *testing.T) {
 			assert: func() {
 				errAs := &core.ApiErrorImpl{}
 				assert.ErrorAs(t, err, &errAs)
-				assert.Empty(t, jwtToken)
+				assert.Empty(t, jwt)
 			},
 		},
 	}
