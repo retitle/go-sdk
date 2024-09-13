@@ -600,51 +600,6 @@ func TestItemDeletes(t *testing.T) {
 	tests_utils.RunGlideExternalApiTestCases(t, ttests)
 }
 
-func TestLinkListingInfo(t *testing.T) {
-	var (
-		trxResource glide.TransactionsResource
-	)
-	trxId := "10"
-	err := fixtures.TransactionsError()
-	url := fmt.Sprintf("https://api.glide.com/transactions/%s/link_listing_info", trxId)
-	ttests := []tests_utils.GlideExternalApiTestCase[glide.LinkListingInfoResponse]{
-		{
-			Name: "Should link listing info",
-			Arrange: func(client glide.Client) {
-				trxResource = glide.GetTransactionsResource(client)
-			},
-			Act: func(client glide.Client) (*glide.LinkListingInfoResponse, error) {
-				return trxResource.LinkListingInfo(trxId, *fixtures.LinkListingInfoData())
-			},
-			ExpectedRequest:        tests_utils.MakeRequestWithNoBody(http.MethodPost, url),
-			MockResponse:           tests_utils.Make200Response(fixtures.LinkListingInfoResponseData(trxId)),
-			ErrorInsteadOfResponse: nil,
-			Assert:                 nil,
-		},
-		{
-			Name: "Should not link listing info, some error happen",
-			Arrange: func(client glide.Client) {
-				trxResource = glide.GetTransactionsResource(client)
-
-			},
-			Act: func(client glide.Client) (*glide.LinkListingInfoResponse, error) {
-				return trxResource.LinkListingInfo(trxId, *fixtures.LinkListingInfoData())
-			},
-			ExpectedRequest:        tests_utils.MakeRequestWithNoBody(http.MethodPost, url),
-			MockResponse:           tests_utils.MakeResponseWithStatus(http.StatusBadRequest, &err),
-			ErrorInsteadOfResponse: nil,
-			Assert: func(t *testing.T, response *glide.LinkListingInfoResponse, err error) {
-				assert.NotNil(t, err)
-				e := err.(*core.ApiErrorImpl)
-				assert.Equal(t, e.StatusCode, http.StatusBadRequest)
-				assert.Nil(t, response)
-			},
-		},
-	}
-
-	tests_utils.RunGlideExternalApiTestCases(t, ttests)
-}
-
 func TestPartyCreates(t *testing.T) {
 	var (
 		trxResource glide.TransactionsResource

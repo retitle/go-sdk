@@ -3,7 +3,6 @@ package tests_utils
 import (
 	"encoding/json"
 	"io"
-	"io/ioutil"
 	"strings"
 )
 
@@ -15,7 +14,7 @@ func ParseStructToIoReadCloser[T any](v *T) io.ReadCloser {
 }
 
 func ParseReaderToStruct[T any](v io.Reader, t *T) error {
-	bytes, err := ioutil.ReadAll(v)
+	bytes, err := io.ReadAll(v)
 	if err != nil {
 		return err
 	}

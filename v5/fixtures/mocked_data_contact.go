@@ -86,7 +86,7 @@ func ContactWithoutAddress() *glide.Contact {
 func ContactList() *glide.ContactList {
 	return &glide.ContactList{
 		Data: []glide.Contact{
-			glide.Contact{
+			{
 				Id:        "111",
 				CellPhone: "987654321",
 				Email:     "test_email@compass.com",
@@ -94,7 +94,7 @@ func ContactList() *glide.ContactList {
 				LastName:  "ContactLast",
 				Object:    "user",
 			},
-			glide.Contact{
+			{
 				Id:        "112",
 				CellPhone: "987654321",
 				Email:     "test_email@compass.com",
@@ -102,7 +102,7 @@ func ContactList() *glide.ContactList {
 				LastName:  "ContactLast",
 				Object:    "user",
 			},
-			glide.Contact{
+			{
 				Id:        "113",
 				CellPhone: "987654321",
 				Email:     "test_email@compass.com",

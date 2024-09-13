@@ -1,6 +1,8 @@
 package glide
 
 import (
+	"bytes"
+	"io"
 	"net/http"
 	"strings"
 
@@ -9,6 +11,7 @@ import (
 
 type Address struct {
 	City    string `json:"city"`
+	County  string `json:"county,omitempty"`
 	State   string `json:"state"`
 	Street  string `json:"street"`
 	Unit    string `json:"unit,omitempty"`
@@ -46,6 +49,27 @@ type AgentRequest struct {
 	NrdsNumber           string   `json:"nrds_number,omitempty"`
 }
 
+type AnalyzeSchema struct {
+	Files     []http.File `json:"files,omitempty"`
+	FilesMeta []*FileMeta `json:"files_meta,omitempty"`
+}
+
+type BinaryResponse struct {
+	ContentType string       `json:"content_type,omitempty"`
+	Data        bytes.Buffer `json:"data,omitempty"`
+	Object      string       `json:"object,omitempty"`
+}
+
+func (m BinaryResponse) SetData(dataSource io.Reader, metaData core.BinaryMetaData) error {
+	m.ContentType = metaData.ContentType
+	_, err := io.Copy(&m.Data, dataSource)
+	return err
+}
+
+func (m BinaryResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Contact struct {
 	Id              string         `json:"id,omitempty"`
 	Address         *Address       `json:"address,omitempty"`
@@ -61,8 +85,8 @@ type Contact struct {
 	FirstName       string         `json:"first_name"`
 	LastName        string         `json:"last_name,omitempty"`
 	PersonalWebsite string         `json:"personal_website,omitempty"`
-	Title           string         `json:"title,omitempty"`
 	TeamId          string         `json:"team_id,omitempty"`
+	Title           string         `json:"title,omitempty"`
 	Object          string         `json:"object,omitempty"`
 }
 
@@ -184,6 +208,29 @@ func (m DeletedParty) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type DocumentAnalysisAsyncResponse struct {
+	ResultsByFileReferenceId map[string]*DocumentAnalysisResult `json:"results_by_file_reference_id,omitempty"`
+	Object                   string                             `json:"object,omitempty"`
+}
+
+func (m DocumentAnalysisAsyncResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentAnalysisResult struct {
+	DatapointExtractionSucceeded *bool        `json:"datapoint_extraction_succeeded"`
+	Error                        string       `json:"error,omitempty"`
+	FormMatches                  []*FormMatch `json:"form_matches,omitempty"`
+	FormMatchingSucceeded        *bool        `json:"form_matching_succeeded"`
+	SignatureDetectionSucceeded  *bool        `json:"signature_detection_succeeded"`
+	Status                       string       `json:"status,omitempty"`
+	Object                       string       `json:"object,omitempty"`
+}
+
+func (m DocumentAnalysisResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type DocumentMergeSchema struct {
 	DeleteOriginalDocuments       *bool    `json:"delete_original_documents,omitempty"`
 	IsAsync                       *bool    `json:"is_async,omitempty"`
@@ -273,6 +320,17 @@ func (m DocumentZoneVertex) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type ExtractedField struct {
+	ExtractedData          string `json:"extracted_data,omitempty"`
+	FormPage               int    `json:"form_page,omitempty"`
+	GlideDataDictionaryKey string `json:"glide_data_dictionary_key"`
+	Object                 string `json:"object,omitempty"`
+}
+
+func (m ExtractedField) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Field struct {
 	Timestamp int                    `json:"timestamp,omitempty"`
 	Value     map[string]interface{} `json:"value,omitempty"`
@@ -340,6 +398,18 @@ type FieldsResponseResult struct {
 
 func (m FieldsResponseResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FileMeta struct {
+	Data                       http.File `json:"data,omitempty"`
+	FileName                   string    `json:"file_name"`
+	FileReferenceId            string    `json:"file_reference_id"`
+	IncludeDatapointExtraction *bool     `json:"include_datapoint_extraction,omitempty"`
+	IncludeFormMatching        *bool     `json:"include_form_matching,omitempty"`
+	IncludeSignatureDetection  *bool     `json:"include_signature_detection,omitempty"`
+	MimeType                   string    `json:"mime_type,omitempty"`
+	StateCode                  string    `json:"state_code"`
+	Url                        string    `json:"url,omitempty"`
 }
 
 type Folder struct {
@@ -433,6 +503,31 @@ func (m FormImportsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type FormMatch struct {
+	EndPage                 int                         `json:"end_page"`
+	ExtractedFields         []*ExtractedField           `json:"extracted_fields,omitempty"`
+	Form                    *GlideForm                  `json:"form,omitempty"`
+	Score                   float64                     `json:"score,omitempty"`
+	SignatureResultsByParty map[string]*SignatureResult `json:"signature_results_by_party,omitempty"`
+	StartPage               int                         `json:"start_page"`
+	Object                  string                      `json:"object,omitempty"`
+}
+
+func (m FormMatch) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type GlideForm struct {
+	GlideFormSeriesId int      `json:"glide_form_series_id"`
+	Tags              []string `json:"tags,omitempty"`
+	Title             string   `json:"title"`
+	Object            string   `json:"object,omitempty"`
+}
+
+func (m GlideForm) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type ItemDeletes struct {
 	Ids []string `json:"ids,omitempty"`
 }
@@ -443,93 +538,6 @@ type ItemDeletesResponse struct {
 }
 
 func (m ItemDeletesResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-type LinkListingInfo struct {
-	MlsKind   string `json:"mls_kind"`
-	MlsNumber string `json:"mls_number"`
-}
-
-type LinkListingInfoResponse struct {
-	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object,omitempty"`
-}
-
-func (m LinkListingInfoResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-type Listing struct {
-	Id                      string    `json:"id,omitempty"`
-	Address                 *Location `json:"address,omitempty"`
-	Bath                    float64   `json:"bath,omitempty"`
-	BathFull                float64   `json:"bath_full,omitempty"`
-	BathHalf                float64   `json:"bath_half,omitempty"`
-	BathOneQuarter          float64   `json:"bath_one_quarter,omitempty"`
-	BathThreeQuarter        float64   `json:"bath_three_quarter,omitempty"`
-	Bed                     float64   `json:"bed,omitempty"`
-	CloseDate               string    `json:"close_date,omitempty"`
-	ClosePrice              float64   `json:"close_price,omitempty"`
-	Dom                     float64   `json:"dom,omitempty"`
-	ListingDate             string    `json:"listing_date,omitempty"`
-	ListingPrice            float64   `json:"listing_price,omitempty"`
-	ListingType             string    `json:"listing_type,omitempty"`
-	MediaUrls               []string  `json:"media_urls,omitempty"`
-	MlsKind                 string    `json:"mls_kind,omitempty"`
-	MlsNumber               string    `json:"mls_number,omitempty"`
-	MlsStatus               string    `json:"mls_status,omitempty"`
-	OriginalListPrice       float64   `json:"original_list_price,omitempty"`
-	PropertyType            string    `json:"property_type,omitempty"`
-	StatusDate              string    `json:"status_date,omitempty"`
-	UsedInActiveTransaction *bool     `json:"used_in_active_transaction,omitempty"`
-	YearBuilt               string    `json:"year_built,omitempty"`
-	Object                  string    `json:"object,omitempty"`
-}
-
-func (m Listing) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-type ListingList struct {
-	Data       []Listing `json:"data"`
-	ListObject string    `json:"list_object"`
-	Object     string    `json:"object"`
-	HasMore    bool      `json:"has_more"`
-}
-
-func (m ListingList) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-func (m ListingList) NextPageParams() core.PageParams {
-	if !m.HasMore {
-		return nil
-	}
-
-	pageSize := len(m.Data)
-	return &core.PageParamsImpl{
-		StartingAfter: m.Data[pageSize-1].Id,
-		Limit:         pageSize,
-	}
-}
-
-type Location struct {
-	AgentAddress  string `json:"agent_address,omitempty"`
-	City          string `json:"city,omitempty"`
-	County        string `json:"county,omitempty"`
-	PrettyAddress string `json:"pretty_address,omitempty"`
-	State         string `json:"state,omitempty"`
-	Street        string `json:"street,omitempty"`
-	StreetNumber  string `json:"street_number,omitempty"`
-	StreetType    string `json:"street_type,omitempty"`
-	UnitNumber    string `json:"unit_number,omitempty"`
-	UnitType      string `json:"unit_type,omitempty"`
-	ZipCode       string `json:"zip_code,omitempty"`
-	Object        string `json:"object,omitempty"`
-}
-
-func (m Location) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -564,6 +572,7 @@ func (m NotificationResponse) IsRef() bool {
 
 type Party struct {
 	Id               string       `json:"id,omitempty"`
+	ClientVisibility string       `json:"client_visibility,omitempty"`
 	Contact          *Contact     `json:"contact,omitempty"`
 	CreatedAt        int          `json:"created_at,omitempty"`
 	Roles            []string     `json:"roles,omitempty"`
@@ -571,7 +580,6 @@ type Party struct {
 	UpdatedAt        int          `json:"updated_at,omitempty"`
 	UserId           string       `json:"user_id,omitempty"`
 	Object           string       `json:"object,omitempty"`
-	ClientVisibility string       `json:"client_visibility,omitempty"`
 }
 
 func (m Party) IsRef() bool {
@@ -603,6 +611,7 @@ func (m PartyList) NextPageParams() core.PageParams {
 
 type PartyCreate struct {
 	Body                  string          `json:"body,omitempty"`
+	ClientVisibility      string          `json:"client_visibility,omitempty"`
 	Contact               *ContactRequest `json:"contact,omitempty"`
 	Invite                *bool           `json:"invite,omitempty"`
 	InviteRestrictions    []string        `json:"invite_restrictions,omitempty"`
@@ -611,7 +620,6 @@ type PartyCreate struct {
 	Subject               string          `json:"subject,omitempty"`
 	SuppressInviteEmail   *bool           `json:"suppress_invite_email,omitempty"`
 	TeamId                string          `json:"team_id,omitempty"`
-	ClientVisibility      string          `json:"client_visibility,omitempty"`
 }
 
 type PartyCreates struct {
@@ -649,11 +657,11 @@ func (m PartyInvitesResponse) IsRef() bool {
 }
 
 type PartyPatch struct {
+	ClientVisibility string          `json:"client_visibility,omitempty"`
 	Contact          *ContactRequest `json:"contact,omitempty"`
 	PartyId          string          `json:"party_id,omitempty"`
 	Roles            []string        `json:"roles,omitempty"`
 	TeamId           string          `json:"team_id,omitempty"`
-	ClientVisibility string          `json:"client_visibility,omitempty"`
 }
 
 type PartyPatches struct {
@@ -696,12 +704,12 @@ func (m PartyRoles) IsRef() bool {
 }
 
 type PartyUpdateContactDetails struct {
+	ClientVisibility      string          `json:"client_visibility,omitempty"`
 	Contact               *ContactRequest `json:"contact,omitempty"`
 	PartyId               string          `json:"party_id,omitempty"`
 	PromoteToPrimaryAgent *bool           `json:"promote_to_primary_agent,omitempty"`
 	Roles                 []string        `json:"roles,omitempty"`
 	TeamId                string          `json:"team_id,omitempty"`
-	ClientVisibility      string          `json:"client_visibility,omitempty"`
 }
 
 type PartyUpdateContactDetailsResponse struct {
@@ -769,6 +777,16 @@ func (m SignatureDetectionResponse) IsRef() bool {
 type SignatureDetectionSchema struct {
 	Files   []http.File       `json:"files,omitempty"`
 	Uploads []*DocumentUpload `json:"uploads,omitempty"`
+}
+
+type SignatureResult struct {
+	SignedSignatureFields int    `json:"signed_signature_fields"`
+	TotalSignatureFields  int    `json:"total_signature_fields"`
+	Object                string `json:"object,omitempty"`
+}
+
+func (m SignatureResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type Task struct {
@@ -962,6 +980,7 @@ type TransactionCreator struct {
 
 type TransactionDocument struct {
 	Id                     string       `json:"id,omitempty"`
+	ClientVisibilityStatus string       `json:"client_visibility_status,omitempty"`
 	Folder                 *Folder      `json:"folder,omitempty"`
 	FolderKind             string       `json:"folder_kind,omitempty"`
 	LastModified           int          `json:"last_modified,omitempty"`
@@ -972,8 +991,6 @@ type TransactionDocument struct {
 	Transaction            *Transaction `json:"transaction,omitempty"`
 	Url                    string       `json:"url,omitempty"`
 	Object                 string       `json:"object,omitempty"`
-	ClientVisibilityStatus string       `json:"client_visibility_status,omitempty"`
-	ClientDocumentType     string       `json:"client_document_type,omitempty"`
 }
 
 func (m TransactionDocument) IsRef() bool {

@@ -211,34 +211,6 @@ func TestSchemas(t *testing.T) {
 	ref = itemDeletesResponse.IsRef()
 	assert.True(t, ref)
 
-	linkListingInfoResponse := glide.LinkListingInfoResponse{}
-	ref = linkListingInfoResponse.IsRef()
-	assert.False(t, ref)
-	linkListingInfoResponse.Object = "/ref/"
-	ref = linkListingInfoResponse.IsRef()
-	assert.True(t, ref)
-
-	listing := glide.Listing{}
-	ref = listing.IsRef()
-	assert.False(t, ref)
-	listing.Object = "/ref/"
-	ref = listing.IsRef()
-	assert.True(t, ref)
-
-	listingList := glide.ListingList{}
-	ref = listingList.IsRef()
-	assert.False(t, ref)
-	listingList.Object = "/ref/"
-	ref = listingList.IsRef()
-	assert.True(t, ref)
-
-	location := glide.Location{}
-	ref = location.IsRef()
-	assert.False(t, ref)
-	location.Object = "/ref/"
-	ref = location.IsRef()
-	assert.True(t, ref)
-
 	notificationResponse := glide.NotificationResponse{}
 	ref = notificationResponse.IsRef()
 	assert.False(t, ref)
@@ -452,14 +424,6 @@ func TestSchemasNextPageParams(t *testing.T) {
 	folderList.Data = []glide.Folder{{Id: "1"}}
 	folderList.HasMore = true
 	pageParams = folderList.NextPageParams()
-	assert.NotNil(t, pageParams)
-
-	listingList := glide.ListingList{}
-	pageParams = listingList.NextPageParams()
-	assert.Nil(t, pageParams)
-	listingList.Data = []glide.Listing{{Id: "1"}}
-	listingList.HasMore = true
-	pageParams = listingList.NextPageParams()
 	assert.NotNil(t, pageParams)
 
 	partyList := glide.PartyList{}

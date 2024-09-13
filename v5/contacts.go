@@ -10,8 +10,8 @@ type ContactsResource interface {
 	GetDetail(id string, opts ...core.RequestOption) (*Contact, error)
 	GetMulti(ids []string, opts ...core.RequestOption) (*ContactList, error)
 	List(opts ...core.RequestOption) (*ContactList, error)
-	Create(contactcreate ContactCreate, opts ...core.RequestOption) (*ContactCreateResponse, error)
-	Update(id string, contactupdate ContactUpdate, opts ...core.RequestOption) (*ContactUpdateResponse, error)
+	Create(contactCreate ContactCreate, opts ...core.RequestOption) (*ContactCreateResponse, error)
+	Update(id string, contactUpdate ContactUpdate, opts ...core.RequestOption) (*ContactUpdateResponse, error)
 }
 
 type contactsResourceImpl struct {
@@ -48,17 +48,17 @@ func (r contactsResourceImpl) List(opts ...core.RequestOption) (*ContactList, er
 	return &res, nil
 }
 
-func (r contactsResourceImpl) Create(contactcreate ContactCreate, opts ...core.RequestOption) (*ContactCreateResponse, error) {
+func (r contactsResourceImpl) Create(contactCreate ContactCreate, opts ...core.RequestOption) (*ContactCreateResponse, error) {
 	res := ContactCreateResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/contacts"), contactcreate, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/contacts"), contactCreate, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r contactsResourceImpl) Update(id string, contactupdate ContactUpdate, opts ...core.RequestOption) (*ContactUpdateResponse, error) {
+func (r contactsResourceImpl) Update(id string, contactUpdate ContactUpdate, opts ...core.RequestOption) (*ContactUpdateResponse, error) {
 	res := ContactUpdateResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/contacts/%s/update", id), contactupdate, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/contacts/%s/update", id), contactUpdate, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"strings"
 )
@@ -98,11 +98,39 @@ func withPayload(payload *bytes.Buffer) RequestOption {
 
 func readHttpResponse(httpResp *http.Response) ([]byte, error) {
 	defer httpResp.Body.Close()
-	body, err := ioutil.ReadAll(httpResp.Body)
+	body, err := io.ReadAll(httpResp.Body)
 	if err != nil {
 		return []byte{}, NewApiErrorWithArgs(err.Error(), http.StatusBadRequest, httpResp.Header, map[string]interface{}{}, err)
 	}
 	return body, nil
+}
+
+func handleDefaultJsonResponse(res interface{}, httpResp *http.Response) error {
+	body, glideErr := readHttpResponse(httpResp)
+	if glideErr != nil {
+		return glideErr
+	}
+
+	if res != nil {
+		err := json.Unmarshal(body, &res)
+		if err != nil {
+			return getUnexpectedApiResponseError(httpResp, body, err)
+		}
+	}
+
+	return nil
+}
+
+func handleBinaryResponse(res BinaryResponse, httpResp *http.Response) error {
+	defer httpResp.Body.Close()
+	err := res.SetData(
+		httpResp.Body,
+		BinaryMetaData{ContentType: httpResp.Header.Get("Content-Type")},
+	)
+	if err != nil {
+		return NewApiErrorWithArgs(err.Error(), http.StatusBadRequest, httpResp.Header, map[string]interface{}{}, err)
+	}
+	return nil
 }
 
 func getUnexpectedApiResponseError(httpResp *http.Response, responseBody []byte, baseError error) error {

@@ -18,9 +18,11 @@ type HttpClientRequester interface {
 
 type HttpClient interface {
 	Get(res interface{}, url string, opts ...RequestOption) error
+	GetStream(res BinaryResponse, url string, opts ...RequestOption) error
 	Post(res interface{}, url string, payload interface{}, opts ...RequestOption) error
 	PostWithFiles(res interface{}, url string, payload interface{}, files []File, opts ...RequestOption) error
 	Request(res interface{}, requestMethod string, url string, opts ...RequestOption) error
+	RequestBinary(res BinaryResponse, requestMethod string, url string, opts ...RequestOption) error
 	SetRequester(requester HttpClientRequester)
 }
 
@@ -28,7 +30,7 @@ type HttpClientImpl struct {
 	requester HttpClientRequester
 }
 
-func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url string, opts ...RequestOption) error {
+func (hc *HttpClientImpl) requestInner(requestMethod string, url string, opts ...RequestOption) (*http.Response, error) {
 	reqOptions := RequestOptionsImpl{}
 	for _, opt := range opts {
 		opt(&reqOptions)
@@ -44,7 +46,7 @@ func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url str
 		req.Host = reqOptions.host
 	}
 	if err != nil {
-		return NewHttpMethodApiError(err)
+		return nil, NewHttpMethodApiError(err)
 	}
 	if payload.Len() > 0 {
 		req.Header.Del("Content-Type")
@@ -59,27 +61,31 @@ func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url str
 
 	httpResp, err := hc.requester.Do(req)
 	if err != nil {
-		return NewHttpRequestApiError(err)
+		return httpResp, NewHttpRequestApiError(err)
 	}
 
 	glideErr := getErrorFromHttpResp(httpResp)
 	if glideErr != nil {
-		return glideErr
+		return httpResp, glideErr
 	}
 
-	body, glideErr := readHttpResponse(httpResp)
-	if glideErr != nil {
-		return glideErr
-	}
+	return httpResp, nil
+}
 
-	if res != nil {
-		err = json.Unmarshal(body, &res)
-		if err != nil {
-			return getUnexpectedApiResponseError(httpResp, body, err)
-		}
+func (hc *HttpClientImpl) Request(res interface{}, requestMethod string, url string, opts ...RequestOption) error {
+	httpResp, err := hc.requestInner(requestMethod, url, opts...)
+	if err != nil {
+		return err
 	}
+	return handleDefaultJsonResponse(res, httpResp)
+}
 
-	return nil
+func (hc *HttpClientImpl) RequestBinary(res BinaryResponse, requestMethod string, url string, opts ...RequestOption) error {
+	httpResp, err := hc.requestInner(requestMethod, url, opts...)
+	if err != nil {
+		return err
+	}
+	return handleBinaryResponse(res, httpResp)
 }
 
 func (hc *HttpClientImpl) Get(res interface{}, url string, opts ...RequestOption) error {
@@ -145,6 +151,10 @@ func (hc *HttpClientImpl) PostWithFiles(res interface{}, url string, payload int
 	opts = append(opts, WithHeader("Content-Type", writer.FormDataContentType()))
 
 	return hc.Request(res, "POST", url, opts...)
+}
+
+func (hc *HttpClientImpl) GetStream(res BinaryResponse, url string, opts ...RequestOption) error {
+	return hc.RequestBinary(res, "GET", url, opts...)
 }
 
 func (hc *HttpClientImpl) SetRequester(requester HttpClientRequester) {

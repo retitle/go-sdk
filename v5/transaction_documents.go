@@ -10,7 +10,7 @@ type TransactionDocumentsResource interface {
 	GetDetail(transactionId string, id string, opts ...core.RequestOption) (*TransactionDocument, error)
 	GetMulti(transactionId string, ids []string, opts ...core.RequestOption) (*TransactionDocumentList, error)
 	List(transactionId string, opts ...core.RequestOption) (*TransactionDocumentList, error)
-	Uploads(transactionId string, transactiondocumentuploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*UploadsResponse, error)
+	Uploads(transactionId string, transactionDocumentUploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*UploadsResponse, error)
 }
 
 type transactionDocumentsResourceImpl struct {
@@ -47,9 +47,9 @@ func (r transactionDocumentsResourceImpl) List(transactionId string, opts ...cor
 	return &res, nil
 }
 
-func (r transactionDocumentsResourceImpl) Uploads(transactionId string, transactiondocumentuploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*UploadsResponse, error) {
+func (r transactionDocumentsResourceImpl) Uploads(transactionId string, transactionDocumentUploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*UploadsResponse, error) {
 	res := UploadsResponse{}
-	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/transactions/%s/transaction_documents/uploads", transactionId), transactiondocumentuploads, files, opts...); err != nil {
+	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/transactions/%s/transaction_documents/uploads", transactionId), transactionDocumentUploads, files, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

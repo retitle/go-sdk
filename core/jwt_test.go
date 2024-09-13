@@ -8,7 +8,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/dgrijalva/jwt/v4"
+	"github.com/golang-jwt/jwt/v4"
 	"github.com/retitle/go-sdk/v3/core"
 	"github.com/retitle/go-sdk/v3/core/mocks"
 	"github.com/stretchr/testify/assert"
@@ -32,7 +32,7 @@ func (fpk *FakePrivateKey) Equal(x crypto.PrivateKey) bool {
 func TestGetJwt(t *testing.T) {
 	var (
 		key       mocks.Key
-		jwt       string
+		jwtToken  string
 		err       error
 		iss       string
 		sub       string
@@ -61,7 +61,7 @@ func TestGetJwt(t *testing.T) {
 				expiresIn = int64((time.Minute * time.Duration(60)).Seconds())
 			},
 			act: func() {
-				jwt, err = core.GetJwt(&key,
+				jwtToken, err = core.GetJwt(&key,
 					iss,
 					sub,
 					aud,
@@ -70,7 +70,7 @@ func TestGetJwt(t *testing.T) {
 			},
 			assert: func() {
 				assert.Nil(t, err)
-				assert.NotEmpty(t, jwt)
+				assert.NotEmpty(t, jwtToken)
 			},
 		},
 		{
@@ -86,7 +86,7 @@ func TestGetJwt(t *testing.T) {
 				expiresIn = int64((time.Minute * time.Duration(60)).Seconds())
 			},
 			act: func() {
-				jwt, err = core.GetJwt(&key,
+				jwtToken, err = core.GetJwt(&key,
 					iss,
 					sub,
 					aud,
@@ -96,7 +96,7 @@ func TestGetJwt(t *testing.T) {
 			assert: func() {
 				errAs := &core.ApiErrorImpl{}
 				assert.ErrorAs(t, err, &errAs)
-				assert.Empty(t, jwt)
+				assert.Empty(t, jwtToken)
 			},
 		},
 		{
@@ -113,7 +113,7 @@ func TestGetJwt(t *testing.T) {
 				expiresIn = int64((time.Minute * time.Duration(60)).Seconds())
 			},
 			act: func() {
-				jwt, err = core.GetJwt(&key,
+				jwtToken, err = core.GetJwt(&key,
 					iss,
 					sub,
 					aud,
@@ -123,7 +123,7 @@ func TestGetJwt(t *testing.T) {
 			assert: func() {
 				errAs := &core.ApiErrorImpl{}
 				assert.ErrorAs(t, err, &errAs)
-				assert.Empty(t, jwt)
+				assert.Empty(t, jwtToken)
 			},
 		},
 	}

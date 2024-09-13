@@ -152,19 +152,6 @@ func ItemDeletesResponseData(trxId string) *glide.ItemDeletesResponse {
 	}
 }
 
-func LinkListingInfoData() *glide.LinkListingInfo {
-	return &glide.LinkListingInfo{
-		MlsKind:   "Some MlsKind",
-		MlsNumber: "Some MlsNumber",
-	}
-}
-
-func LinkListingInfoResponseData(trxId string) *glide.LinkListingInfoResponse {
-	return &glide.LinkListingInfoResponse{
-		TransactionId: trxId,
-	}
-}
-
 func PartyCreateData() *glide.PartyCreate {
 	return &glide.PartyCreate{
 		Body:                  "This is the body for party",

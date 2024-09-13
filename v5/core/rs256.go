@@ -2,7 +2,7 @@ package core
 
 import (
 	"crypto"
-	"io/ioutil"
+	"os"
 
 	"github.com/dgrijalva/jwt-go"
 )
@@ -36,7 +36,7 @@ func (k rsa256Key) GetDecoded() (crypto.PrivateKey, error) {
 	var data []byte
 	if k.privateKeyFilePath != "" {
 		var err error
-		data, err = ioutil.ReadFile(k.privateKeyFilePath)
+		data, err = os.ReadFile(k.privateKeyFilePath)
 		if err != nil {
 			return nil, err
 		}

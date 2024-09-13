@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
-	"io/ioutil"
 	"net/http"
 	"testing"
 
@@ -73,7 +72,7 @@ func MakeResponse(status int, body interface{}) *http.Response {
 }
 
 func JsonStrFromIoReadCloser(readCloser io.ReadCloser) string {
-	actualRequestBodyJsonBytes, ioErr := ioutil.ReadAll(readCloser)
+	actualRequestBodyJsonBytes, ioErr := io.ReadAll(readCloser)
 	if ioErr != nil {
 		panic(ioErr) // this should never happen
 	}
