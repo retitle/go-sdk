@@ -55,13 +55,15 @@ type AnalyzeSchema struct {
 }
 
 type BinaryResponse struct {
-	ContentType string       `json:"content_type,omitempty"`
-	Data        bytes.Buffer `json:"data,omitempty"`
-	Object      string       `json:"object,omitempty"`
+	ContentDisposition string       `json:"content_disposition,omitempty"`
+	ContentType        string       `json:"content_type,omitempty"`
+	Data               bytes.Buffer `json:"data,omitempty"`
+	Object             string       `json:"object,omitempty"`
 }
 
-func (m BinaryResponse) SetData(dataSource io.Reader, metaData core.BinaryMetaData) error {
-	m.ContentType = metaData.ContentType
+func (m BinaryResponse) SetData(dataSource io.Reader, metadata core.BinaryMetadata) error {
+	m.ContentType = metadata.ContentType
+	m.ContentDisposition = metadata.ContentDisposition
 	_, err := io.Copy(&m.Data, dataSource)
 	return err
 }

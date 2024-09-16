@@ -125,7 +125,7 @@ func handleBinaryResponse(res BinaryResponse, httpResp *http.Response) error {
 	defer httpResp.Body.Close()
 	err := res.SetData(
 		httpResp.Body,
-		BinaryMetaData{
+		BinaryMetadata{
 			ContentType:        httpResp.Header.Get("Content-Type"),
 			ContentDisposition: httpResp.Header.Get("Content-Disposition"),
 		},

@@ -6,13 +6,13 @@ type Response interface {
 	IsRef() bool
 }
 
-type BinaryMetaData struct {
+type BinaryMetadata struct {
 	ContentType        string
 	ContentDisposition string
 }
 
 type BinaryResponse interface {
-	SetData(dataSource io.Reader, metaData BinaryMetaData) error
+	SetData(dataSource io.Reader, metadata BinaryMetadata) error
 }
 
 type Request interface{}
