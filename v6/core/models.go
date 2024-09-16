@@ -7,7 +7,8 @@ type Response interface {
 }
 
 type BinaryMetaData struct {
-	ContentType string
+	ContentType        string
+	ContentDisposition string
 }
 
 type BinaryResponse interface {

@@ -125,7 +125,10 @@ func handleBinaryResponse(res BinaryResponse, httpResp *http.Response) error {
 	defer httpResp.Body.Close()
 	err := res.SetData(
 		httpResp.Body,
-		BinaryMetaData{ContentType: httpResp.Header.Get("Content-Type")},
+		BinaryMetaData{
+			ContentType:        httpResp.Header.Get("Content-Type"),
+			ContentDisposition: httpResp.Header.Get("Content-Disposition"),
+		},
 	)
 	if err != nil {
 		return NewApiErrorWithArgs(err.Error(), http.StatusBadRequest, httpResp.Header, map[string]interface{}{}, err)
