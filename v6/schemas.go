@@ -61,7 +61,7 @@ type BinaryResponse struct {
 	Object             string       `json:"object,omitempty"`
 }
 
-func (m BinaryResponse) SetData(dataSource io.Reader, metadata core.BinaryMetadata) error {
+func (m *BinaryResponse) SetData(dataSource io.Reader, metadata core.BinaryMetadata) error {
 	m.ContentType = metadata.ContentType
 	m.ContentDisposition = metadata.ContentDisposition
 	_, err := io.Copy(&m.Data, dataSource)

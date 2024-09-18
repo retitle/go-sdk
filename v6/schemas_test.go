@@ -1,9 +1,11 @@
 package glide_test
 
 import (
+	"bytes"
 	"testing"
 
 	glide "github.com/retitle/go-sdk/v6"
+	"github.com/retitle/go-sdk/v6/core"
 	"github.com/stretchr/testify/assert"
 )
 
@@ -457,5 +459,15 @@ func TestSchemasNextPageParams(t *testing.T) {
 	userList.HasMore = true
 	pageParams = userList.NextPageParams()
 	assert.NotNil(t, pageParams)
+
+	binaryResponse := glide.BinaryResponse{}
+	mockReader := bytes.NewReader([]byte{'0', '1'})
+	binaryResponse.SetData(mockReader, core.BinaryMetadata{
+		ContentType:        "mock-content-type",
+		ContentDisposition: "mock-content-dispostion",
+	})
+	assert.Equal(t, []byte{'0', '1'}, binaryResponse.Data.Bytes())
+	assert.NotEmpty(t, binaryResponse.ContentType)
+	assert.NotEmpty(t, binaryResponse.ContentDisposition)
 
 }
