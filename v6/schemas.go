@@ -982,6 +982,7 @@ type TransactionCreator struct {
 
 type TransactionDocument struct {
 	Id                     string       `json:"id,omitempty"`
+	ClientDocumentType     string       `json:"client_document_type,omitempty"`
 	ClientVisibilityStatus string       `json:"client_visibility_status,omitempty"`
 	Folder                 *Folder      `json:"folder,omitempty"`
 	FolderKind             string       `json:"folder_kind,omitempty"`
