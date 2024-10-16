@@ -414,6 +414,36 @@ type FileMeta struct {
 	Url                        string    `json:"url,omitempty"`
 }
 
+type PropertyInfo struct {
+	Id           string  `json:"id,omitempty"`
+	IsSecondary  bool    `json:"is_secondary,omitempty"`
+	EmailAddress string  `json:"email_address,omitempty"`
+	PropertyType string  `json:"property_type,omitempty"`
+	Address      Address `json:"address,omitempty"`
+}
+
+type Offer struct {
+	Archived        bool     `json:"archived,omitempty"`
+	Favorite        bool     `json:"favorite,omitempty"`
+	Status          string   `json:"status,omitempty"`
+	TransactionSide string   `json:"transaction_side,omitempty"`
+	Notifications   []string `json:"notifications,omitempty"`
+}
+
+type Member struct {
+	Id    string `json:"id,omitempty"`
+	Offer Offer  `json:"offer,omitempty"`
+}
+
+type TransactionPackage struct {
+	Id            string  `json:"id,omitempty"`
+	PackageId     string  `json:"package_id,omitempty"`
+	PackageKind   string  `json:"package_kind,omitempty"`
+	PackageStatus string  `json:"package_status,omitempty"`
+	Title         string  `json:"title,omitempty"`
+	Address       Address `json:"address,omitempty"`
+}
+
 type Folder struct {
 	Id                   string                   `json:"id,omitempty"`
 	Kind                 string                   `json:"kind,omitempty"`
@@ -422,6 +452,8 @@ type Folder struct {
 	Title                string                   `json:"title,omitempty"`
 	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
 	Object               string                   `json:"object,omitempty"`
+	PropertyInfo         PropertyInfo             `json:"property_info,omitempty"`
+	TransactionPackage   TransactionPackage       `json:"transaction_package,omitempty"`
 }
 
 func (m Folder) IsRef() bool {
