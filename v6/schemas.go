@@ -764,12 +764,13 @@ func (m PartyUpdateContactSourceResponse) IsRef() bool {
 }
 
 type PropertyInfo struct {
-	Id           string   `json:"id,omitempty"`
-	Address      *Address `json:"address,omitempty"`
-	EmailAddress string   `json:"email_address,omitempty"`
-	IsSecondary  *bool    `json:"is_secondary,omitempty"`
-	PropertyType string   `json:"property_type,omitempty"`
-	Object       string   `json:"object,omitempty"`
+	Id           string       `json:"id,omitempty"`
+	Address      *Address     `json:"address,omitempty"`
+	EmailAddress string       `json:"email_address,omitempty"`
+	IsSecondary  *bool        `json:"is_secondary,omitempty"`
+	PropertyType string       `json:"property_type,omitempty"`
+	Transaction  *Transaction `json:"transaction,omitempty"`
+	Object       string       `json:"object,omitempty"`
 }
 
 func (m PropertyInfo) IsRef() bool {
@@ -1196,13 +1197,15 @@ type TransactionMetaUpdate struct {
 }
 
 type TransactionPackage struct {
-	Id            string    `json:"id,omitempty"`
-	Members       []*Member `json:"members,omitempty"`
-	PackageId     string    `json:"package_id,omitempty"`
-	PackageKind   string    `json:"package_kind,omitempty"`
-	PackageStatus string    `json:"package_status,omitempty"`
-	Title         string    `json:"title,omitempty"`
-	Object        string    `json:"object,omitempty"`
+	Id            string        `json:"id,omitempty"`
+	Members       []*Member     `json:"members,omitempty"`
+	PackageId     string        `json:"package_id,omitempty"`
+	PackageKind   string        `json:"package_kind,omitempty"`
+	PackageStatus string        `json:"package_status,omitempty"`
+	PropertyInfo  *PropertyInfo `json:"property_info,omitempty"`
+	Title         string        `json:"title,omitempty"`
+	Transaction   *Transaction  `json:"transaction,omitempty"`
+	Object        string        `json:"object,omitempty"`
 }
 
 func (m TransactionPackage) IsRef() bool {
