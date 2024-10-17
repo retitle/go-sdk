@@ -9,8 +9,10 @@ import (
 type TransactionsResource interface {
 	Folders() FoldersResource
 	Parties() PartiesResource
+	PropertiesInfo() PropertiesInfoResource
 	Tasks() TasksResource
 	TransactionDocuments() TransactionDocumentsResource
+	TransactionPackages() TransactionPackagesResource
 	GetDetail(id string, opts ...core.RequestOption) (*Transaction, error)
 	GetMulti(ids []string, opts ...core.RequestOption) (*TransactionList, error)
 	List(opts ...core.RequestOption) (*TransactionList, error)
@@ -43,8 +45,10 @@ type transactionsResourceImpl struct {
 	client               Client
 	folders              FoldersResource
 	parties              PartiesResource
+	propertiesInfo       PropertiesInfoResource
 	tasks                TasksResource
 	transactionDocuments TransactionDocumentsResource
+	transactionPackages  TransactionPackagesResource
 }
 
 func GetTransactionsResource(client Client) TransactionsResource {
@@ -52,8 +56,10 @@ func GetTransactionsResource(client Client) TransactionsResource {
 		client:               client,
 		folders:              GetFoldersResource(client),
 		parties:              GetPartiesResource(client),
+		propertiesInfo:       GetPropertiesInfoResource(client),
 		tasks:                GetTasksResource(client),
 		transactionDocuments: GetTransactionDocumentsResource(client),
+		transactionPackages:  GetTransactionPackagesResource(client),
 	}
 }
 
@@ -65,12 +71,20 @@ func (r transactionsResourceImpl) Parties() PartiesResource {
 	return r.parties
 }
 
+func (r transactionsResourceImpl) PropertiesInfo() PropertiesInfoResource {
+	return r.propertiesInfo
+}
+
 func (r transactionsResourceImpl) Tasks() TasksResource {
 	return r.tasks
 }
 
 func (r transactionsResourceImpl) TransactionDocuments() TransactionDocumentsResource {
 	return r.transactionDocuments
+}
+
+func (r transactionsResourceImpl) TransactionPackages() TransactionPackagesResource {
+	return r.transactionPackages
 }
 
 func (r transactionsResourceImpl) GetDetail(id string, opts ...core.RequestOption) (*Transaction, error) {

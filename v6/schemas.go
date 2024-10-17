@@ -419,8 +419,10 @@ type Folder struct {
 	Kind                 string                   `json:"kind,omitempty"`
 	LastModified         int                      `json:"last_modified,omitempty"`
 	OrderIndex           int                      `json:"order_index,omitempty"`
+	PropertyInfo         *PropertyInfo            `json:"property_info,omitempty"`
 	Title                string                   `json:"title,omitempty"`
 	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
+	TransactionPackage   *TransactionPackage      `json:"transaction_package,omitempty"`
 	Object               string                   `json:"object,omitempty"`
 }
 
@@ -543,6 +545,16 @@ func (m ItemDeletesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Member struct {
+	Id     string `json:"id,omitempty"`
+	Offer  *Offer `json:"offer,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m Member) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type MergeDocumentsResponse struct {
 	IsDelayed     *bool  `json:"is_delayed,omitempty"`
 	TransactionId string `json:"transaction_id,omitempty"`
@@ -569,6 +581,20 @@ type NotificationResponse struct {
 }
 
 func (m NotificationResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type Offer struct {
+	Id              string   `json:"id,omitempty"`
+	Archived        *bool    `json:"archived,omitempty"`
+	Favorite        *bool    `json:"favorite,omitempty"`
+	Notifications   []string `json:"notifications,omitempty"`
+	Status          string   `json:"status,omitempty"`
+	TransactionSide string   `json:"transaction_side,omitempty"`
+	Object          string   `json:"object,omitempty"`
+}
+
+func (m Offer) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -737,6 +763,42 @@ func (m PartyUpdateContactSourceResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type PropertyInfo struct {
+	Id           string   `json:"id,omitempty"`
+	Address      *Address `json:"address,omitempty"`
+	EmailAddress string   `json:"email_address,omitempty"`
+	IsSecondary  *bool    `json:"is_secondary,omitempty"`
+	PropertyType string   `json:"property_type,omitempty"`
+	Object       string   `json:"object,omitempty"`
+}
+
+func (m PropertyInfo) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type PropertyInfoList struct {
+	Data       []PropertyInfo `json:"data"`
+	ListObject string         `json:"list_object"`
+	Object     string         `json:"object"`
+	HasMore    bool           `json:"has_more"`
+}
+
+func (m PropertyInfoList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m PropertyInfoList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
 type ReorderFoldersResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
 	Object        string `json:"object,omitempty"`
@@ -841,6 +903,7 @@ type Transaction struct {
 	IsLease               *bool                    `json:"is_lease,omitempty"`
 	IsReferral            *bool                    `json:"is_referral,omitempty"`
 	Parties               *PartyList               `json:"parties,omitempty"`
+	PropertiesInfo        *PropertyInfoList        `json:"properties_info,omitempty"`
 	ReState               string                   `json:"re_state,omitempty"`
 	SecondaryAddressesIds []string                 `json:"secondary_addresses_ids,omitempty"`
 	Side                  string                   `json:"side,omitempty"`
@@ -848,6 +911,7 @@ type Transaction struct {
 	Tasks                 *TaskList                `json:"tasks,omitempty"`
 	Title                 string                   `json:"title,omitempty"`
 	TransactionDocuments  *TransactionDocumentList `json:"transaction_documents,omitempty"`
+	TransactionPackages   *TransactionPackageList  `json:"transaction_packages,omitempty"`
 	Object                string                   `json:"object,omitempty"`
 }
 
@@ -1129,6 +1193,43 @@ type TransactionMeta struct {
 
 type TransactionMetaUpdate struct {
 	Data *TransactionMeta `json:"data,omitempty"`
+}
+
+type TransactionPackage struct {
+	Id            string    `json:"id,omitempty"`
+	Members       []*Member `json:"members,omitempty"`
+	PackageId     string    `json:"package_id,omitempty"`
+	PackageKind   string    `json:"package_kind,omitempty"`
+	PackageStatus string    `json:"package_status,omitempty"`
+	Title         string    `json:"title,omitempty"`
+	Object        string    `json:"object,omitempty"`
+}
+
+func (m TransactionPackage) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type TransactionPackageList struct {
+	Data       []TransactionPackage `json:"data"`
+	ListObject string               `json:"list_object"`
+	Object     string               `json:"object"`
+	HasMore    bool                 `json:"has_more"`
+}
+
+func (m TransactionPackageList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m TransactionPackageList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
 }
 
 type UpdateArchivalStatusResponse struct {
