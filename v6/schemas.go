@@ -1163,6 +1163,15 @@ type TransactionDocumentUpload struct {
 	Title    string `json:"title,omitempty"`
 }
 
+type TransactionDocumentUploadResponseResult struct {
+	TransactionDocuments []*TransactionDocument `json:"transaction_documents,omitempty"`
+	Object               string                 `json:"object,omitempty"`
+}
+
+func (m TransactionDocumentUploadResponseResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TransactionDocumentUploads struct {
 	Files   []http.File                  `json:"files,omitempty"`
 	Uploads []*TransactionDocumentUpload `json:"uploads,omitempty"`
@@ -1254,8 +1263,9 @@ func (m UpdateTransactionMetaResponse) IsRef() bool {
 }
 
 type UploadsResponse struct {
-	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object,omitempty"`
+	Result        *TransactionDocumentUploadResponseResult `json:"result,omitempty"`
+	TransactionId string                                   `json:"transaction_id,omitempty"`
+	Object        string                                   `json:"object,omitempty"`
 }
 
 func (m UploadsResponse) IsRef() bool {
