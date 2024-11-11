@@ -1160,15 +1160,16 @@ func (m TransactionDocumentTrashesResponse) IsRef() bool {
 
 type TransactionDocumentUpload struct {
 	FolderId string `json:"folder_id,omitempty"`
+	MimeType string `json:"mime_type,omitempty"`
 	Title    string `json:"title,omitempty"`
 }
 
-type TransactionDocumentUploadResponseResult struct {
+type TransactionDocumentUploadResult struct {
 	TransactionDocuments []*TransactionDocument `json:"transaction_documents,omitempty"`
 	Object               string                 `json:"object,omitempty"`
 }
 
-func (m TransactionDocumentUploadResponseResult) IsRef() bool {
+func (m TransactionDocumentUploadResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -1263,9 +1264,9 @@ func (m UpdateTransactionMetaResponse) IsRef() bool {
 }
 
 type UploadsResponse struct {
-	Result        *TransactionDocumentUploadResponseResult `json:"result,omitempty"`
-	TransactionId string                                   `json:"transaction_id,omitempty"`
-	Object        string                                   `json:"object,omitempty"`
+	Result        *TransactionDocumentUploadResult `json:"result,omitempty"`
+	TransactionId string                           `json:"transaction_id,omitempty"`
+	Object        string                           `json:"object,omitempty"`
 }
 
 func (m UploadsResponse) IsRef() bool {
