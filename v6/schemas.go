@@ -285,6 +285,19 @@ type DocumentUpload struct {
 	Title string `json:"title,omitempty"`
 }
 
+type DocumentUploadResponse struct {
+	Docs   []map[string]interface{} `json:"docs,omitempty"`
+	Object string                   `json:"object,omitempty"`
+}
+
+func (m DocumentUploadResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentUploadSchema struct {
+	Files []http.File `json:"files,omitempty"`
+}
+
 type DocumentZone struct {
 	Id               string                  `json:"id,omitempty"`
 	FormId           string                  `json:"form_id,omitempty"`

@@ -11,6 +11,7 @@ type DocumentsResource interface {
 	DocumentSplit(documentSplitSchema DocumentSplitSchema, files []core.File, opts ...core.RequestOption) (*DocumentSplitResponse, error)
 	DownloadZip(opts ...core.RequestOption) (*BinaryResponse, error)
 	SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, files []core.File, opts ...core.RequestOption) (*SignatureDetectionResponse, error)
+	UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error)
 	Download(id string, opts ...core.RequestOption) (*BinaryResponse, error)
 }
 
@@ -51,6 +52,14 @@ func (r documentsResourceImpl) DownloadZip(opts ...core.RequestOption) (*BinaryR
 func (r documentsResourceImpl) SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, files []core.File, opts ...core.RequestOption) (*SignatureDetectionResponse, error) {
 	res := SignatureDetectionResponse{}
 	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/documents/signature_detection"), signatureDetectionSchema, files, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r documentsResourceImpl) UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error) {
+	res := DocumentUploadResponse{}
+	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/documents/upload_file"), documentUploadSchema, files, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
