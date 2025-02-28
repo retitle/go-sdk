@@ -210,6 +210,16 @@ func (m DeletedParty) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Document struct {
+	Id       string `json:"id"`
+	FileName string `json:"file_name"`
+	Object   string `json:"object,omitempty"`
+}
+
+func (m Document) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type DocumentAnalysisAsyncResponse struct {
 	ResultsByFileReferenceId map[string]*DocumentAnalysisResult `json:"results_by_file_reference_id,omitempty"`
 	Object                   string                             `json:"object,omitempty"`
@@ -231,6 +241,10 @@ type DocumentAnalysisResult struct {
 
 func (m DocumentAnalysisResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentFileMeta struct {
+	FileName string `json:"file_name"`
 }
 
 type DocumentMergeSchema struct {
@@ -286,8 +300,9 @@ type DocumentUpload struct {
 }
 
 type DocumentUploadResponse struct {
-	Docs   []map[string]interface{} `json:"docs,omitempty"`
-	Object string                   `json:"object,omitempty"`
+	Documents []*Document `json:"documents,omitempty"`
+	Errors    []*Error    `json:"errors,omitempty"`
+	Object    string      `json:"object,omitempty"`
 }
 
 func (m DocumentUploadResponse) IsRef() bool {
@@ -295,7 +310,8 @@ func (m DocumentUploadResponse) IsRef() bool {
 }
 
 type DocumentUploadSchema struct {
-	Files []http.File `json:"files,omitempty"`
+	Files     []http.File         `json:"files,omitempty"`
+	FilesMeta []*DocumentFileMeta `json:"files_meta,omitempty"`
 }
 
 type DocumentZone struct {
@@ -332,6 +348,17 @@ type DocumentZoneVertex struct {
 }
 
 func (m DocumentZoneVertex) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type Error struct {
+	Error    string `json:"error"`
+	Filename string `json:"filename"`
+	Size     int    `json:"size,omitempty"`
+	Object   string `json:"object,omitempty"`
+}
+
+func (m Error) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
