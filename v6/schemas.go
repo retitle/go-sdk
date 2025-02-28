@@ -300,9 +300,9 @@ type DocumentUpload struct {
 }
 
 type DocumentUploadResponse struct {
-	Documents []*Document `json:"documents,omitempty"`
-	Errors    []*Error    `json:"errors,omitempty"`
-	Object    string      `json:"object,omitempty"`
+	Documents []*Document    `json:"documents,omitempty"`
+	Errors    []*UploadError `json:"errors,omitempty"`
+	Object    string         `json:"object,omitempty"`
 }
 
 func (m DocumentUploadResponse) IsRef() bool {
@@ -348,17 +348,6 @@ type DocumentZoneVertex struct {
 }
 
 func (m DocumentZoneVertex) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-type Error struct {
-	Error    string `json:"error"`
-	Filename string `json:"filename"`
-	Size     int    `json:"size,omitempty"`
-	Object   string `json:"object,omitempty"`
-}
-
-func (m Error) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -1345,6 +1334,17 @@ type UpdateTransactionMetaResponse struct {
 }
 
 func (m UpdateTransactionMetaResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UploadError struct {
+	Error    string `json:"error"`
+	Filename string `json:"filename"`
+	Size     int    `json:"size,omitempty"`
+	Object   string `json:"object,omitempty"`
+}
+
+func (m UploadError) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
