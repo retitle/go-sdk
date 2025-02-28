@@ -566,6 +566,11 @@ func (m MergeDocumentsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type NewContactRecipient struct {
+	Contact *Contact `json:"contact,omitempty"`
+	Roles   []string `json:"roles,omitempty"`
+}
+
 type Notification struct {
 	Bcc              []string               `json:"bcc,omitempty"`
 	Cc               []string               `json:"cc,omitempty"`
@@ -706,6 +711,13 @@ func (m PartyPatchesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type PartyRecipient struct {
+	Id      string   `json:"id,omitempty"`
+	Contact *Contact `json:"contact,omitempty"`
+	Roles   []string `json:"roles,omitempty"`
+	Vers    string   `json:"vers,omitempty"`
+}
+
 type PartyRemove struct {
 	PartyId string `json:"party_id,omitempty"`
 }
@@ -801,6 +813,16 @@ func (m PropertyInfoList) NextPageParams() core.PageParams {
 	}
 }
 
+type Recipient struct {
+	Key           string                `json:"key,omitempty"`
+	Kind          string                `json:"kind,omitempty"`
+	NewContact    *NewContactRecipient  `json:"new_contact,omitempty"`
+	Order         int                   `json:"order,omitempty"`
+	Party         *PartyRecipient       `json:"party,omitempty"`
+	RecipientRole string                `json:"recipient_role,omitempty"`
+	UserContact   *UserContactRecipient `json:"user_contact,omitempty"`
+}
+
 type ReorderFoldersResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
 	Object        string `json:"object,omitempty"`
@@ -843,6 +865,21 @@ func (m SignatureDetectionResponse) IsRef() bool {
 type SignatureDetectionSchema struct {
 	Files   []http.File       `json:"files,omitempty"`
 	Uploads []*DocumentUpload `json:"uploads,omitempty"`
+}
+
+type SignatureRequestFlowRequest struct {
+	Recipients              []*Recipient `json:"recipients,omitempty"`
+	TransactionDocumentsIds []string     `json:"transaction_documents_ids,omitempty"`
+	TransactionId           string       `json:"transaction_id,omitempty"`
+}
+
+type SignatureRequestFlowResponse struct {
+	FlowId string `json:"flow_id,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestFlowResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type SignatureResult struct {
@@ -1323,6 +1360,13 @@ type UserBillingInfo struct {
 
 func (m UserBillingInfo) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UserContactRecipient struct {
+	Contact           *Contact       `json:"contact,omitempty"`
+	Roles             []string       `json:"roles,omitempty"`
+	UserContactId     string         `json:"user_contact_id,omitempty"`
+	UserContactSource *ContactSource `json:"user_contact_source,omitempty"`
 }
 
 type UserManagementSchema struct {
