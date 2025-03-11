@@ -898,9 +898,13 @@ type SignatureDetectionSchema struct {
 
 type SignatureRequest struct {
 	Id               string                       `json:"id,omitempty"`
+	CompletedAt      int                          `json:"completed_at,omitempty"`
+	CreatedAt        int                          `json:"created_at,omitempty"`
 	Documents        []*SignatureRequestDocument  `json:"documents,omitempty"`
 	EnvelopeId       string                       `json:"envelope_id,omitempty"`
 	FlowId           string                       `json:"flow_id,omitempty"`
+	IsArchived       *bool                        `json:"is_archived,omitempty"`
+	Provider         string                       `json:"provider,omitempty"`
 	Recipients       []*SignatureRequestRecipient `json:"recipients,omitempty"`
 	RevisionFlowId   string                       `json:"revision_flow_id,omitempty"`
 	SentAt           int                          `json:"sent_at,omitempty"`
@@ -914,6 +918,29 @@ type SignatureRequest struct {
 
 func (m SignatureRequest) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureRequestList struct {
+	Data       []SignatureRequest `json:"data"`
+	ListObject string             `json:"list_object"`
+	Object     string             `json:"object"`
+	HasMore    bool               `json:"has_more"`
+}
+
+func (m SignatureRequestList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m SignatureRequestList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
 }
 
 type SignatureRequestDocument struct {
@@ -942,17 +969,8 @@ func (m SignatureRequestFlowResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type SignatureRequestList struct {
-	PageNumber        int                 `json:"page_number,omitempty"`
-	SignatureRequests []*SignatureRequest `json:"signature_requests,omitempty"`
-	Object            string              `json:"object,omitempty"`
-}
-
-func (m SignatureRequestList) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type SignatureRequestRecipient struct {
+	Id            string `json:"id,omitempty"`
 	Email         string `json:"email,omitempty"`
 	Order         int    `json:"order,omitempty"`
 	RecipientRole string `json:"recipient_role,omitempty"`
@@ -1016,26 +1034,27 @@ func (m TaskList) NextPageParams() core.PageParams {
 }
 
 type Transaction struct {
-	Id                    string                   `json:"id,omitempty"`
-	Address               *Address                 `json:"address,omitempty"`
-	Archived              *bool                    `json:"archived,omitempty"`
-	DealId                string                   `json:"deal_id,omitempty"`
-	Fields                TransactionFields        `json:"fields,omitempty"`
-	Folders               *FolderList              `json:"folders,omitempty"`
-	IngestDocumentsEmail  string                   `json:"ingest_documents_email,omitempty"`
-	IsLease               *bool                    `json:"is_lease,omitempty"`
-	IsReferral            *bool                    `json:"is_referral,omitempty"`
-	Parties               *PartyList               `json:"parties,omitempty"`
-	PropertiesInfo        *PropertyInfoList        `json:"properties_info,omitempty"`
-	ReState               string                   `json:"re_state,omitempty"`
-	SecondaryAddressesIds []string                 `json:"secondary_addresses_ids,omitempty"`
-	Side                  string                   `json:"side,omitempty"`
-	Stage                 string                   `json:"stage,omitempty"`
-	Tasks                 *TaskList                `json:"tasks,omitempty"`
-	Title                 string                   `json:"title,omitempty"`
-	TransactionDocuments  *TransactionDocumentList `json:"transaction_documents,omitempty"`
-	TransactionPackages   *TransactionPackageList  `json:"transaction_packages,omitempty"`
-	Object                string                   `json:"object,omitempty"`
+	Id                           string                   `json:"id,omitempty"`
+	Address                      *Address                 `json:"address,omitempty"`
+	Archived                     *bool                    `json:"archived,omitempty"`
+	DealId                       string                   `json:"deal_id,omitempty"`
+	Fields                       TransactionFields        `json:"fields,omitempty"`
+	Folders                      *FolderList              `json:"folders,omitempty"`
+	IngestDocumentsEmail         string                   `json:"ingest_documents_email,omitempty"`
+	IsLease                      *bool                    `json:"is_lease,omitempty"`
+	IsReferral                   *bool                    `json:"is_referral,omitempty"`
+	Parties                      *PartyList               `json:"parties,omitempty"`
+	PropertiesInfo               *PropertyInfoList        `json:"properties_info,omitempty"`
+	ReState                      string                   `json:"re_state,omitempty"`
+	SecondaryAddressesIds        []string                 `json:"secondary_addresses_ids,omitempty"`
+	Side                         string                   `json:"side,omitempty"`
+	Stage                        string                   `json:"stage,omitempty"`
+	Tasks                        *TaskList                `json:"tasks,omitempty"`
+	Title                        string                   `json:"title,omitempty"`
+	TransactionDocuments         *TransactionDocumentList `json:"transaction_documents,omitempty"`
+	TransactionPackages          *TransactionPackageList  `json:"transaction_packages,omitempty"`
+	TransactionSignatureRequests *SignatureRequestList    `json:"transaction_signature_requests,omitempty"`
+	Object                       string                   `json:"object,omitempty"`
 }
 
 func (m Transaction) IsRef() bool {
