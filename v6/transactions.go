@@ -13,6 +13,7 @@ type TransactionsResource interface {
 	Tasks() TasksResource
 	TransactionDocuments() TransactionDocumentsResource
 	TransactionPackages() TransactionPackagesResource
+	TransactionSignatureRequests() TransactionSignatureRequestsResource
 	GetDetail(id string, opts ...core.RequestOption) (*Transaction, error)
 	GetMulti(ids []string, opts ...core.RequestOption) (*TransactionList, error)
 	List(opts ...core.RequestOption) (*TransactionList, error)
@@ -42,24 +43,26 @@ type TransactionsResource interface {
 }
 
 type transactionsResourceImpl struct {
-	client               Client
-	folders              FoldersResource
-	parties              PartiesResource
-	propertiesInfo       PropertiesInfoResource
-	tasks                TasksResource
-	transactionDocuments TransactionDocumentsResource
-	transactionPackages  TransactionPackagesResource
+	client                       Client
+	folders                      FoldersResource
+	parties                      PartiesResource
+	propertiesInfo               PropertiesInfoResource
+	tasks                        TasksResource
+	transactionDocuments         TransactionDocumentsResource
+	transactionPackages          TransactionPackagesResource
+	transactionSignatureRequests TransactionSignatureRequestsResource
 }
 
 func GetTransactionsResource(client Client) TransactionsResource {
 	return transactionsResourceImpl{
-		client:               client,
-		folders:              GetFoldersResource(client),
-		parties:              GetPartiesResource(client),
-		propertiesInfo:       GetPropertiesInfoResource(client),
-		tasks:                GetTasksResource(client),
-		transactionDocuments: GetTransactionDocumentsResource(client),
-		transactionPackages:  GetTransactionPackagesResource(client),
+		client:                       client,
+		folders:                      GetFoldersResource(client),
+		parties:                      GetPartiesResource(client),
+		propertiesInfo:               GetPropertiesInfoResource(client),
+		tasks:                        GetTasksResource(client),
+		transactionDocuments:         GetTransactionDocumentsResource(client),
+		transactionPackages:          GetTransactionPackagesResource(client),
+		transactionSignatureRequests: GetTransactionSignatureRequestsResource(client),
 	}
 }
 
@@ -85,6 +88,10 @@ func (r transactionsResourceImpl) TransactionDocuments() TransactionDocumentsRes
 
 func (r transactionsResourceImpl) TransactionPackages() TransactionPackagesResource {
 	return r.transactionPackages
+}
+
+func (r transactionsResourceImpl) TransactionSignatureRequests() TransactionSignatureRequestsResource {
+	return r.transactionSignatureRequests
 }
 
 func (r transactionsResourceImpl) GetDetail(id string, opts ...core.RequestOption) (*Transaction, error) {
