@@ -633,6 +633,15 @@ func (m Offer) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type OfferPartiesResponse struct {
+	Data   []*Party `json:"data,omitempty"`
+	Object string   `json:"object,omitempty"`
+}
+
+func (m OfferPartiesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Party struct {
 	Id               string       `json:"id,omitempty"`
 	ClientVisibility string       `json:"client_visibility,omitempty"`
