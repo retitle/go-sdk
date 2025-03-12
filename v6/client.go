@@ -25,6 +25,7 @@ type Client interface {
 	Contacts() ContactsResource
 	Documents() DocumentsResource
 	Notifications() NotificationsResource
+	Offers() OffersResource
 	SignatureRequests() SignatureRequestsResource
 	Transactions() TransactionsResource
 	UserManagement() UserManagementResource
@@ -44,6 +45,7 @@ type ClientImpl struct {
 	contacts          ContactsResource
 	documents         DocumentsResource
 	notifications     NotificationsResource
+	offers            OffersResource
 	signatureRequests SignatureRequestsResource
 	transactions      TransactionsResource
 	userManagement    UserManagementResource
@@ -80,6 +82,7 @@ func GetClient(clientKey string, key core.Key, opts ...core.ClientOption) Client
 	c.contacts = GetContactsResource(&c)
 	c.documents = GetDocumentsResource(&c)
 	c.notifications = GetNotificationsResource(&c)
+	c.offers = GetOffersResource(&c)
 	c.signatureRequests = GetSignatureRequestsResource(&c)
 	c.transactions = GetTransactionsResource(&c)
 	c.userManagement = GetUserManagementResource(&c)
@@ -102,6 +105,9 @@ func (c *ClientImpl) Documents() DocumentsResource {
 }
 func (c *ClientImpl) Notifications() NotificationsResource {
 	return c.notifications
+}
+func (c *ClientImpl) Offers() OffersResource {
+	return c.offers
 }
 func (c *ClientImpl) SignatureRequests() SignatureRequestsResource {
 	return c.signatureRequests
