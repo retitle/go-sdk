@@ -8,7 +8,7 @@ import (
 
 type OffersResource interface {
 	Parties() PartiesResource
-	List(opts ...core.RequestOption) (*None, error)
+	List(opts ...core.RequestOption) (*OffersResponse, error)
 }
 
 type offersResourceImpl struct {
@@ -27,8 +27,8 @@ func (r offersResourceImpl) Parties() PartiesResource {
 	return r.parties
 }
 
-func (r offersResourceImpl) List(opts ...core.RequestOption) (*None, error) {
-	res := None{}
+func (r offersResourceImpl) List(opts ...core.RequestOption) (*OffersResponse, error) {
+	res := OffersResponse{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/offers"), opts...); err != nil {
 		return nil, err
 	}
