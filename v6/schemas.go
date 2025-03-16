@@ -987,6 +987,21 @@ func (m SignatureRequestFlowResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestFlowDocumentsRequest struct {
+	TransactionDocumentsIds []string `json:"transaction_documents_ids,omitempty"`
+	FlowId                  string   `json:"flow_id,omitempty"`
+	MoveOriginalToTrash     bool     `json:"move_original_to_trash,omitempty"`
+}
+
+type SignatureRequestFlowDocumentsResponse struct {
+	FlowId string `json:"flow_id,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestFlowDocumentsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestRecipient struct {
 	Id            string `json:"id,omitempty"`
 	Email         string `json:"email,omitempty"`
