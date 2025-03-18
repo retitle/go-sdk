@@ -1,13 +1,15 @@
 package glide
 
 import (
+	"fmt"
+
 	"github.com/retitle/go-sdk/v6/core"
 )
 
 type SignatureRequestsResource interface {
 	List(opts ...core.RequestOption) (*SignatureRequestList, error)
 	Flow(signatureRequestFlowRequest SignatureRequestFlowRequest, opts ...core.RequestOption) (*SignatureRequestFlowResponse, error)
-	FlowDocuments(signatureRequestFlowRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error)
+	FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error)
 }
 
 type signatureRequestsResourceImpl struct {
@@ -22,7 +24,7 @@ func GetSignatureRequestsResource(client Client) SignatureRequestsResource {
 
 func (r signatureRequestsResourceImpl) List(opts ...core.RequestOption) (*SignatureRequestList, error) {
 	res := SignatureRequestList{}
-	if err := r.client.Get(&res, true, "/signature_requests", opts...); err != nil {
+	if err := r.client.Get(&res, true, fmt.Sprintf("/signature_requests"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
@@ -30,15 +32,15 @@ func (r signatureRequestsResourceImpl) List(opts ...core.RequestOption) (*Signat
 
 func (r signatureRequestsResourceImpl) Flow(signatureRequestFlowRequest SignatureRequestFlowRequest, opts ...core.RequestOption) (*SignatureRequestFlowResponse, error) {
 	res := SignatureRequestFlowResponse{}
-	if err := r.client.Post(&res, true, "/signature_requests/flow", signatureRequestFlowRequest, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/flow"), signatureRequestFlowRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r signatureRequestsResourceImpl) FlowDocuments(signatureRequestFlowRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error) {
+func (r signatureRequestsResourceImpl) FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error) {
 	res := SignatureRequestFlowDocumentsResponse{}
-	if err := r.client.Post(&res, true, "/signature_requests/flow/documents", signatureRequestFlowRequest, opts...); err != nil {
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/flow_documents"), signatureRequestFlowDocumentsRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
