@@ -9,6 +9,7 @@ import (
 type SignatureRequestsResource interface {
 	List(opts ...core.RequestOption) (*SignatureRequestList, error)
 	Flow(signatureRequestFlowRequest SignatureRequestFlowRequest, opts ...core.RequestOption) (*SignatureRequestFlowResponse, error)
+	FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error)
 }
 
 type signatureRequestsResourceImpl struct {
@@ -32,6 +33,14 @@ func (r signatureRequestsResourceImpl) List(opts ...core.RequestOption) (*Signat
 func (r signatureRequestsResourceImpl) Flow(signatureRequestFlowRequest SignatureRequestFlowRequest, opts ...core.RequestOption) (*SignatureRequestFlowResponse, error) {
 	res := SignatureRequestFlowResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/flow"), signatureRequestFlowRequest, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error) {
+	res := SignatureRequestFlowDocumentsResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/flow_documents"), signatureRequestFlowDocumentsRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
