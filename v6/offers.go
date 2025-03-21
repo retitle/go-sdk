@@ -7,24 +7,24 @@ import (
 )
 
 type OffersResource interface {
-	Parties() PartiesResource
+	OfferParties() OfferPartiesResource
 	List(opts ...core.RequestOption) (*OffersResponse, error)
 }
 
 type offersResourceImpl struct {
-	client  Client
-	parties PartiesResource
+	client       Client
+	offerParties OfferPartiesResource
 }
 
 func GetOffersResource(client Client) OffersResource {
 	return offersResourceImpl{
-		client:  client,
-		parties: GetPartiesResource(client),
+		client:       client,
+		offerParties: GetOfferPartiesResource(client),
 	}
 }
 
-func (r offersResourceImpl) Parties() PartiesResource {
-	return r.parties
+func (r offersResourceImpl) OfferParties() OfferPartiesResource {
+	return r.offerParties
 }
 
 func (r offersResourceImpl) List(opts ...core.RequestOption) (*OffersResponse, error) {

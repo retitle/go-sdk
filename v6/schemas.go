@@ -351,6 +351,20 @@ func (m DocumentZoneVertex) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Envelope struct {
+	Id        string `json:"id,omitempty"`
+	CreatedAt int    `json:"created_at,omitempty"`
+	Creator   string `json:"creator,omitempty"`
+	Status    string `json:"status,omitempty"`
+	Title     string `json:"title,omitempty"`
+	Uuid      string `json:"uuid,omitempty"`
+	Object    string `json:"object,omitempty"`
+}
+
+func (m Envelope) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type ExtractedField struct {
 	ExtractedData          string `json:"extracted_data,omitempty"`
 	FormPage               int    `json:"form_page,omitempty"`
