@@ -9,6 +9,29 @@ import (
 	"github.com/retitle/go-sdk/v6/core"
 )
 
+type Activity struct {
+	Id        string `json:"id,omitempty"`
+	CreatedAt int    `json:"created_at,omitempty"`
+	Kind      string `json:"kind,omitempty"`
+	Object    string `json:"object,omitempty"`
+}
+
+func (m Activity) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ActivityListWithCursor struct {
+	Cursor  string      `json:"cursor,omitempty"`
+	Data    []*Activity `json:"data,omitempty"`
+	HasMore *bool       `json:"has_more,omitempty"`
+	Total   int         `json:"total,omitempty"`
+	Object  string      `json:"object,omitempty"`
+}
+
+func (m ActivityListWithCursor) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Address struct {
 	City    string `json:"city"`
 	County  string `json:"county,omitempty"`
@@ -944,12 +967,15 @@ type SignatureDetectionSchema struct {
 
 type SignatureRequest struct {
 	Id               string                       `json:"id,omitempty"`
+	Activities       *ActivityListWithCursor      `json:"activities,omitempty"`
 	CompletedAt      int                          `json:"completed_at,omitempty"`
 	CreatedAt        int                          `json:"created_at,omitempty"`
+	CurrentFlowPage  string                       `json:"current_flow_page,omitempty"`
 	Documents        []*SignatureRequestDocument  `json:"documents,omitempty"`
 	EnvelopeId       string                       `json:"envelope_id,omitempty"`
 	FlowId           string                       `json:"flow_id,omitempty"`
 	IsArchived       *bool                        `json:"is_archived,omitempty"`
+	Message          string                       `json:"message,omitempty"`
 	Provider         string                       `json:"provider,omitempty"`
 	Recipients       []*SignatureRequestRecipient `json:"recipients,omitempty"`
 	RevisionFlowId   string                       `json:"revision_flow_id,omitempty"`
@@ -959,6 +985,7 @@ type SignatureRequest struct {
 	Title            string                       `json:"title,omitempty"`
 	TransactionId    string                       `json:"transaction_id,omitempty"`
 	TransactionTitle string                       `json:"transaction_title,omitempty"`
+	UpdatedAt        int                          `json:"updated_at,omitempty"`
 	Object           string                       `json:"object,omitempty"`
 }
 
