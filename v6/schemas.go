@@ -374,6 +374,28 @@ func (m DocumentZoneVertex) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type ESignAnnotation struct {
+	Id           string       `json:"id,omitempty"`
+	DefaultValue string       `json:"default_value,omitempty"`
+	FieldId      string       `json:"field_id,omitempty"`
+	FieldParams  *FieldParams `json:"field_params,omitempty"`
+	FieldPart    int          `json:"field_part,omitempty"`
+	Height       float64      `json:"height,omitempty"`
+	IsRequired   *bool        `json:"is_required,omitempty"`
+	Kind         string       `json:"kind,omitempty"`
+	Left         float64      `json:"left,omitempty"`
+	Optional     *bool        `json:"optional,omitempty"`
+	OwnerId      string       `json:"owner_id,omitempty"`
+	Page         int          `json:"page,omitempty"`
+	Top          float64      `json:"top,omitempty"`
+	Width        float64      `json:"width,omitempty"`
+}
+
+type ESignFillConfig struct {
+	Annotations []*ESignAnnotation `json:"annotations,omitempty"`
+	TdvId       string             `json:"tdv_id,omitempty"`
+}
+
 type Envelope struct {
 	Id        string `json:"id,omitempty"`
 	CreatedAt int    `json:"created_at,omitempty"`
@@ -386,6 +408,10 @@ type Envelope struct {
 
 func (m Envelope) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EsignTabConfig struct {
+	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
 }
 
 type ExtractedField struct {
@@ -417,6 +443,10 @@ type FieldOutOfDateDetail struct {
 
 func (m FieldOutOfDateDetail) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type FieldParams struct {
+	Options []string `json:"options,omitempty"`
 }
 
 type FieldResponse struct {
@@ -1057,6 +1087,22 @@ func (m SignatureRequestFlowResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestFlowReviewRequest struct {
+	Body                     string `json:"body,omitempty"`
+	FlowId                   string `json:"flow_id"`
+	MakeDocumentsVisibleInCd *bool  `json:"make_documents_visible_in_cd,omitempty"`
+	Subject                  string `json:"subject,omitempty"`
+}
+
+type SignatureRequestFlowReviewResponse struct {
+	FlowId string `json:"flow_id,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestFlowReviewResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestRecipient struct {
 	Id            string `json:"id,omitempty"`
 	Email         string `json:"email,omitempty"`
@@ -1068,6 +1114,20 @@ type SignatureRequestRecipient struct {
 }
 
 func (m SignatureRequestRecipient) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureRequestSaveTabConfigRequest struct {
+	Data   *EsignTabConfig `json:"data"`
+	FlowId string          `json:"flow_id"`
+}
+
+type SignatureRequestSaveTabConfigResponse struct {
+	FlowId string `json:"flow_id,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestSaveTabConfigResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
