@@ -1131,6 +1131,16 @@ func (m SignatureRequestSaveTabConfigResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestTabConfigDetailResponse struct {
+	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
+	Recipients  []*Recipient       `json:"recipients,omitempty"`
+	Object      string             `json:"object,omitempty"`
+}
+
+func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureResult struct {
 	SignedSignatureFields int    `json:"signed_signature_fields"`
 	TotalSignatureFields  int    `json:"total_signature_fields"`
