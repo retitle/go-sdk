@@ -16,6 +16,7 @@ type SignatureRequestsResource interface {
 	FlowDocumentsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowDocumentsResponse, error)
 	FlowReview(signatureRequestFlowReviewRequest SignatureRequestFlowReviewRequest, opts ...core.RequestOption) (*SignatureRequestFlowReviewResponse, error)
 	SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error)
+	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
 }
 
 type signatureRequestsResourceImpl struct {
@@ -93,6 +94,14 @@ func (r signatureRequestsResourceImpl) FlowReview(signatureRequestFlowReviewRequ
 func (r signatureRequestsResourceImpl) SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error) {
 	res := SignatureRequestSaveTabConfigResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/save_tab_config"), signatureRequestSaveTabConfigRequest, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error) {
+	res := SignatureRequestTabConfigDetailResponse{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/signature_requests/tab_config_detail"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
