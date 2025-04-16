@@ -10,6 +10,7 @@ type TransactionSignatureRequestsResource interface {
 	GetDetail(transactionId string, id string, opts ...core.RequestOption) (*SignatureRequest, error)
 	GetMulti(transactionId string, ids []string, opts ...core.RequestOption) (*SignatureRequestList, error)
 	List(transactionId string, opts ...core.RequestOption) (*SignatureRequestList, error)
+	TimelineEnrichment(transactionId string, opts ...core.RequestOption) (*TimelineSignatureRequests, error)
 }
 
 type transactionSignatureRequestsResourceImpl struct {
@@ -41,6 +42,14 @@ func (r transactionSignatureRequestsResourceImpl) GetMulti(transactionId string,
 func (r transactionSignatureRequestsResourceImpl) List(transactionId string, opts ...core.RequestOption) (*SignatureRequestList, error) {
 	res := SignatureRequestList{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/transactions/%s/transaction_signature_requests", transactionId), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionSignatureRequestsResourceImpl) TimelineEnrichment(transactionId string, opts ...core.RequestOption) (*TimelineSignatureRequests, error) {
+	res := TimelineSignatureRequests{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/transactions/%s/transaction_signature_requests/timeline_enrichment", transactionId), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
