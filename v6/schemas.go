@@ -1477,6 +1477,19 @@ func (m SignatureResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SplitAnnotationTextRequest struct {
+	SplitTexts []*TextSplitRequest `json:"split_texts"`
+}
+
+type SplitAnnotationTextResponse struct {
+	Splits []*TextSplitResponse `json:"splits,omitempty"`
+	Object string               `json:"object,omitempty"`
+}
+
+func (m SplitAnnotationTextResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Step struct {
 	Id       string `json:"id,omitempty"`
 	ClosedAt int    `json:"closed_at,omitempty"`
@@ -1551,6 +1564,21 @@ func (m TaskList) NextPageParams() core.PageParams {
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
+}
+
+type TextSplitRequest struct {
+	Annotations []*ESignAnnotation `json:"annotations,omitempty"`
+	Text        string             `json:"text,omitempty"`
+}
+
+type TextSplitResponse struct {
+	Remainder string   `json:"remainder,omitempty"`
+	TextParts []string `json:"text_parts,omitempty"`
+	Object    string   `json:"object,omitempty"`
+}
+
+func (m TextSplitResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type TimelineSignatureRequest struct {
