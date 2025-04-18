@@ -9,6 +9,20 @@ import (
 	"github.com/retitle/go-sdk/v6/core"
 )
 
+type AccessControl struct {
+	Id         string `json:"id,omitempty"`
+	Deleted    int    `json:"deleted,omitempty"`
+	ObjectId   string `json:"object_id,omitempty"`
+	ObjectType string `json:"object_type,omitempty"`
+	Policy     string `json:"policy,omitempty"`
+	RoleId     string `json:"role_id,omitempty"`
+	RoleType   string `json:"role_type,omitempty"`
+}
+
+type AccessPolicy struct {
+	Acl []*AccessControl `json:"acl,omitempty"`
+}
+
 type Activity struct {
 	Id        string `json:"id,omitempty"`
 	CreatedAt int    `json:"created_at,omitempty"`
@@ -77,6 +91,19 @@ type AnalyzeSchema struct {
 	FilesMeta []*FileMeta `json:"files_meta,omitempty"`
 }
 
+type Annotations struct {
+	Id             string  `json:"id,omitempty"`
+	FieldId        string  `json:"field_id,omitempty"`
+	Height         float64 `json:"height,omitempty"`
+	Kind           string  `json:"kind,omitempty"`
+	Left           float64 `json:"left,omitempty"`
+	RecipientColor string  `json:"recipient_color,omitempty"`
+	RecipientRole  string  `json:"recipient_role,omitempty"`
+	Source         string  `json:"source,omitempty"`
+	Top            float64 `json:"top,omitempty"`
+	Width          float64 `json:"width,omitempty"`
+}
+
 type BinaryResponse struct {
 	ContentDisposition string       `json:"content_disposition,omitempty"`
 	ContentType        string       `json:"content_type,omitempty"`
@@ -93,6 +120,13 @@ func (m *BinaryResponse) SetData(dataSource io.Reader, metadata core.BinaryMetad
 
 func (m BinaryResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ConditionalLinking struct {
+	LinkId        string `json:"link_id,omitempty"`
+	LinkNamespace string `json:"link_namespace,omitempty"`
+	Rule          string `json:"rule,omitempty"`
+	Terms         string `json:"terms,omitempty"`
 }
 
 type Contact struct {
@@ -140,6 +174,17 @@ func (m ContactList) NextPageParams() core.PageParams {
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
+}
+
+type Contact1 struct {
+	Email     string `json:"email,omitempty"`
+	FirstName string `json:"first_name,omitempty"`
+	LastName  string `json:"last_name,omitempty"`
+	Object    string `json:"object,omitempty"`
+}
+
+func (m Contact1) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type ContactCreate struct {
@@ -389,24 +434,160 @@ type ESignAnnotation struct {
 	Page         int          `json:"page,omitempty"`
 	Top          float64      `json:"top,omitempty"`
 	Width        float64      `json:"width,omitempty"`
+	Object       string       `json:"object,omitempty"`
+}
+
+func (m ESignAnnotation) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type ESignFillConfig struct {
 	Annotations []*ESignAnnotation `json:"annotations,omitempty"`
 	TdvId       string             `json:"tdv_id,omitempty"`
+	Object      string             `json:"object,omitempty"`
+}
+
+func (m ESignFillConfig) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvCreateResponse struct {
+	Envelope   *EnvelopeResponse `json:"envelope,omitempty"`
+	EnvelopeId string            `json:"envelope_id,omitempty"`
+	Object     string            `json:"object,omitempty"`
+}
+
+func (m EnvCreateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type Envelope struct {
-	Id        string `json:"id,omitempty"`
-	CreatedAt int    `json:"created_at,omitempty"`
-	Creator   string `json:"creator,omitempty"`
-	Status    string `json:"status,omitempty"`
-	Title     string `json:"title,omitempty"`
-	Uuid      string `json:"uuid,omitempty"`
-	Object    string `json:"object,omitempty"`
+	Id                string                 `json:"id,omitempty"`
+	CreatedAt         int                    `json:"created_at,omitempty"`
+	Creator           string                 `json:"creator,omitempty"`
+	EnvelopeDocument  *EnvelopeDocumentList  `json:"envelope_document,omitempty"`
+	EnvelopeRecipient *EnvelopeRecipientList `json:"envelope_recipient,omitempty"`
+	Status            string                 `json:"status,omitempty"`
+	Step              *StepList              `json:"step,omitempty"`
+	Title             string                 `json:"title,omitempty"`
+	Uuid              string                 `json:"uuid,omitempty"`
+	Object            string                 `json:"object,omitempty"`
 }
 
 func (m Envelope) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeContact struct {
+	Email          string   `json:"email,omitempty"`
+	EmailAddresses []string `json:"email_addresses,omitempty"`
+	EntityType     string   `json:"entity_type,omitempty"`
+	FirstName      string   `json:"first_name,omitempty"`
+	LastName       string   `json:"last_name,omitempty"`
+	PhoneNumbers   []string `json:"phone_numbers,omitempty"`
+}
+
+type EnvelopeCreateIntentSchema struct {
+	AccessPolicy  *AccessPolicy              `json:"access_policy,omitempty"`
+	CallbackPath  string                     `json:"callback_path,omitempty"`
+	Documents     []*InitialEnvelopeDocument `json:"documents,omitempty"`
+	EmailSubject  string                     `json:"email_subject,omitempty"`
+	EmailMessage  string                     `json:"email_message,omitempty"`
+	Recipients    []*InitialRecipients       `json:"recipients,omitempty"`
+	TransactionId string                     `json:"transaction_id,omitempty"`
+}
+
+type EnvelopeDocument struct {
+	Id                 string `json:"id,omitempty"`
+	EnvelopeDocumentId string `json:"envelope_document_id,omitempty"`
+	Filename           string `json:"filename,omitempty"`
+	Url                string `json:"url,omitempty"`
+	Object             string `json:"object,omitempty"`
+}
+
+func (m EnvelopeDocument) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeDocumentList struct {
+	Data       []EnvelopeDocument `json:"data"`
+	ListObject string             `json:"list_object"`
+	Object     string             `json:"object"`
+	HasMore    bool               `json:"has_more"`
+}
+
+func (m EnvelopeDocumentList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m EnvelopeDocumentList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
+type EnvelopeField struct {
+	Id                 string                `json:"id,omitempty"`
+	ConditionalLinking []*ConditionalLinking `json:"conditional_linking,omitempty"`
+	FillConditions     []*FillCondition      `json:"fill_conditions,omitempty"`
+	Kind               string                `json:"kind,omitempty"`
+	LinkId             string                `json:"link_id,omitempty"`
+	LinkNamespace      string                `json:"link_namespace,omitempty"`
+	OverflowPdfFormat  string                `json:"overflow_pdf_format,omitempty"`
+	OwnerId            string                `json:"owner_id,omitempty"`
+}
+
+type EnvelopeRecipient struct {
+	Id             string          `json:"id,omitempty"`
+	Contact        *Contact1       `json:"contact,omitempty"`
+	ExternalId     string          `json:"external_id,omitempty"`
+	Index          int             `json:"index,omitempty"`
+	InitialsImage  *SignatureImage `json:"initials_image,omitempty"`
+	RecipientRole  string          `json:"recipient_role,omitempty"`
+	SignatureImage *SignatureImage `json:"signature_image,omitempty"`
+	Object         string          `json:"object,omitempty"`
+}
+
+func (m EnvelopeRecipient) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeRecipientList struct {
+	Data       []EnvelopeRecipient `json:"data"`
+	ListObject string              `json:"list_object"`
+	Object     string              `json:"object"`
+	HasMore    bool                `json:"has_more"`
+}
+
+func (m EnvelopeRecipientList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m EnvelopeRecipientList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
+}
+
+type EnvelopeResponse struct {
+	LatestVersionId string `json:"latest_version_id,omitempty"`
+	Uuid            string `json:"uuid,omitempty"`
+	Object          string `json:"object,omitempty"`
+}
+
+func (m EnvelopeResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -447,6 +628,11 @@ func (m FieldOutOfDateDetail) IsRef() bool {
 
 type FieldParams struct {
 	Options []string `json:"options,omitempty"`
+	Object  string   `json:"object,omitempty"`
+}
+
+func (m FieldParams) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type FieldResponse struct {
@@ -508,6 +694,20 @@ type FileMeta struct {
 	MimeType                   string    `json:"mime_type,omitempty"`
 	StateCode                  string    `json:"state_code"`
 	Url                        string    `json:"url,omitempty"`
+}
+
+type FillCondition struct {
+	Id      string `json:"id,omitempty"`
+	Level   string `json:"level,omitempty"`
+	Message string `json:"message,omitempty"`
+	Rule    string `json:"rule,omitempty"`
+	Terms   string `json:"terms,omitempty"`
+}
+
+type FillConfig struct {
+	Annotations        []*Annotations      `json:"annotations,omitempty"`
+	ReformForm         *Form               `json:"reform_form,omitempty"`
+	ReformFormPrepared *ReformFormPrepared `json:"reform_form_prepared,omitempty"`
 }
 
 type Folder struct {
@@ -595,6 +795,10 @@ func (m FolderRenamesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Form struct {
+	Fields []*EnvelopeField `json:"fields,omitempty"`
+}
+
 type FormImportsResponse struct {
 	TransactionId string `json:"transaction_id,omitempty"`
 	Object        string `json:"object,omitempty"`
@@ -643,6 +847,24 @@ func (m GlideForm) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type Imports struct {
+	Id    string `json:"id,omitempty"`
+	Alias string `json:"alias,omitempty"`
+}
+
+type InitialEnvelopeDocument struct {
+	Id         string      `json:"id,omitempty"`
+	ExternalId string      `json:"external_id,omitempty"`
+	FillConfig *FillConfig `json:"fill_config,omitempty"`
+}
+
+type InitialRecipients struct {
+	Contact       *EnvelopeContact `json:"contact,omitempty"`
+	ExternalId    string           `json:"external_id,omitempty"`
+	RecipientRole string           `json:"recipient_role,omitempty"`
+	Source        *RecipientSource `json:"source,omitempty"`
+}
+
 type ItemDeletes struct {
 	Ids []string `json:"ids,omitempty"`
 }
@@ -679,6 +901,11 @@ func (m MergeDocumentsResponse) IsRef() bool {
 type NewContactRecipient struct {
 	Contact *Contact `json:"contact,omitempty"`
 	Roles   []string `json:"roles,omitempty"`
+	Object  string   `json:"object,omitempty"`
+}
+
+func (m NewContactRecipient) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type Notification struct {
@@ -715,11 +942,27 @@ func (m Offer) IsRef() bool {
 }
 
 type OfferPartiesResponse struct {
-	Data   []*Party `json:"data,omitempty"`
-	Object string   `json:"object,omitempty"`
+	Data   []*OfferParty `json:"data,omitempty"`
+	Object string        `json:"object,omitempty"`
 }
 
 func (m OfferPartiesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type OfferParty struct {
+	Id               string       `json:"id,omitempty"`
+	ClientVisibility string       `json:"client_visibility,omitempty"`
+	Contact          *Contact     `json:"contact,omitempty"`
+	CreatedAt        int          `json:"created_at,omitempty"`
+	Roles            []string     `json:"roles,omitempty"`
+	Transaction      *Transaction `json:"transaction,omitempty"`
+	UpdatedAt        int          `json:"updated_at,omitempty"`
+	UserId           string       `json:"user_id,omitempty"`
+	Object           string       `json:"object,omitempty"`
+}
+
+func (m OfferParty) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -730,6 +973,13 @@ type OffersResponse struct {
 
 func (m OffersResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type Output struct {
+	Id      string     `json:"id,omitempty"`
+	Handler string     `json:"handler,omitempty"`
+	Imports []*Imports `json:"imports,omitempty"`
+	OutKind string     `json:"out_kind,omitempty"`
 }
 
 type Party struct {
@@ -789,11 +1039,21 @@ type PartyCreates struct {
 }
 
 type PartyCreatesResponse struct {
-	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object,omitempty"`
+	Result        *PartyCreatesResult `json:"result,omitempty"`
+	TransactionId string              `json:"transaction_id,omitempty"`
+	Object        string              `json:"object,omitempty"`
 }
 
 func (m PartyCreatesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type PartyCreatesResult struct {
+	Parties []*Party `json:"parties,omitempty"`
+	Object  string   `json:"object,omitempty"`
+}
+
+func (m PartyCreatesResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -831,11 +1091,21 @@ type PartyPatches struct {
 }
 
 type PartyPatchesResponse struct {
-	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object,omitempty"`
+	Result        *PartyPatchesResult `json:"result,omitempty"`
+	TransactionId string              `json:"transaction_id,omitempty"`
+	Object        string              `json:"object,omitempty"`
 }
 
 func (m PartyPatchesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type PartyPatchesResult struct {
+	Parties []*Party `json:"parties,omitempty"`
+	Object  string   `json:"object,omitempty"`
+}
+
+func (m PartyPatchesResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -844,6 +1114,11 @@ type PartyRecipient struct {
 	Contact *Contact `json:"contact,omitempty"`
 	Roles   []string `json:"roles,omitempty"`
 	Vers    string   `json:"vers,omitempty"`
+	Object  string   `json:"object,omitempty"`
+}
+
+func (m PartyRecipient) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type PartyRemove struct {
@@ -949,6 +1224,33 @@ type Recipient struct {
 	Party         *PartyRecipient       `json:"party,omitempty"`
 	RecipientRole string                `json:"recipient_role,omitempty"`
 	UserContact   *UserContactRecipient `json:"user_contact,omitempty"`
+	Object        string                `json:"object,omitempty"`
+}
+
+func (m Recipient) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type RecipientSource struct {
+	Kind        string       `json:"kind,omitempty"`
+	UserContact *UserContact `json:"user_contact,omitempty"`
+}
+
+type ReformFormPrepareField struct {
+	Id                 string                `json:"id,omitempty"`
+	ConditionalLinking []*ConditionalLinking `json:"conditional_linking,omitempty"`
+	FillConditions     []*FillCondition      `json:"fill_conditions,omitempty"`
+	Kind               string                `json:"kind,omitempty"`
+	LinkId             string                `json:"link_id,omitempty"`
+	LinkNamespace      string                `json:"link_namespace,omitempty"`
+	OverflowPdfFormat  string                `json:"overflow_pdf_format,omitempty"`
+	OwnerId            string                `json:"owner_id,omitempty"`
+	Validations        []*Validation         `json:"validations,omitempty"`
+}
+
+type ReformFormPrepared struct {
+	Fields  []*ReformFormPrepareField `json:"fields,omitempty"`
+	Outputs []*Output                 `json:"outputs,omitempty"`
 }
 
 type ReorderFoldersResponse struct {
@@ -957,6 +1259,16 @@ type ReorderFoldersResponse struct {
 }
 
 func (m ReorderFoldersResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type Signature struct {
+	Kind   string `json:"kind,omitempty"`
+	Text   string `json:"text,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m Signature) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -993,6 +1305,20 @@ func (m SignatureDetectionResponse) IsRef() bool {
 type SignatureDetectionSchema struct {
 	Files   []http.File       `json:"files,omitempty"`
 	Uploads []*DocumentUpload `json:"uploads,omitempty"`
+}
+
+type SignatureImage struct {
+	DocumentId string     `json:"document_id,omitempty"`
+	Signature  *Signature `json:"signature,omitempty"`
+	Object     string     `json:"object,omitempty"`
+}
+
+func (m SignatureImage) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureIntent struct {
+	MaxLength int `json:"max_length,omitempty"`
 }
 
 type SignatureRequest struct {
@@ -1131,6 +1457,16 @@ func (m SignatureRequestSaveTabConfigResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestTabConfigDetailResponse struct {
+	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
+	Recipients  []*Recipient       `json:"recipients,omitempty"`
+	Object      string             `json:"object,omitempty"`
+}
+
+func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureResult struct {
 	SignedSignatureFields int    `json:"signed_signature_fields"`
 	TotalSignatureFields  int    `json:"total_signature_fields"`
@@ -1139,6 +1475,42 @@ type SignatureResult struct {
 
 func (m SignatureResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type Step struct {
+	Id       string `json:"id,omitempty"`
+	ClosedAt int    `json:"closed_at,omitempty"`
+	State    string `json:"state,omitempty"`
+	Status   string `json:"status,omitempty"`
+	StepKind string `json:"step_kind,omitempty"`
+	Object   string `json:"object,omitempty"`
+}
+
+func (m Step) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type StepList struct {
+	Data       []Step `json:"data"`
+	ListObject string `json:"list_object"`
+	Object     string `json:"object"`
+	HasMore    bool   `json:"has_more"`
+}
+
+func (m StepList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+func (m StepList) NextPageParams() core.PageParams {
+	if !m.HasMore {
+		return nil
+	}
+
+	pageSize := len(m.Data)
+	return &core.PageParamsImpl{
+		StartingAfter: m.Data[pageSize-1].Id,
+		Limit:         pageSize,
+	}
 }
 
 type Task struct {
@@ -1179,6 +1551,26 @@ func (m TaskList) NextPageParams() core.PageParams {
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
+}
+
+type TimelineSignatureRequest struct {
+	Id          string                       `json:"id,omitempty"`
+	Recipients  []*SignatureRequestRecipient `json:"recipients,omitempty"`
+	SigningLink string                       `json:"signing_link,omitempty"`
+	Object      string                       `json:"object,omitempty"`
+}
+
+func (m TimelineSignatureRequest) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type TimelineSignatureRequests struct {
+	Data   []*TimelineSignatureRequest `json:"data,omitempty"`
+	Object string                      `json:"object,omitempty"`
+}
+
+func (m TimelineSignatureRequests) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type Transaction struct {
@@ -1623,11 +2015,20 @@ func (m UserBillingInfo) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type UserContact struct {
+	UserContactId string `json:"user_contact_id,omitempty"`
+}
+
 type UserContactRecipient struct {
 	Contact           *Contact       `json:"contact,omitempty"`
 	Roles             []string       `json:"roles,omitempty"`
 	UserContactId     string         `json:"user_contact_id,omitempty"`
 	UserContactSource *ContactSource `json:"user_contact_source,omitempty"`
+	Object            string         `json:"object,omitempty"`
+}
+
+func (m UserContactRecipient) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type UserManagementSchema struct {
@@ -1638,4 +2039,9 @@ type UserManagementSchema struct {
 	MarketIds       []string `json:"market_ids,omitempty"`
 	SubmarketIds    []string `json:"submarket_ids,omitempty"`
 	UsState         string   `json:"us_state,omitempty"`
+}
+
+type Validation struct {
+	Kind      string           `json:"kind,omitempty"`
+	Signature *SignatureIntent `json:"signature,omitempty"`
 }
