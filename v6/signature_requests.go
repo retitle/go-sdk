@@ -16,6 +16,7 @@ type SignatureRequestsResource interface {
 	FlowDocumentsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowDocumentsResponse, error)
 	FlowReview(signatureRequestFlowReviewRequest SignatureRequestFlowReviewRequest, opts ...core.RequestOption) (*SignatureRequestFlowReviewResponse, error)
 	SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error)
+	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
 }
 
@@ -94,6 +95,14 @@ func (r signatureRequestsResourceImpl) FlowReview(signatureRequestFlowReviewRequ
 func (r signatureRequestsResourceImpl) SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error) {
 	res := SignatureRequestSaveTabConfigResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/save_tab_config"), signatureRequestSaveTabConfigRequest, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error) {
+	res := SplitAnnotationTextResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/split_text"), splitAnnotationTextRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
