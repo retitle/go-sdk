@@ -15,6 +15,7 @@ type SignatureRequestsResource interface {
 	FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error)
 	FlowDocumentsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowDocumentsResponse, error)
 	FlowReview(signatureRequestFlowReviewRequest SignatureRequestFlowReviewRequest, opts ...core.RequestOption) (*SignatureRequestFlowReviewResponse, error)
+	FlowReviewDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowReviewResponse, error)
 	SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error)
 	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
@@ -87,6 +88,14 @@ func (r signatureRequestsResourceImpl) FlowDocumentsDetail(opts ...core.RequestO
 func (r signatureRequestsResourceImpl) FlowReview(signatureRequestFlowReviewRequest SignatureRequestFlowReviewRequest, opts ...core.RequestOption) (*SignatureRequestFlowReviewResponse, error) {
 	res := SignatureRequestFlowReviewResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/flow_review"), signatureRequestFlowReviewRequest, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) FlowReviewDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowReviewResponse, error) {
+	res := GetSignatureRequestFlowReviewResponse{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/signature_requests/flow_review_detail"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

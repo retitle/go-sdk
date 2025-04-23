@@ -836,6 +836,21 @@ func (m GetSignatureRequestFlowDocumentsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type GetSignatureRequestFlowReviewResponse struct {
+	MakeDocumentsVisibleInCd *bool                                          `json:"make_documents_visible_in_cd,omitempty"`
+	MessageBody              string                                         `json:"message_body,omitempty"`
+	MessageSubject           string                                         `json:"message_subject,omitempty"`
+	Recipients               []*Recipient                                   `json:"recipients,omitempty"`
+	Subject                  string                                         `json:"subject,omitempty"`
+	TransactionDocumentIds   []string                                       `json:"transaction_document_ids,omitempty"`
+	TransactionDocuments     []*SignatureRequestExpandedTransactionDocument `json:"transaction_documents,omitempty"`
+	Object                   string                                         `json:"object,omitempty"`
+}
+
+func (m GetSignatureRequestFlowReviewResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type GlideForm struct {
 	GlideFormSeriesId int      `json:"glide_form_series_id"`
 	Tags              []string `json:"tags,omitempty"`
@@ -1380,6 +1395,19 @@ type SignatureRequestDocument struct {
 }
 
 func (m SignatureRequestDocument) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureRequestExpandedTransactionDocument struct {
+	Id              string `json:"id,omitempty"`
+	LastModified    int    `json:"last_modified,omitempty"`
+	LatestVersionId string `json:"latest_version_id,omitempty"`
+	SignatureStatus string `json:"signature_status,omitempty"`
+	Title           string `json:"title,omitempty"`
+	Object          string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestExpandedTransactionDocument) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
