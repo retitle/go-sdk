@@ -24,13 +24,37 @@ type AccessPolicy struct {
 }
 
 type Activity struct {
-	Id        string `json:"id,omitempty"`
-	CreatedAt int    `json:"created_at,omitempty"`
-	Kind      string `json:"kind,omitempty"`
-	Object    string `json:"object,omitempty"`
+	Id        string           `json:"id,omitempty"`
+	Context   *ActivityContext `json:"context,omitempty"`
+	CreatedAt int              `json:"created_at,omitempty"`
+	Kind      string           `json:"kind,omitempty"`
+	Object    string           `json:"object,omitempty"`
 }
 
 func (m Activity) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ActivityContext struct {
+	Documents  []*ActivityContextItem `json:"documents,omitempty"`
+	Party      *ActivityContextItem   `json:"party,omitempty"`
+	Recipients []*ActivityContextItem `json:"recipients,omitempty"`
+	User       *ActivityContextItem   `json:"user,omitempty"`
+	Object     string                 `json:"object,omitempty"`
+}
+
+func (m ActivityContext) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ActivityContextItem struct {
+	Id     string `json:"id,omitempty"`
+	Link   string `json:"link,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m ActivityContextItem) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
