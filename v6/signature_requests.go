@@ -14,6 +14,7 @@ type SignatureRequestsResource interface {
 	Flow(signatureRequestFlowRequest SignatureRequestFlowRequest, opts ...core.RequestOption) (*SignatureRequestFlowResponse, error)
 	FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error)
 	FlowDocumentsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowDocumentsResponse, error)
+	FlowRecipients(signatureRequestFlowRecipientsRequest SignatureRequestFlowRecipientsRequest, opts ...core.RequestOption) (*SignatureRequestFlowRecipientsResponse, error)
 	FlowRecipientsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowRecipientsResponse, error)
 	FlowReview(signatureRequestFlowReviewRequest SignatureRequestFlowReviewRequest, opts ...core.RequestOption) (*SignatureRequestFlowReviewResponse, error)
 	FlowReviewDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowReviewResponse, error)
@@ -81,6 +82,14 @@ func (r signatureRequestsResourceImpl) FlowDocuments(signatureRequestFlowDocumen
 func (r signatureRequestsResourceImpl) FlowDocumentsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowDocumentsResponse, error) {
 	res := GetSignatureRequestFlowDocumentsResponse{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/signature_requests/flow_documents_detail"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) FlowRecipients(signatureRequestFlowRecipientsRequest SignatureRequestFlowRecipientsRequest, opts ...core.RequestOption) (*SignatureRequestFlowRecipientsResponse, error) {
+	res := SignatureRequestFlowRecipientsResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/flow_recipients"), signatureRequestFlowRecipientsRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
