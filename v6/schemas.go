@@ -860,6 +860,18 @@ func (m GetSignatureRequestFlowDocumentsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type GetSignatureRequestFlowRecipientsResponse struct {
+	IsSigningOrderApplied *bool        `json:"is_signing_order_applied,omitempty"`
+	LockedOrderSignerKeys []string     `json:"locked_order_signer_keys,omitempty"`
+	LockedSignerKeys      []string     `json:"locked_signer_keys,omitempty"`
+	Recipients            []*Recipient `json:"recipients,omitempty"`
+	Object                string       `json:"object,omitempty"`
+}
+
+func (m GetSignatureRequestFlowRecipientsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type GetSignatureRequestFlowReviewResponse struct {
 	MakeDocumentsVisibleInCd *bool                                          `json:"make_documents_visible_in_cd,omitempty"`
 	MessageBody              string                                         `json:"message_body,omitempty"`
@@ -1447,6 +1459,20 @@ type SignatureRequestFlowDocumentsResponse struct {
 }
 
 func (m SignatureRequestFlowDocumentsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureRequestFlowRecipientsRequest struct {
+	FlowId     string       `json:"flow_id"`
+	Recipients []*Recipient `json:"recipients,omitempty"`
+}
+
+type SignatureRequestFlowRecipientsResponse struct {
+	FlowId string `json:"flow_id,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestFlowRecipientsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
