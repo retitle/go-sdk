@@ -1673,10 +1673,10 @@ func (m TextSplitResponse) IsRef() bool {
 }
 
 type TimelineSignatureRequest struct {
-	Id          string                       `json:"id,omitempty"`
-	Recipients  []*SignatureRequestRecipient `json:"recipients,omitempty"`
-	SigningLink string                       `json:"signing_link,omitempty"`
-	Object      string                       `json:"object,omitempty"`
+	Id         string                       `json:"id,omitempty"`
+	Recipients []*SignatureRequestRecipient `json:"recipients,omitempty"`
+	SignNowUrl string                       `json:"sign_now_url,omitempty"`
+	Object     string                       `json:"object,omitempty"`
 }
 
 func (m TimelineSignatureRequest) IsRef() bool {
