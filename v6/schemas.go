@@ -1507,6 +1507,19 @@ func (m SignatureRequestFlowReviewResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestFlowSendRequest struct {
+	FlowId string `json:"flow_id"`
+}
+
+type SignatureRequestFlowSendResponse struct {
+	SignatureRequest *SignatureRequest `json:"signature_request,omitempty"`
+	Object           string            `json:"object,omitempty"`
+}
+
+func (m SignatureRequestFlowSendResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestRecipient struct {
 	Id            string `json:"id,omitempty"`
 	Email         string `json:"email,omitempty"`
@@ -1660,10 +1673,10 @@ func (m TextSplitResponse) IsRef() bool {
 }
 
 type TimelineSignatureRequest struct {
-	Id          string                       `json:"id,omitempty"`
-	Recipients  []*SignatureRequestRecipient `json:"recipients,omitempty"`
-	SigningLink string                       `json:"signing_link,omitempty"`
-	Object      string                       `json:"object,omitempty"`
+	Id         string                       `json:"id,omitempty"`
+	Recipients []*SignatureRequestRecipient `json:"recipients,omitempty"`
+	SignNowUrl string                       `json:"sign_now_url,omitempty"`
+	Object     string                       `json:"object,omitempty"`
 }
 
 func (m TimelineSignatureRequest) IsRef() bool {
