@@ -1550,9 +1550,10 @@ func (m SignatureRequestSaveTabConfigResponse) IsRef() bool {
 }
 
 type SignatureRequestTabConfigDetailResponse struct {
-	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
-	Recipients  []*Recipient       `json:"recipients,omitempty"`
-	Object      string             `json:"object,omitempty"`
+	FillConfigs          []*ESignFillConfig                             `json:"fill_configs,omitempty"`
+	Recipients           []*Recipient                                   `json:"recipients,omitempty"`
+	TransactionDocuments []*SignatureRequestExpandedTransactionDocument `json:"transaction_documents,omitempty"`
+	Object               string                                         `json:"object,omitempty"`
 }
 
 func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
