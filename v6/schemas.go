@@ -1435,6 +1435,16 @@ func (m SignatureRequestDocument) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestDuplicateResponse struct {
+	FlowId             string `json:"flow_id,omitempty"`
+	SignatureRequestId string `json:"signature_request_id,omitempty"`
+	Object             string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestDuplicateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestExpandedTransactionDocument struct {
 	Id              string `json:"id,omitempty"`
 	LastModified    int    `json:"last_modified,omitempty"`
