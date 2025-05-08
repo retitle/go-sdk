@@ -847,13 +847,14 @@ func (m FormMatch) IsRef() bool {
 }
 
 type GetSignatureRequestFlowDocumentsResponse struct {
-	DestinationFolderId          string   `json:"destination_folder_id,omitempty"`
-	HideFieldMoveOriginalToTrash *bool    `json:"hide_field_move_original_to_trash,omitempty"`
-	LockedTransactionDocumentIds []string `json:"locked_transaction_document_ids,omitempty"`
-	MakeDocumentsVisibleInCd     *bool    `json:"make_documents_visible_in_cd,omitempty"`
-	MoveOriginalToTrash          *bool    `json:"move_original_to_trash,omitempty"`
-	TransactionDocumentIds       []string `json:"transaction_document_ids,omitempty"`
-	Object                       string   `json:"object,omitempty"`
+	DestinationFolderId          string                                         `json:"destination_folder_id,omitempty"`
+	HideFieldMoveOriginalToTrash *bool                                          `json:"hide_field_move_original_to_trash,omitempty"`
+	LockedTransactionDocumentIds []string                                       `json:"locked_transaction_document_ids,omitempty"`
+	MakeDocumentsVisibleInCd     *bool                                          `json:"make_documents_visible_in_cd,omitempty"`
+	MoveOriginalToTrash          *bool                                          `json:"move_original_to_trash,omitempty"`
+	TransactionDocumentIds       []string                                       `json:"transaction_document_ids,omitempty"`
+	TransactionDocuments         []*SignatureRequestExpandedTransactionDocument `json:"transaction_documents,omitempty"`
+	Object                       string                                         `json:"object,omitempty"`
 }
 
 func (m GetSignatureRequestFlowDocumentsResponse) IsRef() bool {
