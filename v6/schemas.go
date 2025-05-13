@@ -1435,6 +1435,16 @@ func (m SignatureRequestDocument) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestDuplicateResponse struct {
+	FlowId             string `json:"flow_id,omitempty"`
+	SignatureRequestId string `json:"signature_request_id,omitempty"`
+	Object             string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestDuplicateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestExpandedTransactionDocument struct {
 	Id              string `json:"id,omitempty"`
 	LastModified    int    `json:"last_modified,omitempty"`
@@ -1550,9 +1560,10 @@ func (m SignatureRequestSaveTabConfigResponse) IsRef() bool {
 }
 
 type SignatureRequestTabConfigDetailResponse struct {
-	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
-	Recipients  []*Recipient       `json:"recipients,omitempty"`
-	Object      string             `json:"object,omitempty"`
+	FillConfigs          []*ESignFillConfig                             `json:"fill_configs,omitempty"`
+	Recipients           []*Recipient                                   `json:"recipients,omitempty"`
+	TransactionDocuments []*SignatureRequestExpandedTransactionDocument `json:"transaction_documents,omitempty"`
+	Object               string                                         `json:"object,omitempty"`
 }
 
 func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
