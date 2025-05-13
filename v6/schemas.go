@@ -1570,6 +1570,11 @@ func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestVoidRequest struct {
+	SignatureRequestId string `json:"signature_request_id"`
+	VoidReason         string `json:"void_reason,omitempty"`
+}
+
 type SignatureResult struct {
 	SignedSignatureFields int    `json:"signed_signature_fields"`
 	TotalSignatureFields  int    `json:"total_signature_fields"`

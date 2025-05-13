@@ -22,6 +22,7 @@ type SignatureRequestsResource interface {
 	SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error)
 	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
+	Void(signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) error
 	Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error)
 }
 
@@ -151,6 +152,13 @@ func (r signatureRequestsResourceImpl) TabConfigDetail(opts ...core.RequestOptio
 		return nil, err
 	}
 	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) Void(signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) error {
+	if err := r.client.Post(nil, true, fmt.Sprintf("/signature_requests/void"), signatureRequestVoidRequest, opts...); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r signatureRequestsResourceImpl) Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error) {
