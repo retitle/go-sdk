@@ -1571,8 +1571,16 @@ func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
 }
 
 type SignatureRequestVoidRequest struct {
-	SignatureRequestId string `json:"signature_request_id"`
-	VoidReason         string `json:"void_reason,omitempty"`
+	VoidReason string `json:"void_reason,omitempty"`
+}
+
+type SignatureRequestVoidResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestVoidResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type SignatureResult struct {

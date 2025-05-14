@@ -22,8 +22,8 @@ type SignatureRequestsResource interface {
 	SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error)
 	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
-	Void(signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) error
 	Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error)
+	Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error)
 }
 
 type signatureRequestsResourceImpl struct {
@@ -154,16 +154,17 @@ func (r signatureRequestsResourceImpl) TabConfigDetail(opts ...core.RequestOptio
 	return &res, nil
 }
 
-func (r signatureRequestsResourceImpl) Void(signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) error {
-	if err := r.client.Post(nil, true, fmt.Sprintf("/signature_requests/void"), signatureRequestVoidRequest, opts...); err != nil {
-		return err
-	}
-	return nil
-}
-
 func (r signatureRequestsResourceImpl) Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error) {
 	res := SignatureRequestDuplicateResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/%s/duplicate", id), nil, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error) {
+	res := SignatureRequestVoidResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/%s/void", id), signatureRequestVoidRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
