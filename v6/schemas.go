@@ -1570,6 +1570,19 @@ func (m SignatureRequestTabConfigDetailResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestVoidRequest struct {
+	VoidReason string `json:"void_reason,omitempty"`
+}
+
+type SignatureRequestVoidResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestVoidResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureResult struct {
 	SignedSignatureFields int    `json:"signed_signature_fields"`
 	TotalSignatureFields  int    `json:"total_signature_fields"`
