@@ -23,6 +23,7 @@ type SignatureRequestsResource interface {
 	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
 	Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error)
+	Resend(id string, opts ...core.RequestOption) error
 	Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error)
 }
 
@@ -160,6 +161,13 @@ func (r signatureRequestsResourceImpl) Duplicate(id string, opts ...core.Request
 		return nil, err
 	}
 	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) Resend(id string, opts ...core.RequestOption) error {
+	if err := r.client.Post(nil, true, fmt.Sprintf("/signature_requests/%s/resend", id), nil, opts...); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r signatureRequestsResourceImpl) Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error) {
