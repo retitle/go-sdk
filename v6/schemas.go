@@ -1379,6 +1379,7 @@ type SignatureRequest struct {
 	CompletedAt      int                          `json:"completed_at,omitempty"`
 	CreatedAt        int                          `json:"created_at,omitempty"`
 	CurrentFlowPage  string                       `json:"current_flow_page,omitempty"`
+	DealId           string                       `json:"deal_id,omitempty"`
 	Documents        []*SignatureRequestDocument  `json:"documents,omitempty"`
 	EnvelopeId       string                       `json:"envelope_id,omitempty"`
 	FlowId           string                       `json:"flow_id,omitempty"`
