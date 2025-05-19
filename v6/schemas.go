@@ -1425,6 +1425,15 @@ func (m SignatureRequestList) NextPageParams() core.PageParams {
 	}
 }
 
+type SignatureRequestArchiveResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m SignatureRequestArchiveResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestDocument struct {
 	Id     string `json:"id,omitempty"`
 	Name   string `json:"name,omitempty"`

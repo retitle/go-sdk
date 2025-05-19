@@ -22,6 +22,7 @@ type SignatureRequestsResource interface {
 	SaveTabConfig(signatureRequestSaveTabConfigRequest SignatureRequestSaveTabConfigRequest, opts ...core.RequestOption) (*SignatureRequestSaveTabConfigResponse, error)
 	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
+	Archive(id string, opts ...core.RequestOption) (*SignatureRequestArchiveResponse, error)
 	Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error)
 	Resend(id string, opts ...core.RequestOption) error
 	Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error)
@@ -150,6 +151,14 @@ func (r signatureRequestsResourceImpl) SplitText(splitAnnotationTextRequest Spli
 func (r signatureRequestsResourceImpl) TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error) {
 	res := SignatureRequestTabConfigDetailResponse{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/signature_requests/tab_config_detail"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) Archive(id string, opts ...core.RequestOption) (*SignatureRequestArchiveResponse, error) {
+	res := SignatureRequestArchiveResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/%s/archive", id), nil, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
