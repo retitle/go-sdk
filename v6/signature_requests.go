@@ -11,6 +11,7 @@ type SignatureRequestsResource interface {
 	GetDetail(id string, opts ...core.RequestOption) (*SignatureRequest, error)
 	GetMulti(ids []string, opts ...core.RequestOption) (*SignatureRequestList, error)
 	List(opts ...core.RequestOption) (*SignatureRequestList, error)
+	DownloadEnvelopeDocument(opts ...core.RequestOption) (*BinaryResponse, error)
 	Flow(signatureRequestFlowRequest SignatureRequestFlowRequest, opts ...core.RequestOption) (*SignatureRequestFlowResponse, error)
 	FlowDocuments(signatureRequestFlowDocumentsRequest SignatureRequestFlowDocumentsRequest, opts ...core.RequestOption) (*SignatureRequestFlowDocumentsResponse, error)
 	FlowDocumentsDetail(opts ...core.RequestOption) (*GetSignatureRequestFlowDocumentsResponse, error)
@@ -63,6 +64,14 @@ func (r signatureRequestsResourceImpl) GetMulti(ids []string, opts ...core.Reque
 func (r signatureRequestsResourceImpl) List(opts ...core.RequestOption) (*SignatureRequestList, error) {
 	res := SignatureRequestList{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/signature_requests"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) DownloadEnvelopeDocument(opts ...core.RequestOption) (*BinaryResponse, error) {
+	res := BinaryResponse{}
+	if err := r.client.GetStream(&res, true, fmt.Sprintf("/signature_requests/download_envelope_document"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
