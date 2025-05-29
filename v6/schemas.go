@@ -1435,10 +1435,11 @@ func (m SignatureRequestArchiveResponse) IsRef() bool {
 }
 
 type SignatureRequestDocument struct {
-	Id     string `json:"id,omitempty"`
-	Name   string `json:"name,omitempty"`
-	Seq    int    `json:"seq,omitempty"`
-	Object string `json:"object,omitempty"`
+	Id                 string `json:"id,omitempty"`
+	EnvelopeDocumentId string `json:"envelope_document_id,omitempty"`
+	Name               string `json:"name,omitempty"`
+	Seq                int    `json:"seq,omitempty"`
+	Object             string `json:"object,omitempty"`
 }
 
 func (m SignatureRequestDocument) IsRef() bool {
