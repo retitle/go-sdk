@@ -26,6 +26,7 @@ type SignatureRequestsResource interface {
 	Archive(id string, opts ...core.RequestOption) (*SignatureRequestArchiveResponse, error)
 	Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error)
 	Resend(id string, opts ...core.RequestOption) error
+	StartRevision(id string, opts ...core.RequestOption) (*SignatureRequestStartRevisionResponse, error)
 	Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error)
 }
 
@@ -186,6 +187,14 @@ func (r signatureRequestsResourceImpl) Resend(id string, opts ...core.RequestOpt
 		return err
 	}
 	return nil
+}
+
+func (r signatureRequestsResourceImpl) StartRevision(id string, opts ...core.RequestOption) (*SignatureRequestStartRevisionResponse, error) {
+	res := SignatureRequestStartRevisionResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/signature_requests/%s/start_revision", id), nil, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
 }
 
 func (r signatureRequestsResourceImpl) Void(id string, signatureRequestVoidRequest SignatureRequestVoidRequest, opts ...core.RequestOption) (*SignatureRequestVoidResponse, error) {
