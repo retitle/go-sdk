@@ -735,16 +735,17 @@ type FillConfig struct {
 }
 
 type Folder struct {
-	Id                   string                   `json:"id,omitempty"`
-	Can                  map[string]*bool         `json:"can,omitempty"`
-	Kind                 string                   `json:"kind,omitempty"`
-	LastModified         int                      `json:"last_modified,omitempty"`
-	OrderIndex           int                      `json:"order_index,omitempty"`
-	PropertyInfo         *PropertyInfo            `json:"property_info,omitempty"`
-	Title                string                   `json:"title,omitempty"`
-	TransactionDocuments *TransactionDocumentList `json:"transaction_documents,omitempty"`
-	TransactionPackage   *TransactionPackage      `json:"transaction_package,omitempty"`
-	Object               string                   `json:"object,omitempty"`
+	Id                        string                     `json:"id,omitempty"`
+	Can                       map[string]*bool           `json:"can,omitempty"`
+	IntegratedServicesPartner *IntegratedServicesPartner `json:"integrated_services_partner,omitempty"`
+	Kind                      string                     `json:"kind,omitempty"`
+	LastModified              int                        `json:"last_modified,omitempty"`
+	OrderIndex                int                        `json:"order_index,omitempty"`
+	PropertyInfo              *PropertyInfo              `json:"property_info,omitempty"`
+	Title                     string                     `json:"title,omitempty"`
+	TransactionDocuments      *TransactionDocumentList   `json:"transaction_documents,omitempty"`
+	TransactionPackage        *TransactionPackage        `json:"transaction_package,omitempty"`
+	Object                    string                     `json:"object,omitempty"`
 }
 
 func (m Folder) IsRef() bool {
@@ -915,6 +916,17 @@ type InitialRecipients struct {
 	ExternalId    string           `json:"external_id,omitempty"`
 	RecipientRole string           `json:"recipient_role,omitempty"`
 	Source        *RecipientSource `json:"source,omitempty"`
+}
+
+type IntegratedServicesPartner struct {
+	BannerDismissed *bool  `json:"banner_dismissed,omitempty"`
+	DisplayName     string `json:"display_name,omitempty"`
+	EnumValue       int    `json:"enum_value,omitempty"`
+	Object          string `json:"object,omitempty"`
+}
+
+func (m IntegratedServicesPartner) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type ItemDeletes struct {
@@ -1911,6 +1923,7 @@ type TransactionDocument struct {
 	SignatureStatus           string           `json:"signature_status,omitempty"`
 	Title                     string           `json:"title,omitempty"`
 	Transaction               *Transaction     `json:"transaction,omitempty"`
+	UploadedBy                *UploadedBy      `json:"uploaded_by,omitempty"`
 	Url                       string           `json:"url,omitempty"`
 	Object                    string           `json:"object,omitempty"`
 }
@@ -2123,6 +2136,16 @@ type UploadError struct {
 }
 
 func (m UploadError) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UploadedBy struct {
+	Name     string `json:"name,omitempty"`
+	PersonId string `json:"person_id,omitempty"`
+	Object   string `json:"object,omitempty"`
+}
+
+func (m UploadedBy) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
