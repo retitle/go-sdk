@@ -615,6 +615,24 @@ func (m EnvelopeResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type EnvelopeStartRevisionResponse struct {
+	EnvelopeId string `json:"envelope_id,omitempty"`
+	Object     string `json:"object,omitempty"`
+}
+
+func (m EnvelopeStartRevisionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeCancelRevisionResponse struct {
+	EnvelopeId string `json:"envelope_id,omitempty"`
+	Object     string `json:"object,omitempty"`
+}
+
+func (m EnvelopeCancelRevisionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type EsignTabConfig struct {
 	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
 }
