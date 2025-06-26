@@ -794,7 +794,14 @@ func (m FolderList) NextPageParams() core.PageParams {
 }
 
 type FolderCreate struct {
-	Title string `json:"title,omitempty"`
+	IntegratedServicesPartner *FolderCreateIntegratedServicesPartner `json:"integrated_services_partner,omitempty"`
+	Kind                      int                                    `json:"kind,omitempty"`
+	Title                     string                                 `json:"title,omitempty"`
+}
+
+type FolderCreateIntegratedServicesPartner struct {
+	DisplayName string `json:"display_name,omitempty"`
+	EnumValue   int    `json:"enum_value,omitempty"`
 }
 
 type FolderCreates struct {
