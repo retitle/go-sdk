@@ -1580,6 +1580,15 @@ func (m SignatureRequestFlowSendResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type SignatureRequestFlowSendRevisionResponse struct {
+	SignatureRequest *SignatureRequest `json:"signature_request,omitempty"`
+	Object           string            `json:"object,omitempty"`
+}
+
+func (m SignatureRequestFlowSendRevisionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type SignatureRequestRecipient struct {
 	Id            string `json:"id,omitempty"`
 	Email         string `json:"email,omitempty"`
@@ -1592,6 +1601,10 @@ type SignatureRequestRecipient struct {
 
 func (m SignatureRequestRecipient) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureRequestReviseRequest struct {
+	RevisionFlowId string `json:"revision_flow_id"`
 }
 
 type SignatureRequestSaveTabConfigRequest struct {
