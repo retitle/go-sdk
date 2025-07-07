@@ -303,9 +303,10 @@ func (m DeletedParty) IsRef() bool {
 }
 
 type Document struct {
-	Id       string `json:"id"`
-	FileName string `json:"file_name"`
-	Object   string `json:"object,omitempty"`
+	Id                 string `json:"id"`
+	FileName           string `json:"file_name"`
+	Object             string `json:"object,omitempty"`
+	PspdfkitDocumentId string `json:"pspdfkit_document_id,omitempty"`
 }
 
 func (m Document) IsRef() bool {
