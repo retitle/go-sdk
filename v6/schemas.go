@@ -402,8 +402,9 @@ func (m DocumentUploadResponse) IsRef() bool {
 }
 
 type DocumentUploadSchema struct {
-	Files     []http.File         `json:"files,omitempty"`
-	FilesMeta []*DocumentFileMeta `json:"files_meta,omitempty"`
+	Files          []http.File         `json:"files,omitempty"`
+	FilesMeta      []*DocumentFileMeta `json:"files_meta,omitempty"`
+	CreatePspdfkit bool                `json:"create_pspdfkit,omitempty"`
 }
 
 type DocumentZone struct {
