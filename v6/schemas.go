@@ -303,9 +303,10 @@ func (m DeletedParty) IsRef() bool {
 }
 
 type Document struct {
-	Id       string `json:"id"`
-	FileName string `json:"file_name"`
-	Object   string `json:"object,omitempty"`
+	Id                 string `json:"id"`
+	FileName           string `json:"file_name"`
+	Object             string `json:"object,omitempty"`
+	PspdfkitDocumentId string `json:"pspdfkit_document_id,omitempty"`
 }
 
 func (m Document) IsRef() bool {
@@ -402,8 +403,9 @@ func (m DocumentUploadResponse) IsRef() bool {
 }
 
 type DocumentUploadSchema struct {
-	Files     []http.File         `json:"files,omitempty"`
-	FilesMeta []*DocumentFileMeta `json:"files_meta,omitempty"`
+	Files          []http.File         `json:"files,omitempty"`
+	FilesMeta      []*DocumentFileMeta `json:"files_meta,omitempty"`
+	CreatePspdfkit bool                `json:"create_pspdfkit,omitempty"`
 }
 
 type DocumentZone struct {
