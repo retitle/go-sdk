@@ -25,6 +25,7 @@ type SignatureRequestsResource interface {
 	SplitText(splitAnnotationTextRequest SplitAnnotationTextRequest, opts ...core.RequestOption) (*SplitAnnotationTextResponse, error)
 	TabConfigDetail(opts ...core.RequestOption) (*SignatureRequestTabConfigDetailResponse, error)
 	Archive(id string, opts ...core.RequestOption) (*SignatureRequestArchiveResponse, error)
+	CancelRevision(id string, opts ...core.RequestOption) error
 	Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error)
 	Resend(id string, opts ...core.RequestOption) error
 	StartRevision(id string, opts ...core.RequestOption) (*SignatureRequestStartRevisionResponse, error)
@@ -181,6 +182,13 @@ func (r signatureRequestsResourceImpl) Archive(id string, opts ...core.RequestOp
 		return nil, err
 	}
 	return &res, nil
+}
+
+func (r signatureRequestsResourceImpl) CancelRevision(id string, opts ...core.RequestOption) error {
+	if err := r.client.Post(nil, true, fmt.Sprintf("/signature_requests/%s/cancel_revision", id), nil, opts...); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (r signatureRequestsResourceImpl) Duplicate(id string, opts ...core.RequestOption) (*SignatureRequestDuplicateResponse, error) {
