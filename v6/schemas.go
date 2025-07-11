@@ -2064,10 +2064,11 @@ func (m TransactionDocumentTrashesResponse) IsRef() bool {
 }
 
 type TransactionDocumentUpload struct {
-	Folder   *FolderCreate `json:"folder,omitempty"`
-	FolderId string        `json:"folder_id,omitempty"`
-	MimeType string        `json:"mime_type,omitempty"`
-	Title    string        `json:"title,omitempty"`
+	Folder                    *FolderCreate                          `json:"folder,omitempty"`
+	FolderId                  string                                 `json:"folder_id,omitempty"`
+	IntegratedServicesPartner *FolderCreateIntegratedServicesPartner `json:"integrated_services_partner,omitempty"`
+	MimeType                  string                                 `json:"mime_type,omitempty"`
+	Title                     string                                 `json:"title,omitempty"`
 }
 
 type TransactionDocumentUploadResult struct {
