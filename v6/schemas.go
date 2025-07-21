@@ -1497,12 +1497,13 @@ func (m SignatureRequestDuplicateResponse) IsRef() bool {
 }
 
 type SignatureRequestExpandedTransactionDocument struct {
-	Id              string `json:"id,omitempty"`
-	LastModified    int    `json:"last_modified,omitempty"`
-	LatestVersionId string `json:"latest_version_id,omitempty"`
-	SignatureStatus string `json:"signature_status,omitempty"`
-	Title           string `json:"title,omitempty"`
-	Object          string `json:"object,omitempty"`
+	Id                 string `json:"id,omitempty"`
+	EnvelopeDocumentId string `json:"envelope_document_id,omitempty"`
+	LastModified       int    `json:"last_modified,omitempty"`
+	LatestVersionId    string `json:"latest_version_id,omitempty"`
+	SignatureStatus    string `json:"signature_status,omitempty"`
+	Title              string `json:"title,omitempty"`
+	Object             string `json:"object,omitempty"`
 }
 
 func (m SignatureRequestExpandedTransactionDocument) IsRef() bool {
