@@ -336,6 +336,16 @@ func (m DocumentAnalysisResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type DocumentDetailsResponse struct {
+	JwtToken           string `json:"jwt_token"`
+	PspdfkitDocumentId string `json:"pspdfkit_document_id"`
+	Object             string `json:"object,omitempty"`
+}
+
+func (m DocumentDetailsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type DocumentFileMeta struct {
 	FileName string `json:"file_name"`
 }
