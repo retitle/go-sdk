@@ -10,10 +10,10 @@ type DocumentsResource interface {
 	AnalyzeSynchronous(analyzeSchema AnalyzeSchema, files []core.File, opts ...core.RequestOption) (*DocumentAnalysisAsyncResponse, error)
 	DocumentSplit(documentSplitSchema DocumentSplitSchema, files []core.File, opts ...core.RequestOption) (*DocumentSplitResponse, error)
 	DownloadZip(opts ...core.RequestOption) (*BinaryResponse, error)
+	PspdfkitDetails(opts ...core.RequestOption) (*DocumentPspdfkitDetailsResponse, error)
 	SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, files []core.File, opts ...core.RequestOption) (*SignatureDetectionResponse, error)
 	UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error)
 	Download(id string, opts ...core.RequestOption) (*BinaryResponse, error)
-	DocumentDetails(opts ...core.RequestOption) (*DocumentDetailsResponse, error)
 }
 
 type documentsResourceImpl struct {
@@ -50,6 +50,14 @@ func (r documentsResourceImpl) DownloadZip(opts ...core.RequestOption) (*BinaryR
 	return &res, nil
 }
 
+func (r documentsResourceImpl) PspdfkitDetails(opts ...core.RequestOption) (*DocumentPspdfkitDetailsResponse, error) {
+	res := DocumentPspdfkitDetailsResponse{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/documents/pspdfkit_details"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
 func (r documentsResourceImpl) SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, files []core.File, opts ...core.RequestOption) (*SignatureDetectionResponse, error) {
 	res := SignatureDetectionResponse{}
 	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/documents/signature_detection"), signatureDetectionSchema, files, opts...); err != nil {
@@ -69,14 +77,6 @@ func (r documentsResourceImpl) UploadFile(documentUploadSchema DocumentUploadSch
 func (r documentsResourceImpl) Download(id string, opts ...core.RequestOption) (*BinaryResponse, error) {
 	res := BinaryResponse{}
 	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/%s/download", id), opts...); err != nil {
-		return nil, err
-	}
-	return &res, nil
-}
-
-func (r documentsResourceImpl) DocumentDetails(opts ...core.RequestOption) (*DocumentDetailsResponse, error) {
-	res := DocumentDetailsResponse{}
-	if err := r.client.Get(&res, true, fmt.Sprintf("/documents/pspdfkit_details"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

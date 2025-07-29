@@ -336,16 +336,6 @@ func (m DocumentAnalysisResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type DocumentDetailsResponse struct {
-	JwtToken           string `json:"jwt_token"`
-	PspdfkitDocumentId string `json:"pspdfkit_document_id"`
-	Object             string `json:"object,omitempty"`
-}
-
-func (m DocumentDetailsResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type DocumentFileMeta struct {
 	FileName string `json:"file_name"`
 }
@@ -356,6 +346,16 @@ type DocumentMergeSchema struct {
 	NewDocumentFolderId           string   `json:"new_document_folder_id"`
 	NewDocumentTitle              string   `json:"new_document_title"`
 	TransactionDocumentVersionIds []string `json:"transaction_document_version_ids,omitempty"`
+}
+
+type DocumentPspdfkitDetailsResponse struct {
+	JwtToken           string `json:"jwt_token,omitempty"`
+	PspdfkitDocumentId string `json:"pspdfkit_document_id,omitempty"`
+	Object             string `json:"object,omitempty"`
+}
+
+func (m DocumentPspdfkitDetailsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type DocumentSplitAsyncResponse struct {
