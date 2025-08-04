@@ -1645,7 +1645,7 @@ func (m SignatureRequestStartRevisionResponse) IsRef() bool {
 
 type SignatureRequestTabConfigDetailResponse struct {
 	FillConfigs             []*ESignFillConfig                             `json:"fill_configs,omitempty"`
-	LockedSignerKeysByTdvId map[string]interface{}                         `json:"locked_signer_keys_by_tdv_id,omitempty"`
+	LockedSignerKeysByTdvId map[string][]string                            `json:"locked_signer_keys_by_tdv_id,omitempty"`
 	Recipients              []*Recipient                                   `json:"recipients,omitempty"`
 	TransactionDocuments    []*SignatureRequestExpandedTransactionDocument `json:"transaction_documents,omitempty"`
 	Object                  string                                         `json:"object,omitempty"`
