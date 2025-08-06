@@ -1605,6 +1605,8 @@ func (m SignatureRequestFlowSendRevisionResponse) IsRef() bool {
 type SignatureRequestRecipient struct {
 	Id            string `json:"id,omitempty"`
 	Email         string `json:"email,omitempty"`
+	FirstName     string `json:"first_name,omitempty"`
+	LastName      string `json:"last_name,omitempty"`
 	Order         int    `json:"order,omitempty"`
 	RecipientRole string `json:"recipient_role,omitempty"`
 	Status        string `json:"status,omitempty"`
