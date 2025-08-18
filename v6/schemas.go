@@ -487,16 +487,6 @@ func (m ESignFillConfig) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type EnvCreateResponse struct {
-	Envelope   *EnvelopeResponse `json:"envelope,omitempty"`
-	EnvelopeId string            `json:"envelope_id,omitempty"`
-	Object     string            `json:"object,omitempty"`
-}
-
-func (m EnvCreateResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type Envelope struct {
 	Id                string                 `json:"id,omitempty"`
 	CreatedAt         int                    `json:"created_at,omitempty"`
@@ -529,8 +519,18 @@ type EnvelopeCreateIntentSchema struct {
 	Documents     []*InitialEnvelopeDocument `json:"documents,omitempty"`
 	EmailSubject  string                     `json:"email_subject,omitempty"`
 	EmailMessage  string                     `json:"email_message,omitempty"`
-	Recipients    []*InitialRecipients       `json:"recipients,omitempty"`
+	Recipients    []*InitialRecipient        `json:"recipients,omitempty"`
 	TransactionId string                     `json:"transaction_id,omitempty"`
+}
+
+type EnvelopeCreateResponse struct {
+	Envelope   *EnvelopeResponse `json:"envelope,omitempty"`
+	EnvelopeId string            `json:"envelope_id,omitempty"`
+	Object     string            `json:"object,omitempty"`
+}
+
+func (m EnvelopeCreateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type EnvelopeDocument struct {
@@ -943,12 +943,12 @@ type Imports struct {
 }
 
 type InitialEnvelopeDocument struct {
-	Id         string      `json:"id,omitempty"`
-	ExternalId string      `json:"external_id,omitempty"`
-	FillConfig *FillConfig `json:"fill_config,omitempty"`
+	Id          string                 `json:"id,omitempty"`
+	Annotations []*SignatureAnnotation `json:"annotations,omitempty"`
+	ExternalId  string                 `json:"external_id,omitempty"`
 }
 
-type InitialRecipients struct {
+type InitialRecipient struct {
 	Contact       *EnvelopeContact `json:"contact,omitempty"`
 	ExternalId    string           `json:"external_id,omitempty"`
 	RecipientRole string           `json:"recipient_role,omitempty"`
@@ -1371,6 +1371,30 @@ type Signature struct {
 
 func (m Signature) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SignatureAnnotation struct {
+	Id             string                     `json:"id,omitempty"`
+	Color          string                     `json:"color,omitempty"`
+	ExtraParams    *SignatureAnnotationParams `json:"extra_params,omitempty"`
+	FieldId        string                     `json:"field_id,omitempty"`
+	Height         float64                    `json:"height,omitempty"`
+	Kind           string                     `json:"kind,omitempty"`
+	Left           float64                    `json:"left,omitempty"`
+	MultiPartIndex int                        `json:"multi_part_index,omitempty"`
+	Optional       *bool                      `json:"optional,omitempty"`
+	PageIndex      int                        `json:"page_index,omitempty"`
+	ReadOnly       *bool                      `json:"read_only,omitempty"`
+	RecipientId    string                     `json:"recipient_id,omitempty"`
+	Top            float64                    `json:"top,omitempty"`
+	Width          float64                    `json:"width,omitempty"`
+}
+
+type SignatureAnnotationParams struct {
+	AllowInput   *bool                  `json:"allow_input,omitempty"`
+	DefaultValue map[string]interface{} `json:"default_value,omitempty"`
+	ExportValue  map[string]interface{} `json:"export_value,omitempty"`
+	Options      []string               `json:"options,omitempty"`
 }
 
 type SignatureDetectionAnalysisResult struct {
