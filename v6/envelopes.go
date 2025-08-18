@@ -8,6 +8,7 @@ import (
 
 type EnvelopesResource interface {
 	GetDetail(id string, opts ...core.RequestOption) (*Envelope, error)
+	Create(envelopeCreateIntentSchema EnvelopeCreateIntentSchema, opts ...core.RequestOption) (*EnvelopeCreateResponse, error)
 	StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error)
 	CancelRevision(id string, opts ...core.RequestOption) (*EnvelopeCancelRevisionResponse, error)
 }
@@ -25,6 +26,14 @@ func GetEnvelopesResource(client Client) EnvelopesResource {
 func (r envelopesResourceImpl) GetDetail(id string, opts ...core.RequestOption) (*Envelope, error) {
 	res := Envelope{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/envelopes/%s", id), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r envelopesResourceImpl) Create(envelopeCreateIntentSchema EnvelopeCreateIntentSchema, opts ...core.RequestOption) (*EnvelopeCreateResponse, error) {
+	res := EnvelopeCreateResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/create"), envelopeCreateIntentSchema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
