@@ -48,6 +48,14 @@ func (r transactionDocumentsResourceImpl) List(transactionId string, opts ...cor
 	return &res, nil
 }
 
+func (r transactionDocumentsResourceImpl) PartnerFolderUploads(transactionId string, transactionDocumentUploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*PartnerFolderUploadsResponse, error) {
+	res := PartnerFolderUploadsResponse{}
+	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/transactions/%s/transaction_documents/partner_folder_uploads", transactionId), transactionDocumentUploads, files, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
 func (r transactionDocumentsResourceImpl) Uploads(transactionId string, transactionDocumentUploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*UploadsResponse, error) {
 	res := UploadsResponse{}
 	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/transactions/%s/transaction_documents/uploads", transactionId), transactionDocumentUploads, files, opts...); err != nil {
