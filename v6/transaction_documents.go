@@ -10,6 +10,7 @@ type TransactionDocumentsResource interface {
 	GetDetail(transactionId string, id string, opts ...core.RequestOption) (*TransactionDocument, error)
 	GetMulti(transactionId string, ids []string, opts ...core.RequestOption) (*TransactionDocumentList, error)
 	List(transactionId string, opts ...core.RequestOption) (*TransactionDocumentList, error)
+	PartnerFolderUploads(transactionId string, transactionDocumentUploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*PartnerFolderUploadsResponse, error)
 	Uploads(transactionId string, transactionDocumentUploads TransactionDocumentUploads, files []core.File, opts ...core.RequestOption) (*UploadsResponse, error)
 }
 

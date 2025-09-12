@@ -1083,6 +1083,16 @@ type Output struct {
 	OutKind string     `json:"out_kind,omitempty"`
 }
 
+type PartnerFolderUploadsResponse struct {
+	Result        *TransactionDocumentUploadResult `json:"result,omitempty"`
+	TransactionId string                           `json:"transaction_id,omitempty"`
+	Object        string                           `json:"object,omitempty"`
+}
+
+func (m PartnerFolderUploadsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Party struct {
 	Id               string       `json:"id,omitempty"`
 	ClientVisibility string       `json:"client_visibility,omitempty"`
