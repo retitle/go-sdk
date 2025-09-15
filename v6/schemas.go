@@ -645,6 +645,19 @@ func (m EnvelopeCancelRevisionResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type EnvelopeVoidResponse struct {
+	EnvelopeId string `json:"envelope_id,omitempty"`
+	Object     string `json:"object,omitempty"`
+}
+
+func (m EnvelopeVoidResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeVoidSchema struct {
+	Message string `json:"message,omitempty"`
+}
+
 type EsignTabConfig struct {
 	FillConfigs []*ESignFillConfig `json:"fill_configs,omitempty"`
 }
