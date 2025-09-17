@@ -493,6 +493,7 @@ type Envelope struct {
 	Creator           string                 `json:"creator,omitempty"`
 	EnvelopeDocument  *EnvelopeDocumentList  `json:"envelope_document,omitempty"`
 	EnvelopeRecipient *EnvelopeRecipientList `json:"envelope_recipient,omitempty"`
+	SigningUrl        string                 `json:"signing_url,omitempty"`
 	Status            string                 `json:"status,omitempty"`
 	Step              *StepList              `json:"step,omitempty"`
 	Title             string                 `json:"title,omitempty"`
@@ -619,6 +620,7 @@ func (m EnvelopeRecipientList) NextPageParams() core.PageParams {
 
 type EnvelopeResponse struct {
 	LatestVersionId string `json:"latest_version_id,omitempty"`
+	SigningUrl      string `json:"signing_url,omitempty"`
 	Uuid            string `json:"uuid,omitempty"`
 	Object          string `json:"object,omitempty"`
 }
