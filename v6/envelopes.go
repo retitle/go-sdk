@@ -11,6 +11,7 @@ type EnvelopesResource interface {
 	Create(envelopeCreateIntentSchema EnvelopeCreateIntentSchema, opts ...core.RequestOption) (*EnvelopeCreateResponse, error)
 	StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error)
 	CancelRevision(id string, opts ...core.RequestOption) (*EnvelopeCancelRevisionResponse, error)
+	Resend(id string, opts ...core.RequestOption) (*EnvelopeResendResponse, error)
 	Void(id string, envelopeVoidSchema EnvelopeVoidSchema, opts ...core.RequestOption) (*EnvelopeVoidResponse, error)
 }
 
@@ -51,6 +52,14 @@ func (r envelopesResourceImpl) StartRevision(id string, opts ...core.RequestOpti
 func (r envelopesResourceImpl) CancelRevision(id string, opts ...core.RequestOption) (*EnvelopeCancelRevisionResponse, error) {
 	res := EnvelopeCancelRevisionResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/cancelRevision", id), nil, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r envelopesResourceImpl) Resend(id string, opts ...core.RequestOption) (*EnvelopeResendResponse, error) {
+	res := EnvelopeResendResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/resend", id), nil, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
