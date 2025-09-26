@@ -618,6 +618,15 @@ func (m EnvelopeRecipientList) NextPageParams() core.PageParams {
 	}
 }
 
+type EnvelopeResendResponse struct {
+	EnvelopeId string `json:"envelope_id,omitempty"`
+	Object     string `json:"object,omitempty"`
+}
+
+func (m EnvelopeResendResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type EnvelopeResponse struct {
 	LatestVersionId string `json:"latest_version_id,omitempty"`
 	SigningUrl      string `json:"signing_url,omitempty"`
