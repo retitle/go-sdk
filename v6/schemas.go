@@ -165,7 +165,7 @@ type Contact struct {
 	EntityName      string         `json:"entity_name,omitempty"`
 	EntityType      string         `json:"entity_type,omitempty"`
 	FaxPhone        string         `json:"fax_phone,omitempty"`
-	FirstName       string         `json:"first_name"`
+	FirstName       string         `json:"first_name,omitempty"`
 	LastName        string         `json:"last_name,omitempty"`
 	PersonalWebsite string         `json:"personal_website,omitempty"`
 	TeamId          string         `json:"team_id,omitempty"`
@@ -236,7 +236,7 @@ type ContactRequest struct {
 	EntityName      string         `json:"entity_name,omitempty"`
 	EntityType      string         `json:"entity_type,omitempty"`
 	FaxPhone        string         `json:"fax_phone,omitempty"`
-	FirstName       string         `json:"first_name"`
+	FirstName       string         `json:"first_name,omitempty"`
 	LastName        string         `json:"last_name,omitempty"`
 	PersonalWebsite string         `json:"personal_website,omitempty"`
 	Title           string         `json:"title,omitempty"`
@@ -488,21 +488,72 @@ func (m ESignFillConfig) IsRef() bool {
 }
 
 type Envelope struct {
-	Id                string                 `json:"id,omitempty"`
-	CreatedAt         int                    `json:"created_at,omitempty"`
-	Creator           string                 `json:"creator,omitempty"`
-	EnvelopeDocument  *EnvelopeDocumentList  `json:"envelope_document,omitempty"`
-	EnvelopeRecipient *EnvelopeRecipientList `json:"envelope_recipient,omitempty"`
-	SigningUrl        string                 `json:"signing_url,omitempty"`
-	Status            string                 `json:"status,omitempty"`
-	Step              *StepList              `json:"step,omitempty"`
-	Title             string                 `json:"title,omitempty"`
-	Uuid              string                 `json:"uuid,omitempty"`
-	Object            string                 `json:"object,omitempty"`
+	Id                string                          `json:"id,omitempty"`
+	Activities        *EnvelopeActivityListWithCursor `json:"activities,omitempty"`
+	CertificateDocId  string                          `json:"certificate_doc_id,omitempty"`
+	CreatedAt         int                             `json:"created_at,omitempty"`
+	Creator           string                          `json:"creator,omitempty"`
+	EnvelopeDocument  *EnvelopeDocumentList           `json:"envelope_document,omitempty"`
+	EnvelopeRecipient *EnvelopeRecipientList          `json:"envelope_recipient,omitempty"`
+	SigningUrl        string                          `json:"signing_url,omitempty"`
+	Status            string                          `json:"status,omitempty"`
+	Step              *StepList                       `json:"step,omitempty"`
+	Title             string                          `json:"title,omitempty"`
+	Uuid              string                          `json:"uuid,omitempty"`
+	Object            string                          `json:"object,omitempty"`
 }
 
 func (m Envelope) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeActivity struct {
+	Id        string                   `json:"id,omitempty"`
+	Context   *EnvelopeActivityContext `json:"context,omitempty"`
+	CreatedAt int                      `json:"created_at,omitempty"`
+	Kind      string                   `json:"kind,omitempty"`
+	Object    string                   `json:"object,omitempty"`
+}
+
+func (m EnvelopeActivity) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeActivityContext struct {
+	Recipients []*EnvelopeActivityContextItem `json:"recipients,omitempty"`
+	User       *EnvelopeActivityContextItem   `json:"user,omitempty"`
+	Object     string                         `json:"object,omitempty"`
+}
+
+func (m EnvelopeActivityContext) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeActivityContextItem struct {
+	Id     string `json:"id,omitempty"`
+	Link   string `json:"link,omitempty"`
+	Name   string `json:"name,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m EnvelopeActivityContextItem) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeActivityListWithCursor struct {
+	Cursor  string              `json:"cursor,omitempty"`
+	Data    []*EnvelopeActivity `json:"data,omitempty"`
+	HasMore *bool               `json:"has_more,omitempty"`
+	Total   int                 `json:"total,omitempty"`
+	Object  string              `json:"object,omitempty"`
+}
+
+func (m EnvelopeActivityListWithCursor) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeCancelRevisionSchema struct {
+	Message string `json:"message,omitempty"`
 }
 
 type EnvelopeContact struct {
@@ -535,11 +586,13 @@ func (m EnvelopeCreateResponse) IsRef() bool {
 }
 
 type EnvelopeDocument struct {
-	Id                 string `json:"id,omitempty"`
-	EnvelopeDocumentId string `json:"envelope_document_id,omitempty"`
-	Filename           string `json:"filename,omitempty"`
-	Url                string `json:"url,omitempty"`
-	Object             string `json:"object,omitempty"`
+	Id         string `json:"id,omitempty"`
+	DocumentId string `json:"document_id,omitempty"`
+	ExternalId string `json:"external_id,omitempty"`
+	Filename   string `json:"filename,omitempty"`
+	Seq        int    `json:"seq,omitempty"`
+	Title      string `json:"title,omitempty"`
+	Object     string `json:"object,omitempty"`
 }
 
 func (m EnvelopeDocument) IsRef() bool {
@@ -628,10 +681,11 @@ func (m EnvelopeResendResponse) IsRef() bool {
 }
 
 type EnvelopeResponse struct {
-	LatestVersionId string `json:"latest_version_id,omitempty"`
-	SigningUrl      string `json:"signing_url,omitempty"`
-	Uuid            string `json:"uuid,omitempty"`
-	Object          string `json:"object,omitempty"`
+	EnvelopeDocuments []*EnvelopeDocument `json:"envelope_documents,omitempty"`
+	LatestVersionId   string              `json:"latest_version_id,omitempty"`
+	SigningUrl        string              `json:"signing_url,omitempty"`
+	Uuid              string              `json:"uuid,omitempty"`
+	Object            string              `json:"object,omitempty"`
 }
 
 func (m EnvelopeResponse) IsRef() bool {
@@ -975,6 +1029,7 @@ type InitialEnvelopeDocument struct {
 type InitialRecipient struct {
 	Contact       *EnvelopeContact `json:"contact,omitempty"`
 	ExternalId    string           `json:"external_id,omitempty"`
+	Order         string           `json:"order,omitempty"`
 	RecipientRole string           `json:"recipient_role,omitempty"`
 	Source        *RecipientSource `json:"source,omitempty"`
 }
