@@ -7,6 +7,10 @@ import (
 )
 
 type EnvelopesResource interface {
+	EnvelopeDocument() EnvelopeDocumentResource
+	EnvelopeRecipient() EnvelopeRecipientResource
+	Step() StepResource
+	Activities() ActivitiesResource
 	GetDetail(id string, opts ...core.RequestOption) (*Envelope, error)
 	Create(envelopeCreateIntentSchema EnvelopeCreateIntentSchema, opts ...core.RequestOption) (*EnvelopeCreateResponse, error)
 	StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error)
@@ -16,13 +20,37 @@ type EnvelopesResource interface {
 }
 
 type envelopesResourceImpl struct {
-	client Client
+	client            Client
+	envelopeDocument  EnvelopeDocumentResource
+	envelopeRecipient EnvelopeRecipientResource
+	step              StepResource
+	activities        ActivitiesResource
 }
 
 func GetEnvelopesResource(client Client) EnvelopesResource {
 	return envelopesResourceImpl{
-		client: client,
+		client:            client,
+		envelopeDocument:  GetEnvelopeDocumentResource(client),
+		envelopeRecipient: GetEnvelopeRecipientResource(client),
+		step:              GetStepResource(client),
+		activities:        GetActivitiesResource(client),
 	}
+}
+
+func (r envelopesResourceImpl) EnvelopeDocument() EnvelopeDocumentResource {
+	return r.envelopeDocument
+}
+
+func (r envelopesResourceImpl) EnvelopeRecipient() EnvelopeRecipientResource {
+	return r.envelopeRecipient
+}
+
+func (r envelopesResourceImpl) Step() StepResource {
+	return r.step
+}
+
+func (r envelopesResourceImpl) Activities() ActivitiesResource {
+	return r.activities
 }
 
 func (r envelopesResourceImpl) GetDetail(id string, opts ...core.RequestOption) (*Envelope, error) {
