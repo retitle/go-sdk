@@ -487,6 +487,16 @@ func (m ESignFillConfig) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type EnvSendRevisionResponse struct {
+	Envelope   *EnvelopeResponse `json:"envelope,omitempty"`
+	EnvelopeId string            `json:"envelope_id,omitempty"`
+	Object     string            `json:"object,omitempty"`
+}
+
+func (m EnvSendRevisionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Envelope struct {
 	Id                string                          `json:"id,omitempty"`
 	Activities        *EnvelopeActivityListWithCursor `json:"activities,omitempty"`
@@ -690,6 +700,14 @@ type EnvelopeResponse struct {
 
 func (m EnvelopeResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type EnvelopeSendRevisionSchema struct {
+	Documents        []*InitialEnvelopeDocument `json:"documents,omitempty"`
+	EmailMessage     string                     `json:"email_message,omitempty"`
+	EmailSubject     string                     `json:"email_subject,omitempty"`
+	LockedSignerKeys []string                   `json:"locked_signer_keys,omitempty"`
+	Recipients       []*InitialRecipient        `json:"recipients,omitempty"`
 }
 
 type EnvelopeStartRevisionResponse struct {
