@@ -9,11 +9,13 @@ import (
 type DocumentsResource interface {
 	AnalyzeSynchronous(analyzeSchema AnalyzeSchema, files []core.File, opts ...core.RequestOption) (*DocumentAnalysisAsyncResponse, error)
 	DocumentSplit(documentSplitSchema DocumentSplitSchema, files []core.File, opts ...core.RequestOption) (*DocumentSplitResponse, error)
+	DownloadDetachedZip(opts ...core.RequestOption) (*BinaryResponse, error)
 	DownloadZip(opts ...core.RequestOption) (*BinaryResponse, error)
 	PspdfkitDetails(opts ...core.RequestOption) (*DocumentPspdfkitDetailsResponse, error)
 	SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, files []core.File, opts ...core.RequestOption) (*SignatureDetectionResponse, error)
 	UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error)
 	Download(id string, opts ...core.RequestOption) (*BinaryResponse, error)
+	DownloadDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error)
 }
 
 type documentsResourceImpl struct {
@@ -37,6 +39,14 @@ func (r documentsResourceImpl) AnalyzeSynchronous(analyzeSchema AnalyzeSchema, f
 func (r documentsResourceImpl) DocumentSplit(documentSplitSchema DocumentSplitSchema, files []core.File, opts ...core.RequestOption) (*DocumentSplitResponse, error) {
 	res := DocumentSplitResponse{}
 	if err := r.client.PostWithFiles(&res, true, fmt.Sprintf("/documents/document_split"), documentSplitSchema, files, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r documentsResourceImpl) DownloadDetachedZip(opts ...core.RequestOption) (*BinaryResponse, error) {
+	res := BinaryResponse{}
+	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/download_detached_zip"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
@@ -77,6 +87,14 @@ func (r documentsResourceImpl) UploadFile(documentUploadSchema DocumentUploadSch
 func (r documentsResourceImpl) Download(id string, opts ...core.RequestOption) (*BinaryResponse, error) {
 	res := BinaryResponse{}
 	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/%s/download", id), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r documentsResourceImpl) DownloadDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error) {
+	res := BinaryResponse{}
+	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/%s/download_detached", id), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
