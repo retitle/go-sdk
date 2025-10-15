@@ -651,6 +651,7 @@ type EnvelopeRecipient struct {
 	InitialsImage  *SignatureImage `json:"initials_image,omitempty"`
 	RecipientRole  string          `json:"recipient_role,omitempty"`
 	SignatureImage *SignatureImage `json:"signature_image,omitempty"`
+	SigningStatus  string          `json:"signing_status,omitempty"`
 	Object         string          `json:"object,omitempty"`
 }
 
