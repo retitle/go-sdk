@@ -336,6 +336,22 @@ func (m DocumentAnalysisResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type DocumentDuplicateResponse struct {
+	Documents []*Document `json:"documents,omitempty"`
+	Object    string      `json:"object,omitempty"`
+}
+
+func (m DocumentDuplicateResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DocumentDuplicateSchema struct {
+	CopyAnalysis     *bool    `json:"copy_analysis,omitempty"`
+	CopyPspdfkitData *bool    `json:"copy_pspdfkit_data,omitempty"`
+	CreatePspdfkit   *bool    `json:"create_pspdfkit,omitempty"`
+	DocumentUuids    []string `json:"document_uuids"`
+}
+
 type DocumentFileMeta struct {
 	FileName string `json:"file_name"`
 }
