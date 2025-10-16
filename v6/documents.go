@@ -11,6 +11,7 @@ type DocumentsResource interface {
 	DocumentSplit(documentSplitSchema DocumentSplitSchema, files []core.File, opts ...core.RequestOption) (*DocumentSplitResponse, error)
 	DownloadDetachedZip(opts ...core.RequestOption) (*BinaryResponse, error)
 	DownloadZip(opts ...core.RequestOption) (*BinaryResponse, error)
+	Duplicate(documentDuplicateSchema DocumentDuplicateSchema, opts ...core.RequestOption) (*DocumentDuplicateResponse, error)
 	PspdfkitDetails(opts ...core.RequestOption) (*DocumentPspdfkitDetailsResponse, error)
 	SignatureDetection(signatureDetectionSchema SignatureDetectionSchema, files []core.File, opts ...core.RequestOption) (*SignatureDetectionResponse, error)
 	UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error)
@@ -55,6 +56,14 @@ func (r documentsResourceImpl) DownloadDetachedZip(opts ...core.RequestOption) (
 func (r documentsResourceImpl) DownloadZip(opts ...core.RequestOption) (*BinaryResponse, error) {
 	res := BinaryResponse{}
 	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/download_zip"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r documentsResourceImpl) Duplicate(documentDuplicateSchema DocumentDuplicateSchema, opts ...core.RequestOption) (*DocumentDuplicateResponse, error) {
+	res := DocumentDuplicateResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/documents/duplicate"), documentDuplicateSchema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
