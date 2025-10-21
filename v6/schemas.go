@@ -583,12 +583,18 @@ type EnvelopeCancelRevisionSchema struct {
 }
 
 type EnvelopeContact struct {
-	Email          string   `json:"email,omitempty"`
-	EmailAddresses []string `json:"email_addresses,omitempty"`
-	EntityType     string   `json:"entity_type,omitempty"`
-	FirstName      string   `json:"first_name,omitempty"`
-	LastName       string   `json:"last_name,omitempty"`
-	PhoneNumbers   []string `json:"phone_numbers,omitempty"`
+	Agent          *EnvelopeContactAgent `json:"agent,omitempty"`
+	CellPhone      string                `json:"cell_phone,omitempty"`
+	Email          string                `json:"email,omitempty"`
+	EmailAddresses []string              `json:"email_addresses,omitempty"`
+	EntityType     string                `json:"entity_type,omitempty"`
+	FirstName      string                `json:"first_name,omitempty"`
+	LastName       string                `json:"last_name,omitempty"`
+	PhoneNumbers   []string              `json:"phone_numbers,omitempty"`
+}
+
+type EnvelopeContactAgent struct {
+	CompanyName string `json:"company_name,omitempty"`
 }
 
 type EnvelopeCreateIntentSchema struct {
