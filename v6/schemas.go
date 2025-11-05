@@ -603,6 +603,7 @@ type EnvelopeCreateIntentSchema struct {
 	Documents     []*InitialEnvelopeDocument `json:"documents,omitempty"`
 	EmailSubject  string                     `json:"email_subject,omitempty"`
 	EmailMessage  string                     `json:"email_message,omitempty"`
+	ExternalId    string                     `json:"external_id,omitempty"`
 	Recipients    []*InitialRecipient        `json:"recipients,omitempty"`
 	TransactionId string                     `json:"transaction_id,omitempty"`
 }
