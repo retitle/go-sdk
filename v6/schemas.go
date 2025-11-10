@@ -715,11 +715,12 @@ func (m EnvelopeResendResponse) IsRef() bool {
 }
 
 type EnvelopeResponse struct {
-	EnvelopeDocuments []*EnvelopeDocument `json:"envelope_documents,omitempty"`
-	LatestVersionId   string              `json:"latest_version_id,omitempty"`
-	SigningUrl        string              `json:"signing_url,omitempty"`
-	Uuid              string              `json:"uuid,omitempty"`
-	Object            string              `json:"object,omitempty"`
+	EnvelopeDocuments  []*EnvelopeDocument  `json:"envelope_documents,omitempty"`
+	EnvelopeRecipients []*EnvelopeRecipient `json:"envelope_recipients,omitempty"`
+	LatestVersionId    string               `json:"latest_version_id,omitempty"`
+	SigningUrl         string               `json:"signing_url,omitempty"`
+	Uuid               string               `json:"uuid,omitempty"`
+	Object             string               `json:"object,omitempty"`
 }
 
 func (m EnvelopeResponse) IsRef() bool {
