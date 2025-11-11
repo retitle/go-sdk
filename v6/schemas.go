@@ -346,10 +346,11 @@ func (m DocumentDuplicateResponse) IsRef() bool {
 }
 
 type DocumentDuplicateSchema struct {
-	CopyAnalysis     *bool    `json:"copy_analysis,omitempty"`
-	CopyPspdfkitData *bool    `json:"copy_pspdfkit_data,omitempty"`
-	CreatePspdfkit   *bool    `json:"create_pspdfkit,omitempty"`
-	DocumentUuids    []string `json:"document_uuids"`
+	CopyAnalysis     *bool             `json:"copy_analysis,omitempty"`
+	CopyPspdfkitData *bool             `json:"copy_pspdfkit_data,omitempty"`
+	CreatePspdfkit   *bool             `json:"create_pspdfkit,omitempty"`
+	DocumentUuids    []string          `json:"document_uuids"`
+	RecipientIdMap   map[string]string `json:"recipient_id_map,omitempty"`
 }
 
 type DocumentFileMeta struct {
