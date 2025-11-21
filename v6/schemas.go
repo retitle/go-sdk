@@ -504,16 +504,6 @@ func (m ESignFillConfig) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type EnvSendRevisionResponse struct {
-	Envelope   *EnvelopeResponse `json:"envelope,omitempty"`
-	EnvelopeId string            `json:"envelope_id,omitempty"`
-	Object     string            `json:"object,omitempty"`
-}
-
-func (m EnvSendRevisionResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type Envelope struct {
 	Id                string                          `json:"id,omitempty"`
 	Activities        *EnvelopeActivityListWithCursor `json:"activities,omitempty"`
@@ -579,8 +569,13 @@ func (m EnvelopeActivityListWithCursor) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type EnvelopeCancelRevisionSchema struct {
-	Message string `json:"message,omitempty"`
+type EnvelopeCancelRevisionResponse struct {
+	EnvelopeId string `json:"envelope_id,omitempty"`
+	Object     string `json:"object,omitempty"`
+}
+
+func (m EnvelopeCancelRevisionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type EnvelopeContact struct {
@@ -728,29 +723,32 @@ func (m EnvelopeResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type EnvelopeSendRevisionResponse struct {
+	Envelope   *EnvelopeResponse `json:"envelope,omitempty"`
+	EnvelopeId string            `json:"envelope_id,omitempty"`
+	Object     string            `json:"object,omitempty"`
+}
+
+func (m EnvelopeSendRevisionResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type EnvelopeSendRevisionSchema struct {
 	Documents        []*InitialEnvelopeDocument `json:"documents,omitempty"`
 	EmailMessage     string                     `json:"email_message,omitempty"`
 	EmailSubject     string                     `json:"email_subject,omitempty"`
+	ExternalId       string                     `json:"external_id,omitempty"`
 	LockedSignerKeys []string                   `json:"locked_signer_keys,omitempty"`
 	Recipients       []*InitialRecipient        `json:"recipients,omitempty"`
 }
 
 type EnvelopeStartRevisionResponse struct {
 	EnvelopeId string `json:"envelope_id,omitempty"`
+	IsDelayed  *bool  `json:"is_delayed,omitempty"`
 	Object     string `json:"object,omitempty"`
 }
 
 func (m EnvelopeStartRevisionResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
-type EnvelopeCancelRevisionResponse struct {
-	EnvelopeId string `json:"envelope_id,omitempty"`
-	Object     string `json:"object,omitempty"`
-}
-
-func (m EnvelopeCancelRevisionResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 

@@ -13,10 +13,10 @@ type EnvelopesResource interface {
 	EnvelopeActivities() EnvelopeActivitiesResource
 	GetDetail(id string, opts ...core.RequestOption) (*Envelope, error)
 	Create(envelopeCreateIntentSchema EnvelopeCreateIntentSchema, opts ...core.RequestOption) (*EnvelopeCreateResponse, error)
-	StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error)
 	CancelRevision(id string, opts ...core.RequestOption) (*EnvelopeCancelRevisionResponse, error)
 	Resend(id string, opts ...core.RequestOption) (*EnvelopeResendResponse, error)
-	SendRevision(id string, envelopeSendRevisionSchema EnvelopeSendRevisionSchema, opts ...core.RequestOption) (*EnvSendRevisionResponse, error)
+	SendRevision(id string, envelopeSendRevisionSchema EnvelopeSendRevisionSchema, opts ...core.RequestOption) (*EnvelopeSendRevisionResponse, error)
+	StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error)
 	Void(id string, envelopeVoidSchema EnvelopeVoidSchema, opts ...core.RequestOption) (*EnvelopeVoidResponse, error)
 }
 
@@ -70,14 +70,6 @@ func (r envelopesResourceImpl) Create(envelopeCreateIntentSchema EnvelopeCreateI
 	return &res, nil
 }
 
-func (r envelopesResourceImpl) StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error) {
-	res := EnvelopeStartRevisionResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/revise", id), nil, opts...); err != nil {
-		return nil, err
-	}
-	return &res, nil
-}
-
 func (r envelopesResourceImpl) CancelRevision(id string, opts ...core.RequestOption) (*EnvelopeCancelRevisionResponse, error) {
 	res := EnvelopeCancelRevisionResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/cancel_revision", id), nil, opts...); err != nil {
@@ -86,17 +78,25 @@ func (r envelopesResourceImpl) CancelRevision(id string, opts ...core.RequestOpt
 	return &res, nil
 }
 
-func (r envelopesResourceImpl) SendRevision(id string, envelopeSendRevisionSchema EnvelopeSendRevisionSchema, opts ...core.RequestOption) (*EnvSendRevisionResponse, error) {
-	res := EnvSendRevisionResponse{}
+func (r envelopesResourceImpl) Resend(id string, opts ...core.RequestOption) (*EnvelopeResendResponse, error) {
+	res := EnvelopeResendResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/resend", id), nil, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r envelopesResourceImpl) SendRevision(id string, envelopeSendRevisionSchema EnvelopeSendRevisionSchema, opts ...core.RequestOption) (*EnvelopeSendRevisionResponse, error) {
+	res := EnvelopeSendRevisionResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/send_revision", id), envelopeSendRevisionSchema, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
 }
 
-func (r envelopesResourceImpl) Resend(id string, opts ...core.RequestOption) (*EnvelopeResendResponse, error) {
-	res := EnvelopeResendResponse{}
-	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/resend", id), nil, opts...); err != nil {
+func (r envelopesResourceImpl) StartRevision(id string, opts ...core.RequestOption) (*EnvelopeStartRevisionResponse, error) {
+	res := EnvelopeStartRevisionResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/envelopes/%s/start_revision", id), nil, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
