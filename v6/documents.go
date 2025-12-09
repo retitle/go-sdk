@@ -17,6 +17,7 @@ type DocumentsResource interface {
 	UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error)
 	Download(id string, opts ...core.RequestOption) (*BinaryResponse, error)
 	DownloadDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error)
+	GetApplicableTemplates(id string, opts ...core.RequestOption) (*ApplicableTemplatesResponse, error)
 }
 
 type documentsResourceImpl struct {
@@ -104,6 +105,14 @@ func (r documentsResourceImpl) Download(id string, opts ...core.RequestOption) (
 func (r documentsResourceImpl) DownloadDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error) {
 	res := BinaryResponse{}
 	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/%s/download_detached", id), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r documentsResourceImpl) GetApplicableTemplates(id string, opts ...core.RequestOption) (*ApplicableTemplatesResponse, error) {
+	res := ApplicableTemplatesResponse{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/documents/templates/%s", id), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
