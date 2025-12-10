@@ -293,6 +293,7 @@ func (m CreateResponse) IsRef() bool {
 type DealTemplates struct {
 	TemplateId        string               `json:"template_id,omitempty"`
 	TemplateDocuments []*TemplateDocuments `json:"template_documents,omitempty"`
+	Tags              []string             `json:"tags,omitempty"`
 	Object            string               `json:"object,omitempty"`
 }
 
