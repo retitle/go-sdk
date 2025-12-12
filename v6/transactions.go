@@ -7,6 +7,7 @@ import (
 )
 
 type TransactionsResource interface {
+	Forms() FormsResource
 	Folders() FoldersResource
 	Parties() PartiesResource
 	PropertiesInfo() PropertiesInfoResource
@@ -44,6 +45,7 @@ type TransactionsResource interface {
 
 type transactionsResourceImpl struct {
 	client                       Client
+	forms                        FormsResource
 	folders                      FoldersResource
 	parties                      PartiesResource
 	propertiesInfo               PropertiesInfoResource
@@ -56,6 +58,7 @@ type transactionsResourceImpl struct {
 func GetTransactionsResource(client Client) TransactionsResource {
 	return transactionsResourceImpl{
 		client:                       client,
+		forms:                        GetFormsResource(client),
 		folders:                      GetFoldersResource(client),
 		parties:                      GetPartiesResource(client),
 		propertiesInfo:               GetPropertiesInfoResource(client),
@@ -64,6 +67,10 @@ func GetTransactionsResource(client Client) TransactionsResource {
 		transactionPackages:          GetTransactionPackagesResource(client),
 		transactionSignatureRequests: GetTransactionSignatureRequestsResource(client),
 	}
+}
+
+func (r transactionsResourceImpl) Forms() FormsResource {
+	return r.forms
 }
 
 func (r transactionsResourceImpl) Folders() FoldersResource {
