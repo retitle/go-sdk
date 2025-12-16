@@ -32,6 +32,7 @@ type TransactionsResource interface {
 	PartyUpdateContactDetails(id string, partyupdatecontactdetails PartyUpdateContactDetails, opts ...core.RequestOption) (*PartyUpdateContactDetailsResponse, error)
 	PartyUpdateContactSource(id string, partyupdatecontactsource PartyUpdateContactSource, opts ...core.RequestOption) (*PartyUpdateContactSourceResponse, error)
 	ReorderFolders(id string, transactiondocumentreorderfolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error)
+	ReplacePrimaryAgent(id string, replacePrimaryAgent ReplacePrimaryAgent, opts ...core.RequestOption) (*ReplacePrimaryAgentResponse, error)
 	TransactionDocumentAssignments(id string, transactiondocumentassignments TransactionDocumentAssignments, opts ...core.RequestOption) (*TransactionDocumentAssignmentsResponse, error)
 	TransactionDocumentRenames(id string, transactiondocumentrenames TransactionDocumentRenames, opts ...core.RequestOption) (*TransactionDocumentRenamesResponse, error)
 	TransactionDocumentRestores(id string, transactiondocumentsrestores TransactionDocumentsRestores, opts ...core.RequestOption) (*TransactionDocumentRestoresResponse, error)
@@ -238,6 +239,14 @@ func (r transactionsResourceImpl) PartyUpdateContactSource(id string, partyupdat
 func (r transactionsResourceImpl) ReorderFolders(id string, transactiondocumentreorderfolders TransactionDocumentReorderFolders, opts ...core.RequestOption) (*ReorderFoldersResponse, error) {
 	res := ReorderFoldersResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/reorder_folders", id), transactiondocumentreorderfolders, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) ReplacePrimaryAgent(id string, replacePrimaryAgent ReplacePrimaryAgent, opts ...core.RequestOption) (*ReplacePrimaryAgentResponse, error) {
+	res := ReplacePrimaryAgentResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/replace_primary_agent", id), replacePrimaryAgent, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
