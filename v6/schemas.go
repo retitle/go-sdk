@@ -1494,6 +1494,25 @@ func (m ReorderFoldersResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type ReplacePrimaryAgent struct {
+	PartyId string `json:"party_id"`
+	Object  string `json:"object,omitempty"`
+}
+
+func (m ReplacePrimaryAgent) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ReplacePrimaryAgentResponse struct {
+	Result        *ReplacePrimaryAgent `json:"result,omitempty"`
+	TransactionId string               `json:"transaction_id,omitempty"`
+	Object        string               `json:"object,omitempty"`
+}
+
+func (m ReplacePrimaryAgentResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Signature struct {
 	Kind   string `json:"kind,omitempty"`
 	Text   string `json:"text,omitempty"`
