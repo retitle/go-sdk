@@ -2263,6 +2263,16 @@ type TransactionDocumentsRestores struct {
 	Restores []*TransactionDocumentsRestore `json:"restores,omitempty"`
 }
 
+type TransactionForm struct {
+	Id     string `json:"id,omitempty"`
+	Title  string `json:"title,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m TransactionForm) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TransactionFormImport struct {
 	FormId string `json:"form_id"`
 	Title  string `json:"title,omitempty"`
@@ -2271,6 +2281,26 @@ type TransactionFormImport struct {
 type TransactionFormImports struct {
 	FolderId string                   `json:"folder_id,omitempty"`
 	Imports  []*TransactionFormImport `json:"imports"`
+}
+
+type TransactionFormLibrary struct {
+	Id     string             `json:"id,omitempty"`
+	Forms  []*TransactionForm `json:"forms,omitempty"`
+	Title  string             `json:"title,omitempty"`
+	Object string             `json:"object,omitempty"`
+}
+
+func (m TransactionFormLibrary) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type TransactionFormsResponse struct {
+	Libraries []*TransactionFormLibrary `json:"libraries,omitempty"`
+	Object    string                    `json:"object,omitempty"`
+}
+
+func (m TransactionFormsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type TransactionMeta struct {
