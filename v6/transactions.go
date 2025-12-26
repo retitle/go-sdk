@@ -40,6 +40,7 @@ type TransactionsResource interface {
 	TransactionDocumentTrashes(id string, transactionDocumentTrashes TransactionDocumentTrashes, opts ...core.RequestOption) (*TransactionDocumentTrashesResponse, error)
 	UpdateArchivalStatus(id string, transactionArchivalStatus TransactionArchivalStatus, opts ...core.RequestOption) (*UpdateArchivalStatusResponse, error)
 	UpdateTransactionMeta(id string, transactionMetaUpdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error)
+	GetApplicableTemplates(id string, opts ...core.RequestOption) (*ApplicableTemplatesResponse, error)
 }
 
 type transactionsResourceImpl struct {
@@ -298,6 +299,14 @@ func (r transactionsResourceImpl) UpdateArchivalStatus(id string, transactionArc
 func (r transactionsResourceImpl) UpdateTransactionMeta(id string, transactionMetaUpdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error) {
 	res := UpdateTransactionMetaResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/update_transaction_meta", id), transactionMetaUpdate, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) GetApplicableTemplates(id string, opts ...core.RequestOption) (*ApplicableTemplatesResponse, error) {
+	res := ApplicableTemplatesResponse{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/transactions/templates/%s", id), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
