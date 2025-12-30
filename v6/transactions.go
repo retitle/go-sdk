@@ -8,6 +8,7 @@ import (
 
 type TransactionsResource interface {
 	Forms() FormsResource
+	Templates() TemplatesResource
 	Folders() FoldersResource
 	Parties() PartiesResource
 	PropertiesInfo() PropertiesInfoResource
@@ -42,12 +43,12 @@ type TransactionsResource interface {
 	TransactionDocumentTrashes(id string, transactionDocumentTrashes TransactionDocumentTrashes, opts ...core.RequestOption) (*TransactionDocumentTrashesResponse, error)
 	UpdateArchivalStatus(id string, transactionArchivalStatus TransactionArchivalStatus, opts ...core.RequestOption) (*UpdateArchivalStatusResponse, error)
 	UpdateTransactionMeta(id string, transactionMetaUpdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error)
-	GetApplicableTemplates(id string, opts ...core.RequestOption) (*ApplicableTemplatesResponse, error)
 }
 
 type transactionsResourceImpl struct {
 	client                       Client
 	forms                        FormsResource
+	templates                    TemplatesResource
 	folders                      FoldersResource
 	parties                      PartiesResource
 	propertiesInfo               PropertiesInfoResource
@@ -61,6 +62,7 @@ func GetTransactionsResource(client Client) TransactionsResource {
 	return transactionsResourceImpl{
 		client:                       client,
 		forms:                        GetFormsResource(client),
+		templates:                    GetTemplatesResource(client),
 		folders:                      GetFoldersResource(client),
 		parties:                      GetPartiesResource(client),
 		propertiesInfo:               GetPropertiesInfoResource(client),
@@ -73,6 +75,10 @@ func GetTransactionsResource(client Client) TransactionsResource {
 
 func (r transactionsResourceImpl) Forms() FormsResource {
 	return r.forms
+}
+
+func (r transactionsResourceImpl) Templates() TemplatesResource {
+	return r.templates
 }
 
 func (r transactionsResourceImpl) Folders() FoldersResource {
@@ -315,14 +321,6 @@ func (r transactionsResourceImpl) UpdateArchivalStatus(id string, transactionArc
 func (r transactionsResourceImpl) UpdateTransactionMeta(id string, transactionMetaUpdate TransactionMetaUpdate, opts ...core.RequestOption) (*UpdateTransactionMetaResponse, error) {
 	res := UpdateTransactionMetaResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/update_transaction_meta", id), transactionMetaUpdate, opts...); err != nil {
-		return nil, err
-	}
-	return &res, nil
-}
-
-func (r transactionsResourceImpl) GetApplicableTemplates(id string, opts ...core.RequestOption) (*ApplicableTemplatesResponse, error) {
-	res := ApplicableTemplatesResponse{}
-	if err := r.client.Get(&res, true, fmt.Sprintf("/transactions/%s/templates", id), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

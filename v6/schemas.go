@@ -128,15 +128,6 @@ type Annotations struct {
 	Width          float64 `json:"width,omitempty"`
 }
 
-type ApplicableTemplatesResponse struct {
-	DealTemplates *DealTemplates `json:"deal_templates,omitempty"`
-	Object        string         `json:"object,omitempty"`
-}
-
-func (m ApplicableTemplatesResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type BinaryResponse struct {
 	ContentDisposition string       `json:"content_disposition,omitempty"`
 	ContentType        string       `json:"content_type,omitempty"`
@@ -290,14 +281,24 @@ func (m CreateResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
-type DealTemplates struct {
-	TemplateId        string               `json:"template_id,omitempty"`
-	TemplateDocuments []*TemplateDocuments `json:"template_documents,omitempty"`
+type DealTemplate struct {
 	Tags              []string             `json:"tags,omitempty"`
+	TemplateDocuments []*TemplateDocuments `json:"template_documents,omitempty"`
+	TemplateId        string               `json:"template_id,omitempty"`
+	TemplateTitle     string               `json:"template_title,omitempty"`
 	Object            string               `json:"object,omitempty"`
 }
 
-func (m DealTemplates) IsRef() bool {
+func (m DealTemplate) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type DealTemplatesResponse struct {
+	DealTemplates []*DealTemplate `json:"deal_templates,omitempty"`
+	Object        string          `json:"object,omitempty"`
+}
+
+func (m DealTemplatesResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -1923,16 +1924,6 @@ func (m StepList) NextPageParams() core.PageParams {
 	}
 }
 
-type TemplateDocuments struct {
-	Id     string `json:"id,omitempty"`
-	Title  string `json:"title,omitempty"`
-	Object string `json:"object,omitempty"`
-}
-
-func (m TemplateDocuments) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type Task struct {
 	Id          string       `json:"id,omitempty"`
 	BoardId     string       `json:"board_id,omitempty"`
@@ -1971,6 +1962,16 @@ func (m TaskList) NextPageParams() core.PageParams {
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
+}
+
+type TemplateDocuments struct {
+	Id     string `json:"id,omitempty"`
+	Title  string `json:"title,omitempty"`
+	Object string `json:"object,omitempty"`
+}
+
+func (m TemplateDocuments) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type TextSplitRequest struct {
