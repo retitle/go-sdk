@@ -1745,6 +1745,7 @@ func (m SignatureRequestFlowRecipientsResponse) IsRef() bool {
 }
 
 type SignatureRequestFlowRequest struct {
+	ExternalTaskId          string       `json:"external_task_id,omitempty"`
 	Recipients              []*Recipient `json:"recipients,omitempty"`
 	TransactionDocumentsIds []string     `json:"transaction_documents_ids,omitempty"`
 	TransactionId           string       `json:"transaction_id,omitempty"`
