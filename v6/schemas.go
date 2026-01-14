@@ -1013,15 +1013,6 @@ type Form struct {
 	Fields []*EnvelopeField `json:"fields,omitempty"`
 }
 
-type FormImportsResponse struct {
-	TransactionId string `json:"transaction_id,omitempty"`
-	Object        string `json:"object,omitempty"`
-}
-
-func (m FormImportsResponse) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type FormMatch struct {
 	EndPage                 int                         `json:"end_page"`
 	ExtractedFields         []*ExtractedField           `json:"extracted_fields,omitempty"`
@@ -1086,6 +1077,16 @@ type GlideForm struct {
 }
 
 func (m GlideForm) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type ImportFormsResponse struct {
+	Result        *TransactionFormImportsResult `json:"result,omitempty"`
+	TransactionId string                        `json:"transaction_id,omitempty"`
+	Object        string                        `json:"object,omitempty"`
+}
+
+func (m ImportFormsResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
@@ -2345,13 +2346,22 @@ func (m TransactionForm) IsRef() bool {
 }
 
 type TransactionFormImport struct {
-	FormId string `json:"form_id"`
-	Title  string `json:"title,omitempty"`
+	FormId          string `json:"form_id"`
+	SourceLibraryId string `json:"source_library_id"`
 }
 
 type TransactionFormImports struct {
 	FolderId string                   `json:"folder_id,omitempty"`
 	Imports  []*TransactionFormImport `json:"imports"`
+}
+
+type TransactionFormImportsResult struct {
+	CreatedDocuments []*TransactionDocument `json:"created_documents"`
+	Object           string                 `json:"object,omitempty"`
+}
+
+func (m TransactionFormImportsResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type TransactionFormLibrary struct {
