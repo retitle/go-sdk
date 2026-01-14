@@ -115,6 +115,17 @@ type AnalyzeSchema struct {
 	FilesMeta []*FileMeta `json:"files_meta,omitempty"`
 }
 
+type ApplyTemplatesResponse struct {
+	IsDelayed     *bool                              `json:"is_delayed,omitempty"`
+	Result        *TransactionAppliedTemplatesResult `json:"result,omitempty"`
+	TransactionId string                             `json:"transaction_id,omitempty"`
+	Object        string                             `json:"object,omitempty"`
+}
+
+func (m ApplyTemplatesResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Annotations struct {
 	Id             string  `json:"id,omitempty"`
 	FieldId        string  `json:"field_id,omitempty"`
@@ -2129,6 +2140,15 @@ func CombineFieldsWrites(fieldWrites ...TransactionFieldsWrite) TransactionField
 	return res
 }
 
+type TransactionAppliedTemplatesResult struct {
+	CreatedDocuments []*TransactionDocument `json:"created_documents"`
+	Object           string                 `json:"object,omitempty"`
+}
+
+func (m TransactionAppliedTemplatesResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TransactionArchivalStatus struct {
 	Archived *bool `json:"archived,omitempty"`
 }
@@ -2400,6 +2420,16 @@ func (m TransactionPackageList) NextPageParams() core.PageParams {
 		StartingAfter: m.Data[pageSize-1].Id,
 		Limit:         pageSize,
 	}
+}
+
+type TransactionSelectedTemplate struct {
+	TemplateId             string   `json:"template_id"`
+	TransactionDocumentIds []string `json:"transaction_document_ids"`
+}
+
+type TransactionSelectedTemplates struct {
+	SelectedTemplateDocuments []*TransactionSelectedTemplate `json:"selected_template_documents"`
+	TemplateIds               []string                       `json:"template_ids"`
 }
 
 type UpdateArchivalStatusResponse struct {

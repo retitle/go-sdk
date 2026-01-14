@@ -22,6 +22,7 @@ type TransactionsResource interface {
 	Create(transactionCreate TransactionCreate, opts ...core.RequestOption) (*CreateResponse, error)
 	AvailablePartyRoles(opts ...core.RequestOption) (*PartyRoles, error)
 	OrgsTransactionsIds(opts ...core.RequestOption) (*TransactionByOrgSchema, error)
+	ApplyTemplates(id string, transactionSelectedTemplates TransactionSelectedTemplates, opts ...core.RequestOption) (*ApplyTemplatesResponse, error)
 	DeletedParties(id string, opts ...core.RequestOption) (*DeletedParties, error)
 	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...core.RequestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...core.RequestOption) (*FolderCreatesResponse, error)
@@ -152,6 +153,14 @@ func (r transactionsResourceImpl) AvailablePartyRoles(opts ...core.RequestOption
 func (r transactionsResourceImpl) OrgsTransactionsIds(opts ...core.RequestOption) (*TransactionByOrgSchema, error) {
 	res := TransactionByOrgSchema{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/transactions/orgs_transactions_ids"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) ApplyTemplates(id string, transactionSelectedTemplates TransactionSelectedTemplates, opts ...core.RequestOption) (*ApplyTemplatesResponse, error) {
+	res := ApplyTemplatesResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/apply_templates", id), transactionSelectedTemplates, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
