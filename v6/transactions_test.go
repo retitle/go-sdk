@@ -516,18 +516,18 @@ func TestTransactionsFormImports(t *testing.T) {
 	)
 	trxId := "10"
 	err := fixtures.TransactionsError()
-	url := fmt.Sprintf("https://api.glide.com/transactions/%s/form_imports", trxId)
-	ttests := []tests_utils.GlideExternalApiTestCase[glide.FormImportsResponse]{
+	url := fmt.Sprintf("https://api.glide.com/transactions/%s/import_forms", trxId)
+	ttests := []tests_utils.GlideExternalApiTestCase[glide.ImportFormsResponse]{
 		{
 			Name: "Should get multi trx",
 			Arrange: func(client glide.Client) {
 				trxResource = glide.GetTransactionsResource(client)
 			},
-			Act: func(client glide.Client) (*glide.FormImportsResponse, error) {
-				return trxResource.FormImports(trxId, *fixtures.TransactionFormImportsData())
+			Act: func(client glide.Client) (*glide.ImportFormsResponse, error) {
+				return trxResource.ImportForms(trxId, *fixtures.TransactionFormImportsData())
 			},
 			ExpectedRequest:        tests_utils.MakeRequestWithNoBody(http.MethodPost, url),
-			MockResponse:           tests_utils.Make200Response(fixtures.FormImportsResponseData(trxId)),
+			MockResponse:           tests_utils.Make200Response(fixtures.ImportFormsResponseData(trxId)),
 			ErrorInsteadOfResponse: nil,
 			Assert:                 nil,
 		},
@@ -537,13 +537,13 @@ func TestTransactionsFormImports(t *testing.T) {
 				trxResource = glide.GetTransactionsResource(client)
 
 			},
-			Act: func(client glide.Client) (*glide.FormImportsResponse, error) {
-				return trxResource.FormImports(trxId, *fixtures.TransactionFormImportsData())
+			Act: func(client glide.Client) (*glide.ImportFormsResponse, error) {
+				return trxResource.ImportForms(trxId, *fixtures.TransactionFormImportsData())
 			},
 			ExpectedRequest:        tests_utils.MakeRequestWithNoBody(http.MethodPost, url),
 			MockResponse:           tests_utils.MakeResponseWithStatus(http.StatusBadRequest, &err),
 			ErrorInsteadOfResponse: nil,
-			Assert: func(t *testing.T, response *glide.FormImportsResponse, err error) {
+			Assert: func(t *testing.T, response *glide.ImportFormsResponse, err error) {
 				assert.NotNil(t, err)
 				e := err.(*core.ApiErrorImpl)
 				assert.Equal(t, e.StatusCode, http.StatusBadRequest)
