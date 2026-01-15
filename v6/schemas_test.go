@@ -199,11 +199,11 @@ func TestSchemas(t *testing.T) {
 	ref = folderRenamesResponse.IsRef()
 	assert.True(t, ref)
 
-	importFormsResponse := glide.ImportFormsResponse{}
-	ref = importFormsResponse.IsRef()
+	formImportsResponse := glide.FormImportsResponse{}
+	ref = formImportsResponse.IsRef()
 	assert.False(t, ref)
-	importFormsResponse.Object = "/ref/"
-	ref = importFormsResponse.IsRef()
+	formImportsResponse.Object = "/ref/"
+	ref = formImportsResponse.IsRef()
 	assert.True(t, ref)
 
 	itemDeletesResponse := glide.ItemDeletesResponse{}

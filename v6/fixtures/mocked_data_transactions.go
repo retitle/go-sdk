@@ -125,14 +125,14 @@ func FolderRenamesData() *glide.FolderRenames {
 	return &glide.FolderRenames{Renames: []*glide.FolderRename{FolderRenameData()}}
 }
 
-func ImportFormsResponseData(trxId string) *glide.ImportFormsResponse {
-	return &glide.ImportFormsResponse{TransactionId: trxId}
+func FormImportsResponseData(trxId string) *glide.FormImportsResponse {
+	return &glide.FormImportsResponse{TransactionId: trxId}
 }
 
 func TransactionFormImportData() *glide.TransactionFormImport {
 	return &glide.TransactionFormImport{
-		FormId:          "some form id",
-		SourceLibraryId: "some form library id",
+		FormId: "some form id",
+		Title:  "School form",
 	}
 }
 
