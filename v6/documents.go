@@ -17,7 +17,6 @@ type DocumentsResource interface {
 	UploadFile(documentUploadSchema DocumentUploadSchema, files []core.File, opts ...core.RequestOption) (*DocumentUploadResponse, error)
 	Download(id string, opts ...core.RequestOption) (*BinaryResponse, error)
 	DownloadDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error)
-	ThumbnailDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error)
 }
 
 type documentsResourceImpl struct {
@@ -105,14 +104,6 @@ func (r documentsResourceImpl) Download(id string, opts ...core.RequestOption) (
 func (r documentsResourceImpl) DownloadDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error) {
 	res := BinaryResponse{}
 	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/%s/download_detached", id), opts...); err != nil {
-		return nil, err
-	}
-	return &res, nil
-}
-
-func (r documentsResourceImpl) ThumbnailDetached(id string, opts ...core.RequestOption) (*BinaryResponse, error) {
-	res := BinaryResponse{}
-	if err := r.client.GetStream(&res, true, fmt.Sprintf("/documents/%s/thumbnail_detached", id), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
