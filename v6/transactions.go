@@ -27,6 +27,7 @@ type TransactionsResource interface {
 	Fields(id string, fieldsWrites TransactionFieldsWrite, controlPolicy string, opts ...core.RequestOption) (*FieldsResponse, error)
 	FolderCreates(id string, folderCreates FolderCreates, opts ...core.RequestOption) (*FolderCreatesResponse, error)
 	FolderRenames(id string, folderRenames FolderRenames, opts ...core.RequestOption) (*FolderRenamesResponse, error)
+	FormImports(id string, transactionFormImports TransactionFormImports, opts ...core.RequestOption) (*FormImportsResponse, error)
 	ImportForms(id string, transactionFormImports TransactionFormImports, opts ...core.RequestOption) (*ImportFormsResponse, error)
 	ItemDeletes(id string, itemDeletes ItemDeletes, opts ...core.RequestOption) (*ItemDeletesResponse, error)
 	MergeDocuments(id string, documentMergeSchema DocumentMergeSchema, opts ...core.RequestOption) (*MergeDocumentsResponse, error)
@@ -194,6 +195,14 @@ func (r transactionsResourceImpl) FolderCreates(id string, folderCreates FolderC
 func (r transactionsResourceImpl) FolderRenames(id string, folderRenames FolderRenames, opts ...core.RequestOption) (*FolderRenamesResponse, error) {
 	res := FolderRenamesResponse{}
 	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/folder_renames", id), folderRenames, opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r transactionsResourceImpl) FormImports(id string, transactionFormImports TransactionFormImports, opts ...core.RequestOption) (*FormImportsResponse, error) {
+	res := FormImportsResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/transactions/%s/form_imports", id), transactionFormImports, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

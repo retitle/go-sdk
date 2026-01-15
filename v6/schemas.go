@@ -116,10 +116,10 @@ type AnalyzeSchema struct {
 }
 
 type ApplyTemplatesResponse struct {
-	IsDelayed     *bool                              `json:"is_delayed,omitempty"`
-	Result        *TransactionAppliedTemplatesResult `json:"result,omitempty"`
-	TransactionId string                             `json:"transaction_id,omitempty"`
-	Object        string                             `json:"object,omitempty"`
+	IsDelayed     *bool                            `json:"is_delayed,omitempty"`
+	Result        *TransactionTemplatesApplyResult `json:"result,omitempty"`
+	TransactionId string                           `json:"transaction_id,omitempty"`
+	Object        string                           `json:"object,omitempty"`
 }
 
 func (m ApplyTemplatesResponse) IsRef() bool {
@@ -1013,6 +1013,15 @@ type Form struct {
 	Fields []*EnvelopeField `json:"fields,omitempty"`
 }
 
+type FormImportsResponse struct {
+	TransactionId string `json:"transaction_id,omitempty"`
+	Object        string `json:"object,omitempty"`
+}
+
+func (m FormImportsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type FormMatch struct {
 	EndPage                 int                         `json:"end_page"`
 	ExtractedFields         []*ExtractedField           `json:"extracted_fields,omitempty"`
@@ -1081,9 +1090,9 @@ func (m GlideForm) IsRef() bool {
 }
 
 type ImportFormsResponse struct {
-	Result        *TransactionFormImportsResult `json:"result,omitempty"`
-	TransactionId string                        `json:"transaction_id,omitempty"`
-	Object        string                        `json:"object,omitempty"`
+	Result        *TransactionDocumentsImportResult `json:"result,omitempty"`
+	TransactionId string                            `json:"transaction_id,omitempty"`
+	Object        string                            `json:"object,omitempty"`
 }
 
 func (m ImportFormsResponse) IsRef() bool {
@@ -2141,15 +2150,6 @@ func CombineFieldsWrites(fieldWrites ...TransactionFieldsWrite) TransactionField
 	return res
 }
 
-type TransactionAppliedTemplatesResult struct {
-	CreatedDocuments []*TransactionDocument `json:"created_documents"`
-	Object           string                 `json:"object,omitempty"`
-}
-
-func (m TransactionAppliedTemplatesResult) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
-}
-
 type TransactionArchivalStatus struct {
 	Archived *bool `json:"archived,omitempty"`
 }
@@ -2326,6 +2326,15 @@ type TransactionDocumentUploads struct {
 	Uploads []*TransactionDocumentUpload `json:"uploads,omitempty"`
 }
 
+type TransactionDocumentsImportResult struct {
+	CreatedDocuments []*TransactionDocument `json:"created_documents"`
+	Object           string                 `json:"object,omitempty"`
+}
+
+func (m TransactionDocumentsImportResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TransactionDocumentsRestore struct {
 	FolderId              string `json:"folder_id,omitempty"`
 	TransactionDocumentId string `json:"transaction_document_id,omitempty"`
@@ -2347,21 +2356,13 @@ func (m TransactionForm) IsRef() bool {
 
 type TransactionFormImport struct {
 	FormId          string `json:"form_id"`
-	SourceLibraryId string `json:"source_library_id"`
+	SourceLibraryId string `json:"source_library_id,omitempty"`
+	Title           string `json:"title,omitempty"`
 }
 
 type TransactionFormImports struct {
 	FolderId string                   `json:"folder_id,omitempty"`
 	Imports  []*TransactionFormImport `json:"imports"`
-}
-
-type TransactionFormImportsResult struct {
-	CreatedDocuments []*TransactionDocument `json:"created_documents"`
-	Object           string                 `json:"object,omitempty"`
-}
-
-func (m TransactionFormImportsResult) IsRef() bool {
-	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type TransactionFormLibrary struct {
@@ -2440,6 +2441,15 @@ type TransactionSelectedTemplate struct {
 type TransactionSelectedTemplates struct {
 	SelectedTemplateDocuments []*TransactionSelectedTemplate `json:"selected_template_documents"`
 	TemplateIds               []string                       `json:"template_ids"`
+}
+
+type TransactionTemplatesApplyResult struct {
+	CreatedDocuments []*TransactionDocument `json:"created_documents"`
+	Object           string                 `json:"object,omitempty"`
+}
+
+func (m TransactionTemplatesApplyResult) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
 }
 
 type UpdateArchivalStatusResponse struct {
