@@ -2192,6 +2192,7 @@ type TransactionDocument struct {
 	ClientDocumentType        string           `json:"client_document_type,omitempty"`
 	ClientVisibilityChangedAt int              `json:"client_visibility_changed_at,omitempty"`
 	ClientVisibilityStatus    string           `json:"client_visibility_status,omitempty"`
+	Entitlement               string           `json:"entitlement,omitempty"`
 	Folder                    *Folder          `json:"folder,omitempty"`
 	FolderKind                string           `json:"folder_kind,omitempty"`
 	FormId                    string           `json:"form_id,omitempty"`
