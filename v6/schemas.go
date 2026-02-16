@@ -1987,9 +1987,13 @@ func (m TaskList) NextPageParams() core.PageParams {
 }
 
 type TemplateDocuments struct {
-	Id     string `json:"id,omitempty"`
-	Title  string `json:"title,omitempty"`
-	Object string `json:"object,omitempty"`
+	Id                string `json:"id,omitempty"`
+	Entitlement       string `json:"entitlement,omitempty"`
+	FormId            string `json:"form_id,omitempty"`
+	FormSeriesId      string `json:"form_series_id,omitempty"`
+	IsDeactivatedForm *bool  `json:"is_deactivated_form,omitempty"`
+	Title             string `json:"title,omitempty"`
+	Object            string `json:"object,omitempty"`
 }
 
 func (m TemplateDocuments) IsRef() bool {
