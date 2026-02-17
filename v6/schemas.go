@@ -2475,6 +2475,28 @@ func (m UpdateTransactionMetaResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
+type UpdatedUser struct {
+	Id              string `json:"id,omitempty"`
+	CompassPersonId string `json:"compass_person_id,omitempty"`
+	NarLastName     string `json:"nar_last_name,omitempty"`
+	NarNrdsId       string `json:"nar_nrds_id,omitempty"`
+	UpdatedAt       int    `json:"updated_at,omitempty"`
+	Object          string `json:"object,omitempty"`
+}
+
+func (m UpdatedUser) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type UpdatedUsersList struct {
+	Users  []*UpdatedUser `json:"users,omitempty"`
+	Object string         `json:"object,omitempty"`
+}
+
+func (m UpdatedUsersList) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type UploadError struct {
 	Error    string `json:"error"`
 	Filename string `json:"filename"`
