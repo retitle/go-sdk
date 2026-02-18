@@ -2602,3 +2602,13 @@ type Validation struct {
 	Kind      string           `json:"kind,omitempty"`
 	Signature *SignatureIntent `json:"signature,omitempty"`
 }
+
+type UserNarCredentials struct {
+	NarLastName string `json:"nar_last_name,omitempty"`
+	NarNrdsId   string `json:"nar_nrds_id,omitempty"`
+	Object      string `json:"object,omitempty"`
+}
+
+func (m UserNarCredentials) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
