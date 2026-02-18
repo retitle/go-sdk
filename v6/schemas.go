@@ -383,6 +383,7 @@ type DocumentDuplicateSchema struct {
 	CreatePspdfkit   *bool             `json:"create_pspdfkit,omitempty"`
 	DocumentUuids    []string          `json:"document_uuids"`
 	RecipientIdMap   map[string]string `json:"recipient_id_map,omitempty"`
+	SourceDocuments  []*SourceDocument `json:"source_documents,omitempty"`
 }
 
 type DocumentFileMeta struct {
@@ -1895,6 +1896,11 @@ type SignatureResult struct {
 
 func (m SignatureResult) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type SourceDocument struct {
+	Uuid                string `json:"uuid"`
+	UuidForPspdfkitCopy string `json:"uuid_for_pspdfkit_copy,omitempty"`
 }
 
 type SplitAnnotationTextRequest struct {
