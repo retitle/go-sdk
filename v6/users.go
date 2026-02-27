@@ -12,6 +12,7 @@ type UsersResource interface {
 	CurrentBilling(opts ...core.RequestOption) (*UserBillingInfo, error)
 	UpdatedSince(opts ...core.RequestOption) (*UpdatedUsersList, error)
 	NarCredentials(opts ...core.RequestOption) (*UserNarCredentials, error)
+	UpdateNarCredentials(id string, userNarCredentials UserNarCredentials, opts ...core.RequestOption) (*UserNarCredentials, error)
 }
 
 type usersResourceImpl struct {
@@ -59,6 +60,14 @@ func (r usersResourceImpl) NarCredentials(opts ...core.RequestOption) (*UserNarC
 func (r usersResourceImpl) UpdatedSince(opts ...core.RequestOption) (*UpdatedUsersList, error) {
 	res := UpdatedUsersList{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/users/updated_since"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r usersResourceImpl) UpdateNarCredentials(id string, userNarCredentials UserNarCredentials, opts ...core.RequestOption) (*UserNarCredentials, error) {
+	res := UserNarCredentials{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/users/%s/update_nar_credentials", id), userNarCredentials, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
