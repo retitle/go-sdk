@@ -2610,7 +2610,7 @@ type Validation struct {
 }
 
 type UserNarCredentials struct {
-	NarLastName string `json:"nar_last_name,omitempty"`
+	NarLastName string `json:"nar_last_name"`
 	NarNrdsId   string `json:"nar_nrds_id"`
 	Object      string `json:"object,omitempty"`
 }
