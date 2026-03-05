@@ -2213,6 +2213,8 @@ type TransactionDocument struct {
 	Origin                    string           `json:"origin,omitempty"`
 	PageCount                 int              `json:"page_count,omitempty"`
 	SignatureStatus           string           `json:"signature_status,omitempty"`
+	SourceTdId                string           `json:"source_td_id,omitempty"`
+	SourceTemplateId          string           `json:"source_template_id,omitempty"`
 	Title                     string           `json:"title,omitempty"`
 	Transaction               *Transaction     `json:"transaction,omitempty"`
 	UploadedBy                *UploadedBy      `json:"uploaded_by,omitempty"`
