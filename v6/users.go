@@ -8,6 +8,7 @@ import (
 
 type UsersResource interface {
 	GetDetail(id string, opts ...core.RequestOption) (*User, error)
+	BulkNarCredentials(opts ...core.RequestOption) (*NarCredentialsList, error)
 	Current(opts ...core.RequestOption) (*User, error)
 	CurrentBilling(opts ...core.RequestOption) (*UserBillingInfo, error)
 	UpdatedSince(opts ...core.RequestOption) (*UpdatedUsersList, error)
@@ -28,6 +29,14 @@ func GetUsersResource(client Client) UsersResource {
 func (r usersResourceImpl) GetDetail(id string, opts ...core.RequestOption) (*User, error) {
 	res := User{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/users/%s", id), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r usersResourceImpl) BulkNarCredentials(opts ...core.RequestOption) (*NarCredentialsList, error) {
+	res := NarCredentialsList{}
+	if err := r.client.Get(&res, true, fmt.Sprintf("/users/bulk_nar_credentials"), opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil
