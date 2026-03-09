@@ -164,6 +164,19 @@ type ConditionalLinking struct {
 	Terms         string `json:"terms,omitempty"`
 }
 
+type BulkNarCredentialsUser struct {
+	Id              string `json:"id,omitempty"`
+	CompassPersonId string `json:"compass_person_id,omitempty"`
+	NarLastName     string `json:"nar_last_name,omitempty"`
+	NarNrdsId       string `json:"nar_nrds_id,omitempty"`
+	UpdatedAt       int    `json:"updated_at,omitempty"`
+	Object          string `json:"object,omitempty"`
+}
+
+func (m BulkNarCredentialsUser) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type Contact struct {
 	Id              string         `json:"id,omitempty"`
 	Address         *Address       `json:"address,omitempty"`
@@ -1160,6 +1173,15 @@ type MergeDocumentsResponse struct {
 }
 
 func (m MergeDocumentsResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type NarCredentialsList struct {
+	Users  []*BulkNarCredentialsUser `json:"users,omitempty"`
+	Object string                    `json:"object,omitempty"`
+}
+
+func (m NarCredentialsList) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
