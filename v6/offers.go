@@ -9,6 +9,7 @@ import (
 type OffersResource interface {
 	OfferParties() OfferPartiesResource
 	List(opts ...core.RequestOption) (*OffersResponse, error)
+	VerifyAccess(offerAccessVerifyRequest OfferAccessVerifyRequest, opts ...core.RequestOption) (*OfferAccessVerifyResponse, error)
 }
 
 type offersResourceImpl struct {
@@ -30,6 +31,14 @@ func (r offersResourceImpl) OfferParties() OfferPartiesResource {
 func (r offersResourceImpl) List(opts ...core.RequestOption) (*OffersResponse, error) {
 	res := OffersResponse{}
 	if err := r.client.Get(&res, true, fmt.Sprintf("/offers"), opts...); err != nil {
+		return nil, err
+	}
+	return &res, nil
+}
+
+func (r offersResourceImpl) VerifyAccess(offerAccessVerifyRequest OfferAccessVerifyRequest, opts ...core.RequestOption) (*OfferAccessVerifyResponse, error) {
+	res := OfferAccessVerifyResponse{}
+	if err := r.client.Post(&res, true, fmt.Sprintf("/offers/verify_access"), offerAccessVerifyRequest, opts...); err != nil {
 		return nil, err
 	}
 	return &res, nil

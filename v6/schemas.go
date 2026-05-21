@@ -661,13 +661,14 @@ func (m EnvelopeCreateResponse) IsRef() bool {
 }
 
 type EnvelopeDocument struct {
-	Id         string `json:"id,omitempty"`
-	DocumentId string `json:"document_id,omitempty"`
-	ExternalId string `json:"external_id,omitempty"`
-	Filename   string `json:"filename,omitempty"`
-	Seq        int    `json:"seq,omitempty"`
-	Title      string `json:"title,omitempty"`
-	Object     string `json:"object,omitempty"`
+	Id            string `json:"id,omitempty"`
+	DocumentId    string `json:"document_id,omitempty"`
+	ExternalId    string `json:"external_id,omitempty"`
+	Filename      string `json:"filename,omitempty"`
+	Seq           int    `json:"seq,omitempty"`
+	SigningStatus string `json:"signing_status,omitempty"`
+	Title         string `json:"title,omitempty"`
+	Object        string `json:"object,omitempty"`
 }
 
 func (m EnvelopeDocument) IsRef() bool {
@@ -1028,6 +1029,7 @@ type Form struct {
 }
 
 type FormImportsResponse struct {
+	IsDelayed     *bool  `json:"is_delayed,omitempty"`
 	TransactionId string `json:"transaction_id,omitempty"`
 	Object        string `json:"object,omitempty"`
 }
@@ -1104,6 +1106,7 @@ func (m GlideForm) IsRef() bool {
 }
 
 type ImportFormsResponse struct {
+	IsDelayed     *bool                             `json:"is_delayed,omitempty"`
 	Result        *TransactionDocumentsImportResult `json:"result,omitempty"`
 	TransactionId string                            `json:"transaction_id,omitempty"`
 	Object        string                            `json:"object,omitempty"`
@@ -1225,6 +1228,19 @@ type Offer struct {
 }
 
 func (m Offer) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
+type OfferAccessVerifyRequest struct {
+	ResourceId string `json:"resource_id"`
+}
+
+type OfferAccessVerifyResponse struct {
+	Allowed *bool  `json:"allowed"`
+	Object  string `json:"object,omitempty"`
+}
+
+func (m OfferAccessVerifyResponse) IsRef() bool {
 	return strings.HasPrefix(m.Object, "/ref/")
 }
 
