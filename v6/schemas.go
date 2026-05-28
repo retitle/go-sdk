@@ -2030,6 +2030,20 @@ func (m TaskList) NextPageParams() core.PageParams {
 	}
 }
 
+type TemplateAccessVerifyRequest struct {
+	Permission string `json:"permission,omitempty"`
+	ResourceId string `json:"resource_id"`
+}
+
+type TemplateAccessVerifyResponse struct {
+	Allowed *bool  `json:"allowed"`
+	Object  string `json:"object,omitempty"`
+}
+
+func (m TemplateAccessVerifyResponse) IsRef() bool {
+	return strings.HasPrefix(m.Object, "/ref/")
+}
+
 type TemplateDocuments struct {
 	Id                string `json:"id,omitempty"`
 	Entitlement       string `json:"entitlement,omitempty"`
