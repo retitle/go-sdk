@@ -2536,12 +2536,13 @@ func (m UpdateTransactionMetaResponse) IsRef() bool {
 }
 
 type UpdatedUser struct {
-	Id              string `json:"id,omitempty"`
-	CompassPersonId string `json:"compass_person_id,omitempty"`
-	NarLastName     string `json:"nar_last_name,omitempty"`
-	NarNrdsId       string `json:"nar_nrds_id,omitempty"`
-	UpdatedAt       int    `json:"updated_at,omitempty"`
-	Object          string `json:"object,omitempty"`
+	Id                         string `json:"id,omitempty"`
+	CompassPersonId            string `json:"compass_person_id,omitempty"`
+	NarLastName                string `json:"nar_last_name,omitempty"`
+	NarNrdsId                  string `json:"nar_nrds_id,omitempty"`
+	NarPrimaryStateAssociation string `json:"nar_primary_state_association,omitempty"`
+	UpdatedAt                  int    `json:"updated_at,omitempty"`
+	Object                     string `json:"object,omitempty"`
 }
 
 func (m UpdatedUser) IsRef() bool {
@@ -2664,9 +2665,10 @@ type Validation struct {
 }
 
 type UserNarCredentials struct {
-	NarLastName string `json:"nar_last_name"`
-	NarNrdsId   string `json:"nar_nrds_id"`
-	Object      string `json:"object,omitempty"`
+	NarLastName                string `json:"nar_last_name"`
+	NarNrdsId                  string `json:"nar_nrds_id"`
+	NarPrimaryStateAssociation string `json:"nar_primary_state_association,omitempty"`
+	Object                     string `json:"object,omitempty"`
 }
 
 func (m UserNarCredentials) IsRef() bool {
