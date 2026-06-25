@@ -165,12 +165,13 @@ type ConditionalLinking struct {
 }
 
 type BulkNarCredentialsUser struct {
-	Id              string `json:"id,omitempty"`
-	CompassPersonId string `json:"compass_person_id,omitempty"`
-	NarLastName     string `json:"nar_last_name,omitempty"`
-	NarNrdsId       string `json:"nar_nrds_id,omitempty"`
-	UpdatedAt       int    `json:"updated_at,omitempty"`
-	Object          string `json:"object,omitempty"`
+	Id                         string `json:"id,omitempty"`
+	CompassPersonId            string `json:"compass_person_id,omitempty"`
+	NarLastName                string `json:"nar_last_name,omitempty"`
+	NarNrdsId                  string `json:"nar_nrds_id,omitempty"`
+	NarPrimaryStateAssociation string `json:"nar_primary_state_association,omitempty"`
+	UpdatedAt                  int    `json:"updated_at,omitempty"`
+	Object                     string `json:"object,omitempty"`
 }
 
 func (m BulkNarCredentialsUser) IsRef() bool {
