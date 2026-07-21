@@ -2501,11 +2501,11 @@ func (m TransactionPackageList) NextPageParams() core.PageParams {
 
 type TransactionSelectedTemplate struct {
 	TemplateId             string   `json:"template_id"`
-	TransactionDocumentIds []string `json:"transaction_document_ids"`
+	TransactionDocumentIds []string `json:"transaction_document_ids,omitempty"`
 }
 
 type TransactionSelectedTemplates struct {
-	SelectedTemplateDocuments []*TransactionSelectedTemplate `json:"selected_template_documents"`
+	SelectedTemplateDocuments []*TransactionSelectedTemplate `json:"selected_template_documents,omitempty"`
 	TemplateIds               []string                       `json:"template_ids"`
 }
 
